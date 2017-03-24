@@ -1,0 +1,17 @@
+<table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Mail</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#contacts}}
+      <tr>
+        <td><a href="/contacts/{{ _id }}">See</a></td>
+        <td>{{name}}</td>
+        <td>{{ mail }}</td>
+      </tr>
+    {{/contacts}}
+    </tbody>
+</table>
