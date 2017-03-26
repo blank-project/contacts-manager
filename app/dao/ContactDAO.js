@@ -1,5 +1,4 @@
-var MongoClient = global.db,
-  co = require('co'),
+var co = require('co'),
   ObjectID = require('mongodb').ObjectID;
 
 

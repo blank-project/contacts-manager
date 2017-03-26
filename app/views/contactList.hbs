@@ -1,17 +1,21 @@
-<table>
+<table class="contact-list">
     <thead>
       <tr>
+        <th></th>
         <th>Nom</th>
         <th>Mail</th>
+        <th>Téléphone</th>
       </tr>
     </thead>
     <tbody>
     {{#contacts}}
       <tr>
-        <td><a href="/contacts/{{ _id }}">See</a></td>
-        <td>{{name}}</td>
-        <td>{{ mail }}</td>
+        <td><a href="/contacts/{{ id }}">See</a></td>
+        <td>{{ fullName }}</td>
+        <td>{{ email }}</td>
+        <td>{{ phone }}</td>
       </tr>
     {{/contacts}}
     </tbody>
 </table>
+<a href="edit">Nouveau</a>

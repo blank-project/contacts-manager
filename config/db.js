@@ -1,15 +1,15 @@
 var conf = require('./config').db,
-    co = require('co'),
-    MongoClient = require('mongodb').MongoClient;
+    mongoose = require('mongoose');
 
 // Exports the function building the db.
-module.exports = co.wrap(function*() {
+module.exports = function() {
+
   // Connection URL
   var url = conf.url;
   delete conf.url;
 
-  // Use connect method to connect to the Server
-  var db = yield MongoClient.connect(url, conf);
-  //
-  return db;
-});
+  // Set default Promise
+  mongoose.Promise = global.Promise;
+
+  return mongoose.connect(url, conf);
+};

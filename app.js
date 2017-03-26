@@ -22,5 +22,5 @@ connect().then(db => {
     console.log('Express server listening on port ' + config.port);
   });
 }, err => {
-  console.log('Err ' + err.stack);
+  console.log('Could not get DB connection : ' + err.stack);
 });

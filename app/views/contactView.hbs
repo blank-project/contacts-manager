@@ -1,4 +1,9 @@
+{{#with contact}}
 <ul>
-  <li>{{ contact.name }}</li>
-  <li>{{ contact.mail }}</li>
+  <li>{{ fullName }}</li>
+  <li>{{ email }}</li>
+  <li>{{ phone }}</li>
 </ul>
+<a href="edit/{{ id }}">Edit</a>
+<a href="/contacts">Back to List</a>
+{{/with}}

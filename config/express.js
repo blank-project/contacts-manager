@@ -7,13 +7,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
-var exphbs  = require('express-handlebars');
+var exphbs = require('express-handlebars');
 
 module.exports = function(app, config) {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
 
+  // Register view engine (handlebars).
   app.engine('hbs', exphbs({
     layoutsDir: config.root + '/app/views/layouts/',
     defaultLayout: 'main',
@@ -46,7 +47,7 @@ module.exports = function(app, config) {
     next(err);
   });
 
-  if(app.get('env') === 'development'){
+  if (app.get('env') === 'development'){
     app.use(function (err, req, res, next) {
       console.log(err);
       res.status(err.status || 500);
@@ -56,16 +57,18 @@ module.exports = function(app, config) {
         title: 'error'
       });
     });
+  } else {
+    app.use(function (err, req, res, next) {
+      res.status(err.status || 500);
+        res.render('error', {
+          message: err.message,
+          error: {},
+          title: 'Une erreur s\'est produite'
+        });
+    });
   }
 
-  app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-      res.render('error', {
-        message: err.message,
-        error: {},
-        title: 'error'
-      });
-  });
+
 
   return app;
 };
