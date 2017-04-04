@@ -1,0 +1,21 @@
+<table class="label-list">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Nom</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#labels}}
+      <tr>
+        <td><!-- <a href="/labels/{{ id }}">See</a> --></td>
+        <td>
+          <span class="label" style="background-color:{{ color }};" >
+            {{ name }}
+          </span>
+        </td>
+      </tr>
+    {{/labels}}
+    </tbody>
+</table>
+<a href="edit">Nouveau</a>
