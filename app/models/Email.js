@@ -8,7 +8,7 @@ const EMAIL_REGEX = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
 var schema = new Schema({
   value : { type: String, match : EMAIL_REGEX },
   type : {type : String}
-});
+}, { _id : false });
 
 Email = mongoose.model('Email', schema);
 Email.schema = schema;

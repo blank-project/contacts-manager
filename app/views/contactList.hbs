@@ -14,6 +14,11 @@
         <td>{{ fullName }}</td>
         <td>{{ email }}</td>
         <td>{{ phone }}</td>
+        <td>
+          {{#labels}}
+            {{> label }}
+          {{/labels}}
+        </td>
       </tr>
     {{/contacts}}
     </tbody>

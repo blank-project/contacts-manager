@@ -8,11 +8,9 @@
     <tbody>
     {{#labels}}
       <tr>
-        <td><!-- <a href="/labels/{{ id }}">See</a> --></td>
+        <td><a href="/labels/{{ id }}">Edit</a></td>
         <td>
-          <span class="label" style="background-color:{{ color }};" >
-            {{ name }}
-          </span>
+          {{> label }}
         </td>
       </tr>
     {{/labels}}

@@ -3,7 +3,21 @@
   <li>{{ fullName }}</li>
   <li>{{ email }}</li>
   <li>{{ phone }}</li>
+  <li>
+  {{#labels}}
+    {{> label }}
+  {{/labels}}
+  </li>
 </ul>
+
 <a href="edit/{{ id }}">Edit</a>
 <a href="/contacts">Back to List</a>
 {{/with}}
+<form method="POST" action="/contacts/{{ contact.id }}/labels/">
+  <select name="labelId" id="labelId">
+    {{#labels}}
+    <option value="{{ id }}">{{> label}}</option>
+    {{/labels}}
+  </select>
+  <input type="submit" value="Ajouter" />
+</form>

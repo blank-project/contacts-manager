@@ -10,7 +10,7 @@ var schema = new Schema({
   code : {type : String},
   country : {type : String},
   number : { type: String }
-});
+}, { _id: false });
 
 Address = mongoose.model('Address', schema);
 Address.schema = schema;
