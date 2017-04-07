@@ -85,10 +85,19 @@ router.post('/', function (req, res, next) {
         next();
         return;
       }
+
       contact.set({
         fullName : req.body.name,
         email : req.body.email,
-        phone : req.body.phone
+        phone : req.body.phone,
+        organization : req.body.organization,
+        address : {
+          number : req.body['address.number'],
+          street : req.body['address.street'],
+          code : req.body['address.code'],
+          city : req.body['address.city']
+        },
+        note : req.body.note,
       });
       return contact.save();
     }).

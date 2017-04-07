@@ -1,26 +1,38 @@
 {{#with contact}}
-<ul>
-  <li>{{ fullName }}</li>
-  <li>{{ email }}</li>
-  <li>{{ phone }}</li>
-  <li>
-  {{#each tags}}
-    {{! TODO Find a way to factor tag and tagEdit}}
-    {{>tagEdit}}
-  {{else}}
-    Aucune étiquette
-  {{/each}}
-  </li>
-</ul>
+<dl>
+  <dt>Nom</dt><dd>{{ fullName }}</dd>
+  <dt>Mail</dt><dd>{{ email }}</dd>
+  <dt>Téléphone</dt><dd>{{ phone }}</dd>
+  <dt>Organisation</dt><dd>{{ organization }}</dd>
+  {{#with address }}
+  <dt>Adresse</dt><dd>
+    <address>
+     <span>{{ number }}</span> <span>{{ street }}</span><br />
+     <span>{{ code }}</span> <span>{{ city }}</span><br />
+   </address>
+  </dd>
+  {{/with}}
+  <dt>Etiquettes</dt><dd>
+    <div>
+      {{#each tags}}
+        {{! TODO Find a way to factor tag and tagEdit}}
+        {{>tagEdit}}
+      {{else}}
+        Aucune étiquette
+      {{/each}}
+    </div>
+    <form method="POST" action="/contacts/{{ contact.id }}/tags/">
+      <select name="tagId" id="tagId">
+        {{#each ../tags}}
+        <option value="{{ id }}">{{ name }}</option>
+        {{/each}}
+      </select>
+      <input type="submit" value="Ajouter" />
+    </form>
+  </dd>
+  <dt>Note</dt><dd>{{ note }}</dd>
+</dl>
 {{/with}}
-<form method="POST" action="/contacts/{{ contact.id }}/tags/">
-  <select name="tagId" id="tagId">
-    {{#tags}}
-    <option value="{{ id }}">{{ name }}</option>
-    {{/tags}}
-  </select>
-  <input type="submit" value="Ajouter" />
-</form>
 {{#with contact}}
 <a href="edit/{{ id }}">Edit</a>
 {{/with}}

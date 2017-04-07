@@ -11,15 +11,17 @@ var mongoose = require('mongoose')
 // Base Schema
 var schema = new Schema({
   name : {
-    last : { type: String },
-    first : {type : String, required : true},
-    prefix : {type : String},
-    suffix : {type : String}
+    last : { type: String , trim : true },
+    first : {type : String, required : true, trim : true },
+    prefix : {type : String, trim : true },
+    suffix : {type : String , trim : true }
   },
+  organization : {type : String, trim : true },
   emails : [Email.schema],
   phones : [Phone.schema],
   addresses : [Address.schema],
-  tags : [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
+  tags : [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+  note : {type : String, trim : true }
 }, {
   collection : 'contacts',
   timestamps: {
@@ -61,6 +63,19 @@ schema.virtual('address').get(function() {
     return addr[0];
   }
   return null;
+}).set(function(pVal) {
+  var addrs = this.addresses;
+  if (!addrs) {
+    addrs = this.addresses = [];
+  }
+  addrs[0] = pVal;
+});
+
+schema.virtual('formattedAddress').get(function() {
+  if (!this.get('address')) {
+    return '';
+  }
+  return this.get('address').format();
 });
 
 schema.virtual('email').get(function() {
@@ -72,7 +87,7 @@ schema.virtual('email').get(function() {
 }).set(function(v) {
   var mails = this.emails;
   if (!mails) {
-    mails = [];
+    this.emails = mails = [];
   }
   if (mails.length == 0){
     mails.push(new Email());

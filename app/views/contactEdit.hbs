@@ -6,6 +6,16 @@
   <label for="name">Nom</label><input id="name" type="text" name="name" value="{{ fullName }}"/><br />
   <label for="email">Mail</label><input id="email" type="email" name="email" value="{{ email }}" /><br />
   <label for="phone">Téléphone</label><input id="phone" type="tel" name="phone" value="{{ phone }}" /><br />
+  <label for="organization">Organisation</label><input id="organization" type="text" name="organization" value="{{ organization }}" /><br />
+  <fieldset>
+    <legend>Adresse</legend>
+    <label for="address.number">N°</label><input id="address.number" type="text" name="address.number" value="{{ address.number }}" /><br />
+    <label for="address.street">Rue</label><input id="address.street" type="text" name="address.street" value="{{ address.street }}" /><br />
+    <label for="address.code">Code Postal</label><input id="address.code" type="text" name="address.code" value="{{ address.code }}" /><br />
+    <label for="address.city">N°</label><input id="address.city" type="text" name="address.city" value="{{ address.city }}" /><br />
+  </fieldset>
+  <label for="note">Note</label><textarea id="note" name="note">{{ note }}</textarea><br />
+
   <input type="submit" name="submit" value="Soumettre" />
   <input type="reset" name="reset" value="RAZ" />
   <input type="submit" name="cancel" value="Annuler" />
