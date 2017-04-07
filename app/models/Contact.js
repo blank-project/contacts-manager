@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
   , Phone = require('./Phone')
   , Address = require('./Address')
   , Email = require('./Email')
-  , Label = require('./Label');
+  , Tag = require('./Tag');
 
 
 // https://en.wikipedia.org/wiki/VCard
@@ -19,7 +19,7 @@ var schema = new Schema({
   emails : [Email.schema],
   phones : [Phone.schema],
   addresses : [Address.schema],
-  labels : [{ type: Schema.Types.ObjectId, ref: 'Label' }]
+  tags : [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
 }, {
   collection : 'contacts',
   timestamps: {

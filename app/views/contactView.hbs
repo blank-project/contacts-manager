@@ -4,20 +4,47 @@
   <li>{{ email }}</li>
   <li>{{ phone }}</li>
   <li>
-  {{#labels}}
-    {{> label }}
-  {{/labels}}
+  {{#each tags}}
+    {{! TODO Find a way to factor tag and tagEdit}}
+    {{>tagEdit}}
+  {{else}}
+    Aucune étiquette
+  {{/each}}
   </li>
 </ul>
-
-<a href="edit/{{ id }}">Edit</a>
-<a href="/contacts">Back to List</a>
 {{/with}}
-<form method="POST" action="/contacts/{{ contact.id }}/labels/">
-  <select name="labelId" id="labelId">
-    {{#labels}}
-    <option value="{{ id }}">{{> label}}</option>
-    {{/labels}}
+<form method="POST" action="/contacts/{{ contact.id }}/tags/">
+  <select name="tagId" id="tagId">
+    {{#tags}}
+    <option value="{{ id }}">{{ name }}</option>
+    {{/tags}}
   </select>
   <input type="submit" value="Ajouter" />
 </form>
+{{#with contact}}
+<a href="edit/{{ id }}">Edit</a>
+{{/with}}
+<a href="/contacts/">Back to List</a>
+
+<script>
+var remove = function(id) {
+    var oReq = new XMLHttpRequest();
+
+    oReq.addEventListener("load", function() {
+      location.reload(true);
+    });
+    oReq.addEventListener("error", console.log);
+
+    oReq.open("DELETE", "/contacts/{{ contact.id }}/tags/" + id);
+
+    oReq.send();
+  }, els = document.getElementsByClassName("tag-remove"), el;
+
+  for (var i = 0; i < els.length; i++) {
+    el = els[i];
+    var tagId = el.getAttribute("data-id");
+    el.addEventListener('click', function(ev) {
+      remove(tagId);
+    });
+  }
+</script>

@@ -8,12 +8,47 @@
   {{#if ENV_DEVELOPMENT}}
     <script src="http://localhost:35729/livereload.js"></script>
   {{/if}}
+  <style>
+    /* TODO Factor out */
+    .tag {
+      border-radius : 2px;
+      margin-left: 2px;
+      padding : 2px;
+    }
+
+    main {
+      margin: 20px;
+    }
+    nav ul {
+       display : flex;
+       background-color: blue;
+       padding : 20px;
+    }
+
+    nav ul li {
+      list-style-type: none;
+      padding-left : 20px;
+    }
+
+    .clickable {
+      cursor : pointer;
+    }
+  </style>
 </head>
 <body>
-
-
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/contacts/">Contacts</a></li>
+        <li><a href="/tags/">Etiquettes</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
   {{{body}}}
-
-
+  </main>
+  <footer>
+    &copy Erwan Osouf for Belleville Citoyenne
+  </footer>
   </body>
 </html>

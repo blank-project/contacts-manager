@@ -2,7 +2,7 @@ var express = require('express')
   , co = require('co')
   , router = express.Router()
   , Contact = require('../models/Contact')
-  , Label = require('../models/Label');
+  , Tag = require('../models/Tag');
 
 // Exports a function to bind Controller
 module.exports = function (app) {
@@ -10,14 +10,22 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
+    var query = {};
+    if (req.query.tagId) {
+      query.tags = req.query.tagId;
+    }
     console.log('Listing contacts');
-    var contacts = Contact.find().populate('labels');
-    contacts.then(data => {
-      res.render('contactList', {
-        title : 'Liste de Contact',
-        contacts : data
-      });
-    });
+
+    co(function* () {
+      return yield {
+        contacts : Contact.find(query).populate('tags').exec(),
+        tags : Tag.find().exec()
+      };
+
+    }).then(data => {
+      data.title = 'Liste de Contact';
+      res.render('contactList', data);
+    }).catch(err => { next(err); });
 });
 
 router.get('/edit/', function (req, res, next) {
@@ -28,7 +36,7 @@ router.get('/edit/:contactId', function (req, res, next) {
     console.log('Editing contact');
     var id = req.params.contactId;
     console.log('id :' + id);
-    Contact.findById(id).populate('labels').exec().
+    Contact.findById(id).populate('tags').exec().
     then(data => {
         res.render('contactEdit', {
           contact : data
@@ -42,11 +50,16 @@ router.get('/:contactId', function (req, res, next) {
     console.log('Displaying contact ' + id);
 
     co(function* () {
-      return yield {
-        contact : Contact.findById(id).populate('labels').exec(),
-        labels : Label.find().exec()
-      };
+      var contact, tags, data = {}, ids = [];
 
+      contact = yield Contact.findById(id).populate('tags').exec();
+      contact.tags.forEach(tag => { ids.push(tag._id) });
+
+      tags = yield Tag.find({ _id : { $nin : ids }}).exec();
+
+      data.contact = contact;
+      data.tags = tags;
+      return data;
     }).then(data => {
       data.title = 'Fiche Contact ' + data.contact.fullName;
       res.render('contactView', data);
@@ -83,24 +96,49 @@ router.post('/', function (req, res, next) {
     catch(err => { next(err); });
 });
 
-router.post('/:contactId/labels/', function (req, res, next) {
+router.post('/:contactId/tags/', function (req, res, next) {
     var id = req.params.contactId
-      , labelId = req.body.labelId;
-    console.log('Associating ' + id + ' with ' + labelId);
-    Label.findById(labelId).exec()
-    .then(label => {
-      if (label == null) {
-        console.log("Label " + labelId + ' not found');
+      , tagId = req.body.tagId;
+    console.log('Associating ' + id + ' with ' + tagId);
+    Tag.findById(tagId).exec()
+    .then(tag => {
+      if (tag == null) {
+        console.log("Tag " + tagId + ' not found');
         next();
         return;
       }
-      // Label found at this point, add to label set.
+      // Tag found at this point, add to tag set.
       Contact.findByIdAndUpdate(id, {
-        $addToSet : { labels : label._id }
+        $addToSet : { tags : tag._id }
       }).exec()
       .then(() => {
-          console.log('OK');
           res.redirect("/contacts/" + id);
+      })
+      .catch(err => {
+        next(err);
+      });
+    })
+    .catch(err => { next(err); });
+
+});
+
+router.delete('/:contactId/tags/:tagId', function (req, res, next) {
+    var id = req.params.contactId
+      , tagId = req.params.tagId;
+    console.log('Removing ' + id + ' with ' + tagId);
+    Tag.findById(tagId).exec()
+    .then(tag => {
+      if (tag == null) {
+        console.log("Tag " + tagId + ' not found');
+        next();
+        return;
+      }
+      // Tag found at this point, add to tag set.
+      Contact.findByIdAndUpdate(id, {
+        $pull : { tags : tag._id }
+      }).exec()
+      .then(() => {
+          res.sendStatus(200);
       })
       .catch(err => {
         next(err);

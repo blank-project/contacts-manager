@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
-  , Label;
+  , Tag;
 
   const LABEL_REGEX = /[^@#]+/i;
 
@@ -9,14 +9,14 @@ var schema = new Schema({
   name : { type: String, match : LABEL_REGEX },
   color : { type: String }
 }, {
-  collection : 'labels',
+  collection : 'tags',
   timestamps: {
     createdAt : 'meta.creationDate',
     updatedAt : 'meta.modificationDate'
   }
 });
 
-Label = mongoose.model('Label', schema);
-Label.schema = schema;
+Tag = mongoose.model('Tag', schema);
+Tag.schema = schema;
 
-module.exports = Label;
+module.exports = Tag;

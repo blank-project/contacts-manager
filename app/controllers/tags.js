@@ -1,64 +1,64 @@
 var express = require('express')
   , router = express.Router()
-  , Label = require('../models/Label');
+  , Tag = require('../models/Tag');
 
 // Exports a function to bind Controller
 module.exports = function (app) {
-  app.use('/labels', router);
+  app.use('/tags', router);
 };
 
 router.get('/', function (req, res, next) {
-    console.log('Listing labels');
-    var labels = Label.find();
-    labels.then(data => {
-      res.render('labelList', {
+    console.log('Listing tags');
+    var tags = Tag.find();
+    tags.then(data => {
+      res.render('tagList', {
         title : 'Liste d\'etiquettes',
-        labels : data
+        tags : data
       });
     });
 });
 
 router.get('/edit/', function (req, res, next) {
-    res.render('labelEdit', { label : {} });
+    res.render('tagEdit', { tag : {} });
 });
 
-router.get('/edit/:labelId', function (req, res, next) {
-    console.log('Editing label');
-    var id = req.params.labelId;
+router.get('/edit/:tagId', function (req, res, next) {
+    console.log('Editing tag');
+    var id = req.params.tagId;
     console.log('id :' + id);
-    Label.findById(id).exec().
+    Tag.findById(id).exec().
     then(data => {
-        res.render('labelEdit', {
-          label : data
+        res.render('tagEdit', {
+          tag : data
         });
       }).
     catch(err => { next(err); });
 });
 
 router.post('/', function (req, res, next) {
-    console.log('Submitting label ');
+    console.log('Submitting tag ');
     if (req.body.cancel) {
       // Redirect to list.
       res.redirect("");
       return;
     }
-    var label = null;
+    var tag = null;
     var id = req.body.id;
     if (id) {
-      label = Label.findById(id).exec();
+      tag = Tag.findById(id).exec();
     } else {
-      label = Promise.resolve(new Label());
+      tag = Promise.resolve(new Tag());
     }
-    label.then(label => {
-      if (!label) {
+    tag.then(tag => {
+      if (!tag) {
         next();
         return;
       }
-      label.set({
+      tag.set({
         name : req.body.name,
         color : req.body.color
       });
-      return label.save();
+      return tag.save();
     }).
     then(model => { res.redirect("") }).
     catch(err => { next(err); });

@@ -1,4 +1,4 @@
-<table class="label-list">
+<table class="tag-list">
     <thead>
       <tr>
         <th></th>
@@ -6,14 +6,14 @@
       </tr>
     </thead>
     <tbody>
-    {{#labels}}
+    {{#tags}}
       <tr>
-        <td><a href="/labels/{{ id }}">Edit</a></td>
+        <td><a href="/tags/edit/{{ id }}">Edit</a></td>
         <td>
-          {{> label }}
+          {{> tag }}
         </td>
       </tr>
-    {{/labels}}
+    {{/tags}}
     </tbody>
 </table>
 <a href="edit">Nouveau</a>
