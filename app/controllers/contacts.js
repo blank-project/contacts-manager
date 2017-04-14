@@ -18,7 +18,10 @@ router.get('/', function (req, res, next) {
 
     co(function* () {
       return yield {
-        contacts : Contact.find(query).populate('tags').exec(),
+        contacts : Contact.find(query).populate({
+          path: 'tags'
+          , options: { sort: { name: 1 }}
+        }).exec(),
         tags : Tag.find().exec()
       };
 
@@ -52,7 +55,10 @@ router.get('/:contactId', function (req, res, next) {
     co(function* () {
       var contact, tags, data = {}, ids = [];
 
-      contact = yield Contact.findById(id).populate('tags').exec();
+      contact = yield Contact.findById(id).populate({
+        path: 'tags'
+        , options: { sort: { name: 1 }}
+      }).exec();
       contact.tags.forEach(tag => { ids.push(tag._id) });
 
       tags = yield Tag.find({ _id : { $nin : ids }}).exec();
