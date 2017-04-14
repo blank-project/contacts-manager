@@ -21,7 +21,7 @@
         Aucune étiquette
       {{/each}}
     </div>
-    <form method="POST" action="/contacts/{{ contact.id }}/tags/">
+    <form method="POST" action="/contacts/{{ id }}/tags/">
       <select name="tagId" id="tagId">
         {{#each ../tags}}
         <option value="{{ id }}">{{ name }}</option>
