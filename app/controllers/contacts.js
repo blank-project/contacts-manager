@@ -20,7 +20,7 @@ router.get('/', function (req, res, next) {
       return yield {
         contacts : Contact.find(query).populate({
           path: 'tags'
-          , options: { sort: { name: 1 }}
+          , options: { sort: 'name'}
         }).exec(),
         tags : Tag.find().exec()
       };
@@ -57,7 +57,7 @@ router.get('/:contactId', function (req, res, next) {
 
       contact = yield Contact.findById(id).populate({
         path: 'tags'
-        , options: { sort: { name: 1 }}
+        , options: { sort: 'name'}
       }).exec();
       contact.tags.forEach(tag => { ids.push(tag._id) });
 
