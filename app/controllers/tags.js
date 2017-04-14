@@ -9,7 +9,7 @@ module.exports = function (app) {
 
 router.get('/', function (req, res, next) {
     console.log('Listing tags');
-    var tags = Tag.find();
+    var tags = Tag.find({}).sort('name').exec();
     tags.then(data => {
       res.render('tagList', {
         title : 'Liste d\'etiquettes',

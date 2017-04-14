@@ -61,7 +61,7 @@ router.get('/:contactId', function (req, res, next) {
       }).exec();
       contact.tags.forEach(tag => { ids.push(tag._id) });
 
-      tags = yield Tag.find({ _id : { $nin : ids }}).exec();
+      tags = yield Tag.find({ _id : { $nin : ids }}).sort('name').exec();
 
       data.contact = contact;
       data.tags = tags;
