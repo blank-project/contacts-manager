@@ -1,12 +1,4 @@
-<form method="GET" action="/contacts/">
-  <select name="tagId" id="tagId">
-    <option value="">&nbsp;</option>
-    {{#tags}}
-    <option value="{{ id }}">{{ name }}</option>
-    {{/tags}}
-  </select>
-  <input type="submit" value="Go" />
-</form>
+{{> contactFilters }}
 <table class="contact-list">
     <thead>
       <tr>

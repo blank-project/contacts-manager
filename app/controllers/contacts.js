@@ -12,7 +12,8 @@ module.exports = function (app) {
 router.get('/', function (req, res, next) {
     var query = {};
     if (req.query.tagId) {
-      query.tags = req.query.tagId;
+      console.log(req.query.tagId);
+      query.tags = { $all : req.query.tagId };
     }
     console.log('Listing contacts');
 

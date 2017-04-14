@@ -1,0 +1,9 @@
+<form method="GET" action="/contacts/">
+  <label for="tagId">Etiquettes</label>
+  <select multiple name="tagId" id="tagId">
+    {{#tags}}
+    <option value="{{ id }}">{{ name }}</option>
+    {{/tags}}
+  </select><br />
+  <input type="submit" value="Filtrer" />
+</form>
