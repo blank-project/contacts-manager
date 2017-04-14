@@ -12,8 +12,10 @@ module.exports = function (app) {
 router.get('/', function (req, res, next) {
     var query = {};
     if (req.query.tagId) {
-      console.log(req.query.tagId);
       query.tags = { $all : req.query.tagId };
+    }
+    if (req.query.search && req.query.search.trim()) {
+      query.$text = { $search: req.query.search };
     }
     console.log('Listing contacts');
 

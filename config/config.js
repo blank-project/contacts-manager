@@ -35,7 +35,10 @@ var config = {
     port: process.env.PORT || 3000,
     db : {
       url : 'mongodb://localhost:27017/contacts-manager-production',
-      poolSize : 10
+      poolSize : 10,
+      config : {
+        autoIndex : false
+      }
     }
   }
 };

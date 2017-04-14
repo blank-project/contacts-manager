@@ -31,6 +31,23 @@ var schema = new Schema({
   }
 });
 
+schema.index({
+    "name.last" : "text",
+    "name.first" : "text",
+    "name.prefix" : "text",
+    "name.suffix" : "text",
+    "organization" : "text"
+  },
+  {
+    weights : {
+      "name.last" : 50,
+      "name.first" : 30,
+      "name.prefix" : 1,
+      "name.suffix" : 1,
+      "organization" : 7
+    }
+  });
+
 // Add Virtuals
 schema.virtual('fullName').
   get(function () {
@@ -114,5 +131,12 @@ schema.virtual('phone').get(function() {
 });
 
 var Contact = mongoose.model('Contact', schema);
+
+Contact.on('index', function(error) {
+    if (error) {
+      console.log("Error creating text index");
+      console.log(error);
+    }
+});
 
 module.exports = Contact;

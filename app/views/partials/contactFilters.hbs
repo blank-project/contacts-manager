@@ -1,9 +1,11 @@
 <form method="GET" action="/contacts/">
+  <label for="search">Recherche</label><input type="text" name="search" id="search" /><br />
   <label for="tagId">Etiquettes</label>
   <select multiple name="tagId" id="tagId">
     {{#tags}}
     <option value="{{ id }}">{{ name }}</option>
     {{/tags}}
   </select><br />
+
   <input type="submit" value="Filtrer" />
 </form>
