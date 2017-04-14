@@ -17,6 +17,7 @@ var schema = new Schema({
     suffix : {type : String , trim : true }
   },
   organization : {type : String, trim : true },
+  title : {type : String, trim : true },
   emails : [Email.schema],
   phones : [Phone.schema],
   addresses : [Address.schema],
