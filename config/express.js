@@ -9,6 +9,10 @@ var compress = require('compression');
 var methodOverride = require('method-override');
 var exphbs = require('express-handlebars');
 
+// Auth conf
+var auth = require('./auth')();
+
+// Exports a configuration function.
 module.exports = function(app, config) {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
@@ -34,6 +38,9 @@ module.exports = function(app, config) {
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
+
+  app.use(auth.initialize());
+  app.use(auth.authenticate('basic', { session: false }));
 
   // Register all controllers
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
