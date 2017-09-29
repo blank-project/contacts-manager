@@ -100,6 +100,7 @@ router.post('/', function (req, res, next) {
         email : req.body.email,
         phone : req.body.phone,
         organization : req.body.organization,
+        title : req.body.title,
         address : {
           number : req.body['address.number'],
           street : req.body['address.street'],
