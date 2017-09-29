@@ -141,6 +141,19 @@ router.post('/:contactId/tags/', function (req, res, next) {
 
 });
 
+router.delete('/:contactId', function (req, res, next) {
+    var id = req.params.contactId;
+    console.log('Removing ' + id);
+      // Tag found at this point, add to tag set.
+      Contact.findByIdAndRemove(id).exec()
+      .then(() => {
+          res.sendStatus(200);
+      })
+      .catch(err => {
+        next(err);
+      });
+});
+
 router.delete('/:contactId/tags/:tagId', function (req, res, next) {
     var id = req.params.contactId
       , tagId = req.params.tagId;
