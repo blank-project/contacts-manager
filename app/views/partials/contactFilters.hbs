@@ -1,11 +1,26 @@
-<form method="GET" action="/contacts/">
-  <label for="search">Recherche</label><input type="text" name="search" id="search" /><br />
-  <label for="tagId">Etiquettes</label>
-  <select multiple name="tagId" id="tagId">
-    {{#tags}}
-    <option value="{{ id }}">{{ name }}</option>
-    {{/tags}}
-  </select><br />
+<div class="padded">
+  <span id="toggle-filter" class="pure-button button-toggle fa fa-filter" title="Filtrer"></span>
+  <div id="filters" class="hidden">
+    <form method="GET" action="/contacts/" class="pure-form pure-form-stacked">
+      <label for="search">Recherche</label>
+      <input type="text" name="search" id="search" class="pure-input-rounded" placeholder="Rechercher"/>
+      <br />
+      <label for="tagId">Etiquettes</label>
+      <select multiple name="tagId" id="tagId">
+        {{#tags}}
+        <option value="{{ id }}">{{ name }}</option>
+        {{/tags}}
+      </select><br />
 
-  <input type="submit" value="Filtrer" />
-</form>
+      <input type="submit" value="Filtrer" class="pure-button" />
+    </form>
+  </div>
+  <script>
+    var filter = document.getElementById('toggle-filter'), filters = document.getElementById('filters'), visible = false;
+    filter.addEventListener('click', function(ev) {
+      visible = !visible;
+      filter.classList.toggle('pure-button-active', visible);
+      filters.classList.toggle('hidden', !visible);
+    });
+  </script>
+</div>
