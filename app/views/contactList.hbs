@@ -1,21 +1,42 @@
-<table class="contact-list">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Nom</th>
-        <th>Mail</th>
-        <th>Téléphone</th>
-      </tr>
-    </thead>
-    <tbody>
-    {{#contacts}}
-      <tr>
-        <td><a href="/contacts/{{ id }}">See</a></td>
-        <td>{{ fullName }}</td>
-        <td>{{ email }}</td>
-        <td>{{ phone }}</td>
-      </tr>
-    {{/contacts}}
-    </tbody>
-</table>
-<a href="edit">Nouveau</a>
+{{> contactFilters }}
+<div class="padded">
+  <div class="heading">
+    <h1>Liste des contacts</h1>
+    <a class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau"><i class="fa fa-plus"></i></a>
+  </div>
+  <table class="contact-list pure-table  pure-table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nom</th>
+          <th>Mail</th>
+          <th>Téléphone</th>
+          <th>Organisation</th>
+          <th>Fonction</th>
+          <th>Adresse</th>
+          <th>Etiquettes</th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#contacts}}
+        <tr class="contact-line" data-id="{{ id }}">
+          <td>
+            <a class="fa fa-eye" href="/contacts/{{ id }}" title="Voir"></a>
+            <a class="fa fa-edit" href="/contacts/edit/{{ id }}" title="Modifier"></a>
+          </td>
+          <td>{{ fullName }}</td>
+          <td>{{ email }}</td>
+          <td>{{ phone }}</td>
+          <td>{{ organization }}</td>
+          <td>{{ title }}</td>
+          <td>{{ formattedAddress }}</td>
+          <td>
+            {{#tags}}
+              {{> tag }}
+            {{/tags}}
+          </td>
+        </tr>
+      {{/contacts}}
+      </tbody>
+  </table>
+</div>

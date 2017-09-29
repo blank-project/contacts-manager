@@ -4,16 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <title>{{ title }}</title>
+
+  <link rel="stylesheet" href="/css/vendor/pure-min.css">
+  <link rel="stylesheet" href="/lib/vendor/font-awesome/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+
   {{#if ENV_DEVELOPMENT}}
     <script src="http://localhost:35729/livereload.js"></script>
   {{/if}}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-
-
+  <header>
+    <nav class="pure-menu pure-menu-horizontal">
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/contacts/">Contacts</a>
+        </li>
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/tags/">Etiquettes</a>
+        </li>
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/contacts/edit">Ajouter</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
   {{{body}}}
-
-
+  </main>
+  <footer>
+    &copy Erwan Osouf for Belleville Citoyenne
+  </footer>
   </body>
 </html>

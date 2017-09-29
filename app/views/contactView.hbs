@@ -1,9 +1,98 @@
 {{#with contact}}
-<ul>
-  <li>{{ fullName }}</li>
-  <li>{{ email }}</li>
-  <li>{{ phone }}</li>
-</ul>
-<a href="edit/{{ id }}">Edit</a>
-<a href="/contacts">Back to List</a>
+<table class="contact pure-table">
+  <tr>
+    <td>Nom</td><td>{{ fullName }}</td>
+  </tr>
+  <tr>
+    <td>Mail</td><td>{{ email }}</td>
+  </tr>
+  <tr>
+    <td>Téléphone</td><td>{{ phone }}</td>
+  </tr>
+  <tr>
+    <td>Organisation</td><td>{{ organization }}</td>
+  </tr>
+  <tr>
+    <td>Fonction</td><td>{{ title }}</td>
+  </tr>
+  {{#with address }}
+  <tr>
+    <td>Adresse</td>
+      <td>
+      <address>
+       <span>{{ number }}</span> <span>{{ street }}</span><br />
+       <span>{{ code }}</span> <span>{{ city }}</span><br />
+     </address>
+    </td>
+  </tr>
+  {{/with}}
+  <tr>
+    <td>Etiquettes</td>
+    <td>
+      <div class="padded">
+        {{#each tags}}
+          {{! TODO Find a way to factor tag and tagEdit}}
+          {{>tagEdit}}
+        {{else}}
+          Aucune étiquette
+        {{/each}}
+      </div>
+      <div class="padded">
+        <form method="POST" action="/contacts/{{ id }}/tags/" class="pure-form">
+          <select name="tagId" id="tagId">
+            {{#each ../tags}}
+            <option value="{{ id }}">{{ name }}</option>
+            {{/each}}
+          </select>
+          <button type="submit" class="pure-button pure-input-rounded" >
+            <i class="fa fa-plus"></i>
+          </button>
+        </form>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>Note</td><td>{{ note }}</td>
+  </tr>
+</table>
 {{/with}}
+{{#with contact}}
+<div class="padded">
+  <a href="edit/{{ id }}" class="pure-button pure-button-primary">Modifier</a>
+  <button id="delete" class="pure-button pure-button-error">Supprimer</button>
+<div>
+{{/with}}
+<div class="padded">
+<a href="/contacts/" class="pure-button">Retour à la liste</a>
+</div>
+
+<script>
+    var removeTag = function(id) {
+      axios.delete("/contacts/{{ contact.id }}/tags/" + id)
+      .then(function (response) {
+        location.reload(true);
+      })
+      .catch(console.log);
+    }, els = document.getElementsByClassName("tag-remove"), el;
+
+    for (var i = 0; i < els.length; i++) {
+      el = els[i];
+      var tagId = el.getAttribute("data-id");
+      el.addEventListener('click', function(ev) {
+        removeTag(tagId);
+      });
+    }
+</script>
+<script>
+    var remove = function(id) {
+      axios.delete("/contacts/" + id)
+      .then(function (response) {
+        location.assign("/contacts/");
+      })
+      .catch(console.log);
+    }, deleteButton = document.getElementById("delete");
+
+    deleteButton.addEventListener('click', function(ev) {
+      remove('{{ contact.id }}');
+    });
+</script>

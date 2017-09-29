@@ -2,7 +2,8 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , Phone = require('./Phone')
   , Address = require('./Address')
-  , Email = require('./Email');
+  , Email = require('./Email')
+  , Tag = require('./Tag');
 
 
 // https://en.wikipedia.org/wiki/VCard
@@ -10,14 +11,18 @@ var mongoose = require('mongoose')
 // Base Schema
 var schema = new Schema({
   name : {
-    last : { type: String },
-    first : {type : String, required : true},
-    prefix : {type : String},
-    suffix : {type : String}
+    last : { type: String , trim : true },
+    first : {type : String, required : true, trim : true },
+    prefix : {type : String, trim : true },
+    suffix : {type : String , trim : true }
   },
+  organization : {type : String, trim : true },
+  title : {type : String, trim : true },
   emails : [Email.schema],
   phones : [Phone.schema],
-  addresses : [Address.schema]
+  addresses : [Address.schema],
+  tags : [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+  note : {type : String, trim : true }
 }, {
   collection : 'contacts',
   timestamps: {
@@ -25,6 +30,23 @@ var schema = new Schema({
     updatedAt : 'meta.modificationDate'
   }
 });
+
+schema.index({
+    "name.last" : "text",
+    "name.first" : "text",
+    "name.prefix" : "text",
+    "name.suffix" : "text",
+    "organization" : "text"
+  },
+  {
+    weights : {
+      "name.last" : 50,
+      "name.first" : 30,
+      "name.prefix" : 1,
+      "name.suffix" : 1,
+      "organization" : 7
+    }
+  });
 
 // Add Virtuals
 schema.virtual('fullName').
@@ -59,6 +81,19 @@ schema.virtual('address').get(function() {
     return addr[0];
   }
   return null;
+}).set(function(pVal) {
+  var addrs = this.addresses;
+  if (!addrs) {
+    addrs = this.addresses = [];
+  }
+  addrs[0] = pVal;
+});
+
+schema.virtual('formattedAddress').get(function() {
+  if (!this.get('address')) {
+    return '';
+  }
+  return this.get('address').format();
 });
 
 schema.virtual('email').get(function() {
@@ -70,7 +105,7 @@ schema.virtual('email').get(function() {
 }).set(function(v) {
   var mails = this.emails;
   if (!mails) {
-    mails = [];
+    this.emails = mails = [];
   }
   if (mails.length == 0){
     mails.push(new Email());
@@ -96,5 +131,12 @@ schema.virtual('phone').get(function() {
 });
 
 var Contact = mongoose.model('Contact', schema);
+
+Contact.on('index', function(error) {
+    if (error) {
+      console.log("Error creating text index");
+      console.log(error);
+    }
+});
 
 module.exports = Contact;

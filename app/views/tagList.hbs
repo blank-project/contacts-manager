@@ -1,0 +1,26 @@
+<div class="padded">
+  <div class="heading">
+    <h1>Liste des Etiquettes</h1>
+    <a class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau"><i class="fa fa-plus"></i></a>
+  </div>
+  <table class="tag-list pure-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nom</th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#tags}}
+        <tr>
+          <td>
+            <a class="fa fa-edit" href="/tags/edit/{{ id }}" title="Modifier"></a>
+          </td>
+          <td>
+            {{> tag }}
+          </td>
+        </tr>
+      {{/tags}}
+      </tbody>
+  </table>
+</div>
