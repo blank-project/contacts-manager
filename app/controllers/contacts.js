@@ -11,6 +11,7 @@ module.exports = function (app) {
 
 router.get('/', function (req, res, next) {
     var query = {};
+    // Search by all provided tags
     if (req.query.tagId) {
       query.tags = { $all : req.query.tagId };
     }
@@ -36,6 +37,15 @@ router.get('/', function (req, res, next) {
 
 router.get('/edit/', function (req, res, next) {
     res.render('contactEdit', { contact : {} });
+});
+
+router.get('/import/', function (req, res, next) {
+    res.render('contactImport', { contact : {} });
+});
+
+router.post('/import/', function (req, res, next) {
+    console.log(req);
+    //res.render('contactImport', { contact : {} });
 });
 
 router.get('/edit/:contactId', function (req, res, next) {
