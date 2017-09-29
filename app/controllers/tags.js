@@ -39,7 +39,7 @@ router.post('/', function (req, res, next) {
     console.log('Submitting tag ');
     if (req.body.cancel) {
       // Redirect to list.
-      res.redirect("");
+      res.redirect("/tags/");
       return;
     }
     var tag = null;

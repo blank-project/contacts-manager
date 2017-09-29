@@ -1,7 +1,63 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 a {
   color: #00B7FF;
+}
+.padded-vertical {
+  padding: 5px 0px;
+}
+.padded-horizontal {
+  padding: 0px 5px;
+}
+.padded {
+  padding: 5px;
+}
+.left-offset {
+  margin-left: 5px;
+}
+.heading {
+  display: flex;
+  align-items: center;
+}
+.tag {
+  border-radius: 5px;
+  margin-left: 5px;
+  padding: 5px;
+}
+.tag .tag-remove {
+  padding-left: 5px;
+}
+main {
+  margin: 20px;
+}
+.clickable {
+  cursor: pointer;
+}
+a.fa {
+  color: #AAA;
+  text-decoration: none;
+}
+a.fa :hover {
+  text-decoration: underline;
+}
+dl.twocolumn {
+  overflow: auto;
+}
+dl.twocolumn dt,
+dl.twocolumn dd {
+  float: left;
+  padding: 5px;
+  box-sizing: border-box;
+}
+dl.twocolumn dt {
+  clear: left;
+  width: 25%;
+  text-align: right;
+}
+dl.twocolumn dd {
+  width: 75%;
+  /* or whatever's left over from dt */
+  margin-left: 0;
 }

@@ -79,7 +79,7 @@ router.post('/', function (req, res, next) {
     console.log('Submitting contact ');
     if (req.body.cancel) {
       // Redirect to list.
-      res.redirect("");
+      res.redirect("/contacts/");
       return;
     }
     var contact = null;
