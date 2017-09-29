@@ -35,29 +35,40 @@
 </dl>
 {{/with}}
 {{#with contact}}
-<a href="edit/{{ id }}">Edit</a>
+<a href="edit/{{ id }}">Modifier</a>
+<button id="delete">Supprimer</button>
 {{/with}}
-<a href="/contacts/">Back to List</a>
+<div>
+<a href="/contacts/">Retour à la liste</a>
+</div>
 
 <script>
-var remove = function(id) {
-    var oReq = new XMLHttpRequest();
+    var removeTag = function(id) {
+      axios.delete("/contacts/{{ contact.id }}/tags/" + id)
+      .then(function (response) {
+        location.reload(true);
+      })
+      .catch(console.log);
+    }, els = document.getElementsByClassName("tag-remove"), el;
 
-    oReq.addEventListener("load", function() {
-      location.reload(true);
+    for (var i = 0; i < els.length; i++) {
+      el = els[i];
+      var tagId = el.getAttribute("data-id");
+      el.addEventListener('click', function(ev) {
+        removeTag(tagId);
+      });
+    }
+</script>
+<script>
+    var remove = function(id) {
+      axios.delete("/contacts/" + id)
+      .then(function (response) {
+        location.assign("/contacts/");
+      })
+      .catch(console.log);
+    }, deleteButton = document.getElementById("delete");
+
+    deleteButton.addEventListener('click', function(ev) {
+      remove('{{ contact.id }}');
     });
-    oReq.addEventListener("error", console.log);
-
-    oReq.open("DELETE", "/contacts/{{ contact.id }}/tags/" + id);
-
-    oReq.send();
-  }, els = document.getElementsByClassName("tag-remove"), el;
-
-  for (var i = 0; i < els.length; i++) {
-    el = els[i];
-    var tagId = el.getAttribute("data-id");
-    el.addEventListener('click', function(ev) {
-      remove(tagId);
-    });
-  }
 </script>
