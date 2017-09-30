@@ -98,11 +98,6 @@ router.get('/:contactId', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
     console.log('Submitting contact ');
-    if (req.body.cancel) {
-      // Redirect to list.
-      res.redirect("/contacts/");
-      return;
-    }
     var contact = null;
     var id = req.body.id;
     if (id) {
@@ -167,11 +162,11 @@ router.delete('/:contactId', function (req, res, next) {
     console.log('Removing ' + id);
       // Tag found at this point, add to tag set.
       Contact.findByIdAndRemove(id).exec()
-      .then(() => {
-          res.sendStatus(200);
+      .then((data) => {
+          res.sendStatus(data ? 200 : 404);
       })
       .catch(err => {
-        next(err);
+          res.sendStatus(500);
       });
 });
 

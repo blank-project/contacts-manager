@@ -7,17 +7,6 @@ module.exports = function (app) {
   app.use('/tags', router);
 };
 
-router.get('/', function (req, res, next) {
-    console.log('Listing tags');
-    var tags = Tag.find({}).sort('name').exec();
-    tags.then(data => {
-      res.render('tagList', {
-        title : 'Liste d\'etiquettes',
-        tags : data
-      });
-    });
-});
-
 router.get('/edit/', function (req, res, next) {
     res.render('tagEdit', { tag : {} });
 });
@@ -35,13 +24,32 @@ router.get('/edit/:tagId', function (req, res, next) {
     catch(err => { next(err); });
 });
 
+router.get('/', function (req, res, next) {
+    console.log('Listing tags');
+    var tags = Tag.find({}).sort('name').exec();
+    tags.then(data => {
+      res.render('tagList', {
+        title : 'Liste d\'etiquettes',
+        tags : data
+      });
+    });
+});
+
+router.get('/:tagId', function (req, res, next) {
+    console.log('Showing tag');
+    var id = req.params.tagId;
+    console.log('id :' + id);
+    Tag.findById(id).exec().
+    then(data => {
+        res.render('tagView', {
+          tag : data
+        });
+      }).
+    catch(err => { next(err); });
+});
+
 router.post('/', function (req, res, next) {
     console.log('Submitting tag ');
-    if (req.body.cancel) {
-      // Redirect to list.
-      res.redirect("/tags/");
-      return;
-    }
     var tag = null;
     var id = req.body.id;
     if (id) {
@@ -60,6 +68,19 @@ router.post('/', function (req, res, next) {
       });
       return tag.save();
     }).
-    then(model => { res.redirect("") }).
+    then(model => { res.redirect("/tags/") }).
     catch(err => { next(err); });
+});
+
+router.delete('/:tagId', function (req, res, next) {
+  var id = req.params.tagId;
+  console.log('id :' + id);
+  Tag.findByIdAndRemove(id).exec()
+  .then((data) => {
+      res.sendStatus(data ? 200 : 404);
+  })
+  .catch(err => {
+      res.sendStatus(500);
+  });
+
 });
