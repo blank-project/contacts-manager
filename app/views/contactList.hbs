@@ -39,4 +39,14 @@
       {{/contacts}}
       </tbody>
   </table>
+  <div class="padded">
+    <form method="GET" action="/contacts/" class="pure-form">
+      <input name="previousSize" type="hidden" value="{{ size }}" />
+      <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
+      <button name="first" type="submit" {{#if hasNext}}value="{{ next }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-right"></button>
+      {{#if incomplete}}
+      <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
+      {{/if}}
+    </form>
+  </div>
 </div>

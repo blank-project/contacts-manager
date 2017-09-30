@@ -10,12 +10,19 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
-    var query = {};
+    var query = {}, first = parseInt(req.query.first), size = parseInt(req.query.size);
     if (req.query.tagId) {
       query.tags = { $all : req.query.tagId };
     }
     if (req.query.search && req.query.search.trim()) {
       query.$text = { $search: req.query.search };
+    }
+    // Sanitize first.
+    if (!first || first < 0 || size != req.query.previousSize) {
+      first = 0;
+    }
+    if (!size || size <= 0) {
+      size = 20;
     }
     console.log('Listing contacts');
 
@@ -24,11 +31,25 @@ router.get('/', function (req, res, next) {
         contacts : Contact.find(query).populate({
           path: 'tags'
           , options: { sort: 'name'}
-        }).exec(),
+        }).skip(first).limit(size + 1).exec(),
         tags : Tag.find().exec()
       };
 
     }).then(data => {
+      var contacts = data.contacts;
+      if (contacts.length > size) {
+        contacts.pop();
+        data.next = first + size;
+        data.hasNext = true;
+      }
+      if (first >= size) {
+        data.previous = first - size;
+        data.hasPrevious = true;
+      }
+      if (data.hasPrevious || data.hasNext) {
+        data.incomplete = true;
+      }
+      data.size = size;
       data.title = 'Liste de Contact';
       res.render('contactList', data);
     }).catch(err => { next(err); });
