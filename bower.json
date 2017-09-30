@@ -5,5 +5,9 @@
     "**/.*",
     "node_modules",
     "components"
-  ]
+  ],
+  "dependencies": {
+    "pure": "^1.0.0",
+    "font-awesome": "^4.7.0"
+  }
 }
