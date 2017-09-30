@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 var exphbs = require('express-handlebars');
-
+var helpers = require('handlebars-helpers')(['collection', 'array']);
 // Auth conf
 var auth = require('./auth')();
 
@@ -23,7 +23,8 @@ module.exports = function(app, config) {
     layoutsDir: config.root + '/app/views/layouts/',
     defaultLayout: 'main',
     extname : '.hbs',
-    partialsDir: [config.root + '/app/views/partials/']
+    partialsDir: [config.root + '/app/views/partials/'],
+    helpers : helpers
   }));
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'hbs');

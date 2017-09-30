@@ -29,7 +29,7 @@
   <tr>
     <td>Etiquettes</td>
     <td>
-      <div class="padded">
+      <div id="tag-list" class="padded">
         {{#each tags}}
           {{! TODO Find a way to factor tag and tagEdit}}
           {{>tagEdit}}
@@ -44,7 +44,7 @@
             <option value="{{ id }}">{{ name }}</option>
             {{/each}}
           </select>
-          <button type="submit" class="pure-button pure-input-rounded" >
+          <button type="submit" class="pure-button pure-input-rounded" {{#isEmpty ../tags }}disabled{{/isEmpty}}>
             <i class="fa fa-plus"></i>
           </button>
         </form>
@@ -67,32 +67,20 @@
 </div>
 
 <script>
-    var removeTag = function(id) {
-      axios.delete("/contacts/{{ contact.id }}/tags/" + id)
-      .then(function (response) {
-        location.reload(true);
-      })
-      .catch(console.log);
-    }, els = document.getElementsByClassName("tag-remove"), el;
-
-    for (var i = 0; i < els.length; i++) {
-      el = els[i];
-      var tagId = el.getAttribute("data-id");
-      el.addEventListener('click', function(ev) {
-        removeTag(tagId);
-      });
-    }
+    var tags = document.getElementById('tag-list');
+    delegate(tags, 'click', '.tag-remove', function(e) {
+      var id = e.actualTarget.getAttribute("data-id");
+      removeTagFromContact(id, '{{ contact.id }}').then(function (response) {
+        window.location.reload(true);
+      }).catch(console.log);
+    });
 </script>
 <script>
-    var remove = function(id) {
-      axios.delete("/contacts/" + id)
-      .then(function (response) {
+    var deleteButton = document.getElementById("delete");
+    deleteButton.addEventListener('click', function(ev) {
+      deleteContact('{{ contact.id }}').then(function (response) {
         location.assign("/contacts/");
       })
       .catch(console.log);
-    }, deleteButton = document.getElementById("delete");
-
-    deleteButton.addEventListener('click', function(ev) {
-      remove('{{ contact.id }}');
     });
 </script>
