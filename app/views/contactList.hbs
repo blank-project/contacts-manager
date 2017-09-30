@@ -4,10 +4,9 @@
     <h1>Liste des contacts</h1>
     <a class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau"><i class="fa fa-plus"></i></a>
   </div>
-  <table class="contact-list pure-table  pure-table-striped">
+  <table id="contact-list" class="contact-list pure-table pure-table-striped">
       <thead>
         <tr>
-          <th></th>
           <th>Nom</th>
           <th>Mail</th>
           <th>Téléphone</th>
@@ -19,11 +18,7 @@
       </thead>
       <tbody>
       {{#contacts}}
-        <tr class="contact-line" data-id="{{ id }}">
-          <td>
-            <a class="fa fa-eye" href="/contacts/{{ id }}" title="Voir"></a>
-            <a class="fa fa-edit" href="/contacts/edit/{{ id }}" title="Modifier"></a>
-          </td>
+        <tr class="contact-line clickable" data-id="{{ id }}">
           <td>{{ fullName }}</td>
           <td>{{ email }}</td>
           <td>{{ phone }}</td>
@@ -39,4 +34,21 @@
       {{/contacts}}
       </tbody>
   </table>
+  <div class="padded">
+    <form method="GET" action="/contacts/" class="pure-form">
+      <input name="previousSize" type="hidden" value="{{ size }}" />
+      <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
+      <button name="first" type="submit" {{#if hasNext}}value="{{ next }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-right"></button>
+      {{#if incomplete}}
+      <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
+      {{/if}}
+    </form>
+  </div>
 </div>
+<script>
+  var contacts = document.getElementById('contact-list');
+  delegate(contacts, 'click', '.contact-line', function(e) {
+    var id = e.actualTarget.getAttribute("data-id");
+    window.location.assign("/contacts/" + id);
+  });
+</script>

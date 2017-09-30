@@ -13,7 +13,11 @@
   </div>
   <fieldset class="padded">
     <input type="submit" name="submit" value="Soumettre" class="pure-button pure-button-primary" />
-    <input type="submit" name="cancel" value="Annuler" class="pure-button"/>
+    {{#if id }}
+    <a href="/tags/{{ id }}" class="pure-button">Annuler</a>
+    {{else}}
+    <a href="/tags/" class="pure-button">Annuler</a>
+    {{/if}}
   </fieldset>
 {{/with}}
 </form>

@@ -3,19 +3,15 @@
     <h1>Liste des Etiquettes</h1>
     <a class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau"><i class="fa fa-plus"></i></a>
   </div>
-  <table class="tag-list pure-table">
+  <table id="tag-list" class="tag-list pure-table">
       <thead>
         <tr>
-          <th></th>
           <th>Nom</th>
         </tr>
       </thead>
       <tbody>
       {{#tags}}
-        <tr>
-          <td>
-            <a class="fa fa-edit" href="/tags/edit/{{ id }}" title="Modifier"></a>
-          </td>
+        <tr class="tag-line clickable"  data-id="{{ id }}">
           <td>
             {{> tag }}
           </td>
@@ -24,3 +20,10 @@
       </tbody>
   </table>
 </div>
+<script>
+  var table = document.getElementById('tag-list');
+  delegate(table, 'click', '.tag-line', function(e) {
+    var id = e.actualTarget.getAttribute("data-id");
+    window.location.assign("/tags/" + id);
+  });
+</script>
