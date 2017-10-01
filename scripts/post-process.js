@@ -1,6 +1,7 @@
 // Post processing script of Contacts import
 var collection = db['contacts-import'];
-collection.find({}).forEach(r => { 
+collection.find({}).forEach(r => {
+  // Make the e-mail an array instead of the imported object.
   if (r.emails && r.emails['0']) {
   	r.emails = [r.emails[0]];
   }
@@ -19,4 +20,3 @@ collection.find({}).forEach(r => {
   r.meta.modificationDate = new Date();
   collection.save(r);
 });
-
