@@ -60,15 +60,6 @@ router.get('/edit/', function (req, res, next) {
     res.render('contactEdit', { contact : {} });
 });
 
-router.get('/import/', function (req, res, next) {
-    res.render('contactImport', { contact : {} });
-});
-
-router.post('/import/', function (req, res, next) {
-    console.log(req);
-    //res.render('contactImport', { contact : {} });
-});
-
 router.get('/edit/:contactId', function (req, res, next) {
     console.log('Editing contact');
     var id = req.params.contactId;

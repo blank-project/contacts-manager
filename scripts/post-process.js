@@ -1,9 +1,18 @@
 // Post processing script of Contacts import
-var collection = db['contacts-import'];
-collection.find({}).forEach(r => {
-  // Make the e-mail an array instead of the imported object.
+var source = db['contacts-import']
+  , target = db.contacts
+  , imports = db.imports
+  , count = 0
+  , currentImport = { meta : { date : new Date() }}
+  , importId;
+
+importId = imports.insertOne(currentImport).insertedId;
+currentImport._id = importId;
+
+source.find({}).forEach(r => {
+  // Transforms imported objects into arrays.
   if (r.emails && r.emails['0']) {
-  	r.emails = [r.emails[0]];
+  	r.emails = [r.emails['0']];
   }
   if (r.phones) {
     phones = [];
@@ -15,8 +24,18 @@ collection.find({}).forEach(r => {
     }
     r.phones = phones;
   }
+  if (r.adresses && r.adresses['0']) {
+    r.adresses = [r.adresses['0']];
+  }
+  // Set meta fields.
   r.meta = {};
   r.meta.creationDate = new Date();
   r.meta.modificationDate = new Date();
-  collection.save(r);
+  r.meta.importId = importId;
+  delete r._id;
+  target.save(r);
+  count++;
 });
+
+currentImport.meta.count = count;
+imports.save(currentImport);

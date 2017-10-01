@@ -1,8 +1,23 @@
-<form action="/contacts/import" enctype="multipart/form-data" method="POST">
-  <select id="separator" name="separator">
-    <option value=",">,</option>
-    <option value=";">;</option>
-  </select>
-  <input id="upload" name="upload" type="file"  />
-  <input id="submit" name="submit" type="submit" value="Soumettre" />
+<span class="instructions">
+  Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".<br />
+  Les colonnes sont :
+  <ul>
+  <li>Prénom</li>
+  <li>Nom</li>
+  <li>E-mail</li>
+  <li>Téléphone 1</li>
+  <li>Téléphone 2</li>
+  <li>Organisation</li>
+  <li>Fonction</li>
+  <li>N° de Rue</li>
+  <li>Rue</li>
+  <li>Code Postal</li>
+  <li>Ville</li>
+  <li>Note</li>
+  </ul>
+</span>
+{{#if message }}<div class="messages error">{{message}}</div>{{/if}}
+<form action="/import" enctype="multipart/form-data" method="POST" class="pure-form">
+  <input id="upload" name="upload" type="file" required />
+  <input id="submit" name="submit" type="submit" value="Soumettre" class="pure-button pure-button-primary"/>
 </form>
