@@ -11,6 +11,7 @@ module.exports = function (app) {
 
 router.get('/', function (req, res, next) {
     var query = {}, first = parseInt(req.query.first), size = parseInt(req.query.size);
+    // Search by all provided tags
     if (req.query.tagId) {
       query.tags = { $all : req.query.tagId };
     }

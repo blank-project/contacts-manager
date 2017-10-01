@@ -5,3 +5,7 @@ public/lib
 npm-debug.log
 
 public/css/style.css
+
+data/
+data/uploads/
+data/downloads/
