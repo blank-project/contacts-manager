@@ -24,8 +24,8 @@ source.find({}).forEach(r => {
     }
     r.phones = phones;
   }
-  if (r.adresses && r.adresses['0']) {
-    r.adresses = [r.adresses['0']];
+  if (r.addresses && r.addresses['0']) {
+    r.addresses = [r.addresses['0']];
   }
   // Set meta fields.
   r.meta = {};

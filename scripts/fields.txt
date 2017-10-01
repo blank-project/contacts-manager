@@ -5,8 +5,8 @@ phones.0.value
 phones.1.value
 organization
 title
-adresses.0.number
-adresses.0.street
-adresses.0.code
-adresses.0.city
+addresses.0.number
+addresses.0.street
+addresses.0.code
+addresses.0.city
 note
