@@ -4,44 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <title>{{ title }}</title>
+
+  <link rel="stylesheet" href="/lib/pure/pure-min.css">
+  <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+
   {{#if ENV_DEVELOPMENT}}
     <script src="http://localhost:35729/livereload.js"></script>
   {{/if}}
-  <style>
-    /* TODO Factor out */
-    .tag {
-      border-radius : 2px;
-      margin-left: 2px;
-      padding : 2px;
-    }
-
-    main {
-      margin: 20px;
-    }
-    nav ul {
-       display : flex;
-       background-color: blue;
-       padding : 20px;
-    }
-
-    nav ul li {
-      list-style-type: none;
-      padding-left : 20px;
-    }
-
-    .clickable {
-      cursor : pointer;
-    }
-  </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/contacts-manager-client.js" type="text/javascript"></script>
+    <script src="/js/dom.js" type="text/javascript"></script>
 </head>
 <body>
   <header>
-    <nav>
-      <ul>
-        <li><a href="/contacts/">Contacts</a></li>
-        <li><a href="/tags/">Etiquettes</a></li>
-        <li><a href="/contacts/edit">Ajouter</a></li>
+    <nav class="pure-menu pure-menu-horizontal">
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/contacts/">Contacts</a>
+        </li>
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/tags/">Etiquettes</a>
+        </li>
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/contacts/edit">Ajouter</a>
+        </li>
       </ul>
     </nav>
   </header>

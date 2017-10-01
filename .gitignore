@@ -3,3 +3,5 @@ public/lib
 .nyc_output
 .sass-cache
 npm-debug.log
+
+public/css/style.css
