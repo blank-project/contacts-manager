@@ -1,10 +1,11 @@
 var express = require('express')
   , router = express.Router()
+  , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
   , Tag = require('../models/Tag');
 
 // Exports a function to bind Controller
 module.exports = function (app) {
-  app.use('/tags', router);
+  app.use('/tags', ensureLoggedIn('/login'), router);
 };
 
 router.get('/edit/', function (req, res, next) {
