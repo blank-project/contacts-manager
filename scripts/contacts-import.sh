@@ -1,5 +1,6 @@
 #!/bin/sh
-# $2 : input file to import
+# Needs database connexion parameters (database, host, port) in env.
+# $1 : input file to import
 mongoimport -d $database -c contacts-import --file $1 --type csv --fieldFile fields.txt --ignoreBlanks --drop
 
 echo $?

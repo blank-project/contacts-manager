@@ -16,7 +16,7 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
-    res.render('contactImport', { title : 'Import de contact' });
+    res.render('import/contactImport', { title : 'Import de contact' });
 });
 
 router.post('/', upload.single('upload'), function (req, res, next) {

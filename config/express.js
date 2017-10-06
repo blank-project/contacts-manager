@@ -14,6 +14,7 @@ var methodOverride = require('method-override');
 var exphbs = require('express-handlebars');
 var helpers = require('handlebars-helpers')(['collection', 'array']);
 var session = require('express-session');
+var flash = require('connect-flash');
 
 // Auth conf
 var auth = require('./auth');
@@ -27,10 +28,10 @@ module.exports = function(app, config) {
 
   // Register view engine (handlebars).
   app.engine('hbs', exphbs({
-    layoutsDir: config.root + '/app/views/layouts/',
+    layoutsDir: config.root + '/app/views/_layouts/',
     defaultLayout: 'main',
     extname : '.hbs',
-    partialsDir: [config.root + '/app/views/partials/'],
+    partialsDir: [config.root + '/app/views/_partials/'],
     helpers : helpers
   }));
   app.set('views', config.root + '/app/views');
@@ -42,6 +43,8 @@ module.exports = function(app, config) {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+
+  app.use(flash());
   app.use(cookieParser(secret));
   app.use(session({
     secret: secret,
@@ -55,6 +58,13 @@ module.exports = function(app, config) {
 
   app.use(auth.initialize());
   app.use(auth.session());
+
+  app.use(function(req, res, next) {
+    // Expose req and user as response-local attribute
+    res.locals.req = req;
+    res.locals.user = req.user;
+    next();
+  });
 
   // Register all controllers
   var controllers = glob.sync(config.root + '/app/controllers/*.js');

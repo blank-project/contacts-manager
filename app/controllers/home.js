@@ -14,13 +14,22 @@ router.get('/', function (req, res, next) {
 
 router.route('/login')
   .get(function (req, res, next) {
-      res.render('home/login', {
+      var data =  {
         title : 'Contacts Manager - Login'
-      });
+      }, flash = req.flash();
+      console.log(flash);
+      if (flash && flash.error) {
+        data.message = {
+          level : 'error',
+          message : flash.error[0]
+        }
+      }
+      res.render('home/login', data);
   })
   .post(auth.authenticate('local', {
     successRedirect: '/contacts',
-    failureRedirect: '/login'
+    failureRedirect: '/login',
+    failureFlash: true
   }));
 
 router.get('/logout', function (req, res, next) {
@@ -32,7 +41,7 @@ router.get('/logout', function (req, res, next) {
 
 router.route('/signup')
   .get(function (req, res, next) {
-      res.render('home/signup', {
+      res.render('users/userEdit', {
         title : 'Contacts Manager - Sign Up'
       });
-  })
+  });

@@ -9,7 +9,7 @@ module.exports = function (app) {
 };
 
 router.get('/edit/', function (req, res, next) {
-    res.render('tagEdit', { tag : {} });
+    res.render('tags/tagEdit', { tag : {} });
 });
 
 router.get('/edit/:tagId', function (req, res, next) {
@@ -18,7 +18,7 @@ router.get('/edit/:tagId', function (req, res, next) {
     console.log('id :' + id);
     Tag.findById(id).exec().
     then(data => {
-        res.render('tagEdit', {
+        res.render('tags/tagEdit', {
           tag : data
         });
       }).
@@ -29,7 +29,7 @@ router.get('/', function (req, res, next) {
     console.log('Listing tags');
     var tags = Tag.find({}).sort('name').exec();
     tags.then(data => {
-      res.render('tagList', {
+      res.render('tags/tagList', {
         title : 'Liste d\'etiquettes',
         tags : data
       });
@@ -42,7 +42,7 @@ router.get('/:tagId', function (req, res, next) {
     console.log('id :' + id);
     Tag.findById(id).exec().
     then(data => {
-        res.render('tagView', {
+        res.render('tags/tagView', {
           tag : data
         });
       }).

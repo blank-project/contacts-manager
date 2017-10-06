@@ -1,14 +1,9 @@
-<span class="fa fa-user"></span>
-{{#if message }}<div class="messages error">{{message}}</div>{{/if}}
+<span class="fa fa-user fa-2x"></span>
 <form action="/login" method="POST" class="pure-form">
-    <div>
-        <label>Username:</label>
+    <fieldset class="pure-group">
         <input id="username" name="username" type="text"  placeholder="Login" required />
-    </div>
-    <div>
-        <label>Password:</label>
         <input id="password" name="password" type="password" placeholder="Password" required />
-    </div>
+    </fieldset>
     <div>
       <input id="submit" name="submit" type="submit" value="Soumettre" class="pure-button pure-button-primary"/>
     </div>

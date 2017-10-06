@@ -16,7 +16,7 @@ function userView(req, res, next, id) {
   co(function* () {
     var user, data = {};
 
-    user = yield user.findById(id).exec();
+    user = yield User.findById(id).exec();
 
     data.user = user;
     return data;
@@ -28,13 +28,19 @@ function userView(req, res, next, id) {
 
 router.route('/')
   .get(function (req, res, next) {
-    res.redirect('me');
+    console.log(req.user);
+    console.log(req.session.user);
+    res.redirect('/users/me');
   })
   .post(function (req, res, next) {
     console.log('Submitting User ');
     var user = new User();
     user.set({
       username : req.body.username,
+      name : {
+        first : req.body.firstname,
+        last : req.body.lastname
+      },
       email : req.body.email,
       phone : req.body.phone,
       organization : req.body.organization,
@@ -44,19 +50,34 @@ router.route('/')
         disabled : new Date()
       }
     });
-    user.save().then(model => {
-      res.redirect(model.id)
-    })
-    .catch(err => {
-      next(err);
+    User.register(user, req.body.password, function(err) {
+      var data;
+      if (err) {
+        console.log(err);
+        data = req.body || {};
+        data.message = {
+          level : 'error',
+          message : err.message
+        }
+        res.render('users/userEdit', data);
+        return;
+      }
+
+      console.log('user registered!');
+
+      res.redirect('/');
     });
   });
 
-router.get('/:userId', ensureLoggedIn('/login'), function (req, res, next) {
-  var id = req.params.userId;
-  userView(id);
+router.get('/me', function (req, res, next) {
+  var data = {
+    user : req.user,
+    title : 'Profil ' + req.user.username
+  };
+  res.render('users/userView', data);
 });
 
-router.get('/me', function (req, res, next) {
-  res.redirect(req.user._id);
+router.get('/:userId', ensureLoggedIn('/login'), function (req, res, next) {
+  var id = req.params.userId;
+  userView(req, res, next, id);
 });

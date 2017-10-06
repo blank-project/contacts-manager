@@ -1,21 +1,22 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , Phone = require('./Phone')
-  , Email = require('./Email');
+  , Email = require('./Email')
+  , Profile = require('./Profile')
+  , passportLocalMongoose = require('passport-local-mongoose');
 // Base Schema
 // TODO Factor with Contact as BaseEntity ?
 // TODO Using ES6 Classes as definition ?
 var schema = new Schema({
-  username : {type : String, required : true, trim : true, unique : true },
-/*  hash : {type : String, required : true, trim : true },
   name : {
     last : { type: String , trim : true },
     first : {type : String, required : true, trim : true }
-  }, */
+  },
   organization : {type : String, trim : true },
   title : {type : String, trim : true },
   emails : [Email.schema],
   phones : [Phone.schema],
+  profile : Profile.schema,
   meta : {
     disabled : { type : Date }
   }
@@ -24,6 +25,31 @@ var schema = new Schema({
   timestamps: {
     createdAt : 'meta.creationDate',
     updatedAt : 'meta.modificationDate'
+  }
+});
+
+//
+schema.plugin(passportLocalMongoose, {
+  saltField : 'meta.salt',
+  hashField : 'password',
+  attemptsField : 'meta.attempts',
+  lastLoginField : 'meta.lastLogin',
+  populateFields : 'profile',
+  usernameUnique : false,
+  findByUsername: function(model, queryParameters) {
+    // Add additional query parameter - AND condition - active: true
+    queryParameters["meta.disabled"] = null;
+    return model.findOne(queryParameters);
+  },
+  errorMessages : {
+    MissingPasswordError : 'Mot de passe manquant',
+    AttemptTooSoonError : 'Trop d\'essais manqué, veuillez ré-essayer plus tard',
+    TooManyAttemptsError : 'Trop d\'essais manqué, veuillez ré-essayer plus tard',
+    NoSaltValueStoredError : 'Authentication not possible. No salt value stored',
+    IncorrectPasswordError : 'Nom d\'utilisateur ou mot de passe incorrect',
+    IncorrectUsernameError : 'Nom d\'utilisateur ou mot de passe incorrect',
+    MissingUsernameError : 'Nom d\'utilisateur manquant',
+    UserExistsError : 'Un utilisateur avec ce nom existe déja'
   }
 });
 
