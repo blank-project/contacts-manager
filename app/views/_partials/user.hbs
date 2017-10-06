@@ -1,0 +1,10 @@
+<div id="user-pane" class="user-pane">
+  <span class="fa fa-user"></span>
+  {{#if req.user }}
+  <a href="/users/me">{{ req.user.fullName }}</a>
+  <a href="/logout">Déconnexion</a>
+  {{else}}
+  <a href="/login">Se connecter</a>
+  <a href="/signup">S'inscrire</a>
+  {{/if}}
+</div>

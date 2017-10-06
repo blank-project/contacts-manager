@@ -1,12 +1,13 @@
 var express = require('express')
   , co = require('co')
   , router = express.Router()
+  , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
   , Contact = require('../models/Contact')
   , Tag = require('../models/Tag');
 
 // Exports a function to bind Controller
 module.exports = function (app) {
-  app.use('/contacts', router);
+  app.use('/contacts', ensureLoggedIn('/login'), router);
 };
 
 router.get('/', function (req, res, next) {
@@ -52,12 +53,12 @@ router.get('/', function (req, res, next) {
       }
       data.size = size;
       data.title = 'Liste de Contact';
-      res.render('contactList', data);
+      res.render('contacts/contactList', data);
     }).catch(err => { next(err); });
 });
 
 router.get('/edit/', function (req, res, next) {
-    res.render('contactEdit', { contact : {} });
+    res.render('contacts/contactEdit', { contact : {} });
 });
 
 router.get('/edit/:contactId', function (req, res, next) {
@@ -66,7 +67,7 @@ router.get('/edit/:contactId', function (req, res, next) {
     console.log('id :' + id);
     Contact.findById(id).populate('tags').exec().
     then(data => {
-        res.render('contactEdit', {
+        res.render('contacts/contactEdit', {
           contact : data
         });
     }).
@@ -86,6 +87,7 @@ router.get('/:contactId', function (req, res, next) {
       }).exec();
       contact.tags.forEach(tag => { ids.push(tag._id) });
 
+      // Load other tags for edition
       tags = yield Tag.find({ _id : { $nin : ids }}).sort('name').exec();
 
       data.contact = contact;
@@ -93,7 +95,7 @@ router.get('/:contactId', function (req, res, next) {
       return data;
     }).then(data => {
       data.title = 'Fiche Contact ' + data.contact.fullName;
-      res.render('contactView', data);
+      res.render('contacts/contactView', data);
     }).catch(err => { next(err); });
 });
 

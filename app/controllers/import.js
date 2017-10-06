@@ -1,5 +1,6 @@
 var express = require('express')
   , router = express.Router()
+  , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
   , upload = require('multer')({ dest: 'data/uploads/' })
   , conf = require('../../config/config')
   , path = require('path')
@@ -11,11 +12,11 @@ var express = require('express')
 
 // Exports a function to bind Controller
 module.exports = function (app) {
-  app.use('/import', router);
+  app.use('/import', ensureLoggedIn('/login'), router);
 };
 
 router.get('/', function (req, res, next) {
-    res.render('contactImport', { title : 'Import de contact' });
+    res.render('import/contactImport', { title : 'Import de contact' });
 });
 
 router.post('/', upload.single('upload'), function (req, res, next) {
