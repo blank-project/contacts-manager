@@ -10,8 +10,13 @@ var config = {
     },
     port: process.env.PORT || 3000,
     db : {
-      url : 'mongodb://localhost:27017/contacts-manager-development',
-      poolSize : 10
+      database : 'contacts-manager-development',
+      host : 'localhost',
+      port : '27017',
+      options : {
+        poolSize : 10
+      }
+
     }
   },
 
@@ -22,8 +27,12 @@ var config = {
     },
     port: process.env.PORT || 3000,
     db : {
-      url : 'mongodb://localhost:27017/contacts-manager-test',
-      poolSize : 10
+      database : 'contacts-manager-test',
+      host : 'localhost',
+      port : '27017',
+      options : {
+        poolSize : 10
+      }
     }
   },
 
@@ -34,11 +43,16 @@ var config = {
     },
     port: process.env.PORT || 3000,
     db : {
-      url : 'mongodb://localhost:27017/contacts-manager-production',
-      poolSize : 10,
-      config : {
-        autoIndex : false
+      database : 'contacts-manager-production',
+      host : 'localhost',
+      port : '27017',
+      options : {
+        poolSize : 10,
+        config : {
+          autoIndex : false
+        }
       }
+
     }
   }
 };

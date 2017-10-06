@@ -5,11 +5,10 @@ var conf = require('./config').db,
 module.exports = function() {
 
   // Connection URL
-  var url = conf.url;
-  delete conf.url;
+  var url = 'mongodb://' + conf.host + ':' + conf.port + '/' + conf.database;
 
   // Set default Promise
   mongoose.Promise = global.Promise;
 
-  return mongoose.connect(url, conf);
+  return mongoose.connect(url, conf.options);
 };

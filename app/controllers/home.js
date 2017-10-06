@@ -1,12 +1,47 @@
 var express = require('express'),
-  router = express.Router();
+  router = express.Router(),
+  auth = require('../../config/auth');
 
 module.exports = function (app) {
   app.use('/', router);
 };
 
 router.get('/', function (req, res, next) {
-    res.render('index', {
-      title : 'Contact Manager'
+    res.render('home/index', {
+      title : 'Contacts Manager'
     });
 });
+
+router.route('/login')
+  .get(function (req, res, next) {
+      var data =  {
+        title : 'Contacts Manager - Login'
+      }, flash = req.flash();
+      console.log(flash);
+      if (flash && flash.error) {
+        data.message = {
+          level : 'error',
+          message : flash.error[0]
+        }
+      }
+      res.render('home/login', data);
+  })
+  .post(auth.authenticate('local', {
+    successRedirect: '/contacts',
+    failureRedirect: '/login',
+    failureFlash: true
+  }));
+
+router.get('/logout', function (req, res, next) {
+    req.logout();
+    res.render('home/index', {
+      title : 'Contacts Manager - Logout'
+    });
+});
+
+router.route('/signup')
+  .get(function (req, res, next) {
+      res.render('users/userEdit', {
+        title : 'Contacts Manager - Sign Up'
+      });
+  });

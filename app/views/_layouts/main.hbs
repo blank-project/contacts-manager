@@ -30,10 +30,17 @@
         <li class="pure-menu-item">
           <a class="pure-menu-link" href="/contacts/edit">Ajouter</a>
         </li>
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/import">Importer</a>
+        </li>
       </ul>
+      {{>user}}
     </nav>
   </header>
   <main>
+  {{#with message }}
+    {{>message}}
+  {{/with }}
   {{{body}}}
   </main>
   <footer>
