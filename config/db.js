@@ -10,5 +10,8 @@ module.exports = function() {
   // Set default Promise
   mongoose.Promise = global.Promise;
 
+  var options = conf.options || {};
+  options.useMongoClient = true;
+
   return mongoose.connect(url, conf.options);
 };

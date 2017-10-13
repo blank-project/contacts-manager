@@ -2,10 +2,10 @@
 
 var expect = require('chai').expect;
 
-var article = require('../../../app/models/article');
+var Contact = require('../../../app/models/Contact');
 
 describe('article', function() {
   it('should load', function() {
-    expect(article).to.be.a('function');
+    expect(Contact).to.be.a('function');
   });
 });
