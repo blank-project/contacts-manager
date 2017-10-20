@@ -1,6 +1,6 @@
 var express = require('express'),
   router = express.Router(),
-  auth = require('../../config/auth');
+  auth = require('../../config/authentication');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -34,6 +34,7 @@ router.route('/login')
 
 router.get('/logout', function (req, res, next) {
     req.logout();
+    delete res.locals.user;
     res.render('home/index', {
       title : 'Contacts Manager - Logout'
     });
@@ -41,7 +42,7 @@ router.get('/logout', function (req, res, next) {
 
 router.route('/signup')
   .get(function (req, res, next) {
-      res.render('users/userEdit', {
+      res.render('users/userCreate', {
         title : 'Contacts Manager - Sign Up'
       });
   });

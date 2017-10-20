@@ -2,6 +2,7 @@ var express = require('express')
 , co = require('co')
 , router = express.Router()
 , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
+, ensureRequest = require('../../config/authorization').ensureRequest
 , Contact = require('../models/Contact')
 , Tag = require('../models/Tag');
 
@@ -10,7 +11,7 @@ module.exports = function (app) {
   app.use('/contacts', ensureLoggedIn('/login'), router);
 };
 
-router.get('/', async function (req, res, next) {
+router.get('/', ensureRequest.isPermitted('contact:read'), async function (req, res, next) {
   var query = {}, first = parseInt(req.query.first), size = parseInt(req.query.size);
   // Search by all provided tags
   if (req.query.tagId) {
@@ -54,11 +55,11 @@ router.get('/', async function (req, res, next) {
   res.render('contacts/contactList', data);
 });
 
-router.get('/edit/', function (req, res, next) {
+router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {
   res.render('contacts/contactEdit', { contact : {} });
 });
 
-router.get('/edit/:contactId', async function (req, res, next) {
+router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
   console.log('Editing contact');
   var id = req.params.contactId;
   console.log('id :' + id);
@@ -69,7 +70,7 @@ router.get('/edit/:contactId', async function (req, res, next) {
   });
 });
 
-router.get('/:contactId', async function (req, res, next) {
+router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async function (req, res, next) {
   var id = req.params.contactId;
   console.log('Displaying contact ' + id);
   var contact, tags, data = {}, ids = [];
@@ -89,7 +90,10 @@ router.get('/:contactId', async function (req, res, next) {
   res.render('contacts/contactView', data);
 });
 
-router.post('/', async function (req, res, next) {
+router.post('/', function (req, res, next) {
+  // Wrap in a middleware as role to check depends on body.
+  ensureRequest.isPermitted(req.body.id ? 'contact:update' : 'contact:create')(req, res, next);
+}, async function (req, res, next) {
   console.log('Submitting contact ');
   var contact = null;
   var id = req.body.id;
@@ -121,7 +125,7 @@ router.post('/', async function (req, res, next) {
   res.redirect(contact.id);
 });
 
-router.post('/:contactId/tags/', async function (req, res, next) {
+router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
   var id = req.params.contactId
   , tagId = req.body.tagId;
   console.log('Associating ' + id + ' with ' + tagId);
@@ -139,14 +143,14 @@ router.post('/:contactId/tags/', async function (req, res, next) {
   res.redirect("/contacts/" + id);
 });
 
-router.delete('/:contactId', async function (req, res, next) {
+router.delete('/:contactId', ensureRequest.isPermitted('contact:delete'), async function (req, res, next) {
   var id = req.params.contactId;
   console.log('Removing ' + id);
   var data = await Contact.findByIdAndRemove(id).exec();
   res.sendStatus(data ? 200 : 404);
 });
 
-router.delete('/:contactId/tags/:tagId', async function (req, res, next) {
+router.delete('/:contactId/tags/:tagId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
   var id = req.params.contactId
   , tagId = req.params.tagId;
   console.log('Removing ' + id + ' with ' + tagId);

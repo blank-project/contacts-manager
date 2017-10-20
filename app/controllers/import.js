@@ -1,6 +1,7 @@
 var express = require('express')
   , router = express.Router()
   , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
+  , ensureRequest = require('../../config/authorization').ensureRequest
   , upload = require('multer')({ dest: 'data/uploads/' })
   , conf = require('../../config/config')
   , path = require('path')
@@ -12,7 +13,7 @@ var express = require('express')
 
 // Exports a function to bind Controller
 module.exports = function (app) {
-  app.use('/import', ensureLoggedIn('/login'), router);
+  app.use('/import', ensureLoggedIn('/login'), ensureRequest.isPermitted('contact:import', 'contact:create'), router);
 };
 
 router.get('/', function (req, res, next) {

@@ -5,7 +5,8 @@ var mongoose = require('mongoose')
 // Base Schema
 var schema = new Schema({
   name : { type: String, required : true, trim : true },
-  roles : [{ type: String, trim : true }]
+  default : { type : Boolean },
+  permissions : [{ type: String, trim : true }]
 }, {
   collection : 'profiles',
   timestamps: {
@@ -16,5 +17,7 @@ var schema = new Schema({
 
 Profile = mongoose.model('Profile', schema);
 Profile.schema = schema;
+
+Profile.ALL = "*";
 
 module.exports = Profile;

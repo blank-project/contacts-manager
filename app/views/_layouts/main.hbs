@@ -21,18 +21,26 @@
   <header>
     <nav class="pure-menu pure-menu-horizontal">
       <ul class="pure-menu-list">
+        {{#isPermitted "contact:read" }}
         <li class="pure-menu-item">
           <a class="pure-menu-link" href="/contacts/">Contacts</a>
         </li>
+        {{/isPermitted}}
+        {{#isPermitted "tag:read" }}
         <li class="pure-menu-item">
           <a class="pure-menu-link" href="/tags/">Etiquettes</a>
         </li>
+        {{/isPermitted}}
+        {{#isPermitted "contact:create" }}
         <li class="pure-menu-item">
           <a class="pure-menu-link" href="/contacts/edit">Ajouter</a>
         </li>
+        {{/isPermitted}}
+        {{#isPermitted "contact:import" "contact:create" }}
         <li class="pure-menu-item">
           <a class="pure-menu-link" href="/import">Importer</a>
         </li>
+        {{/isPermitted}}
       </ul>
       {{>user}}
     </nav>
