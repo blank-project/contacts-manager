@@ -31,12 +31,17 @@
     <td>
       <div id="tag-list" class="padded">
         {{#each tags}}
-          {{! TODO Find a way to factor tag and tagEdit}}
-          {{>tagEdit}}
+          {{#isPermitted "contact:update" }}
+            {{! TODO Find a way to factor tag and tagEdit}}
+            {{>tagEdit}}
+          {{else}}
+            {{>tag}}
+          {{/isPermitted}}
         {{else}}
           Aucune étiquette
         {{/each}}
       </div>
+      {{#isPermitted "contact:update" }}
       <div class="padded">
         <form method="POST" action="/contacts/{{ id }}/tags/" class="pure-form">
           <select name="tagId" id="tagId">
@@ -49,6 +54,7 @@
           </button>
         </form>
       </div>
+      {{/isPermitted}}
     </td>
   </tr>
   <tr>
@@ -58,8 +64,12 @@
 {{/with}}
 {{#with contact}}
 <div class="padded">
+  {{#isPermitted "contact:update" }}
   <a href="edit/{{ id }}" class="pure-button pure-button-primary">Modifier</a>
+  {{/isPermitted}}
+  {{#isPermitted "contact:delete" }}
   <button id="delete" class="pure-button button-error">Supprimer</button>
+  {{/isPermitted}}
 <div>
 {{/with}}
 <div class="padded">
@@ -75,6 +85,7 @@
       }).catch(console.log);
     });
 </script>
+{{#isPermitted "contact:delete" }}
 <script>
     var deleteButton = document.getElementById("delete");
     deleteButton.addEventListener('click', function(ev) {
@@ -84,3 +95,4 @@
       .catch(console.log);
     });
 </script>
+{{/isPermitted}}

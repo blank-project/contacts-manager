@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , Phone = require('./Phone')
   , Email = require('./Email')
-  , Profile = require('./Profile')
+//  , Profile = require('./Profile')
   , passportLocalMongoose = require('passport-local-mongoose');
 // Base Schema
 // TODO Factor with Contact as BaseEntity ?
@@ -16,7 +16,8 @@ var schema = new Schema({
   title : {type : String, trim : true },
   emails : [Email.schema],
   phones : [Phone.schema],
-  profile : Profile.schema,
+  // profile : Profile.schema,
+  permissions : [{type : String, trim : true }],
   meta : {
     disabled : { type : Date }
   }
@@ -39,7 +40,7 @@ schema.plugin(passportLocalMongoose, {
   findByUsername: function(model, queryParameters) {
     // Add additional query parameter - AND condition - active: true
     queryParameters["meta.disabled"] = null;
-    return model.findOne(queryParameters);
+    return model.findOne(queryParameters).populate('profile');
   },
   errorMessages : {
     MissingPasswordError : 'Mot de passe manquant',
@@ -113,6 +114,16 @@ schema.virtual('phone').get(function() {
   }
   phones[0].value = v;
 });
+
+/*
+schema.virtual('permissions').get(function() {
+  var profile = this.profile;
+  if (!profile || !profile.permissions) {
+    return [];
+  }
+  return profile.permissions;
+});
+*/
 
 var User = mongoose.model('User', schema);
 

@@ -2,7 +2,9 @@
 <div class="padded">
   <div class="heading">
     <h1>Liste des contacts</h1>
-    <a class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau"><i class="fa fa-plus"></i></a>
+    {{#isPermitted "contact:create" }}
+    <a class="pure-button pure-button-primary left-offset" href="/contacts/edit" title="Nouveau"><i class="fa fa-plus"></i></a>
+    {{/isPermitted }}
   </div>
   <table id="contact-list" class="contact-list pure-table pure-table-striped">
       <thead>
