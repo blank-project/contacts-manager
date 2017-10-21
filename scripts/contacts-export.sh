@@ -1,2 +1,2 @@
 #!/bin/sh
-mongoexport -d $database -c contacts --type csv --fieldFile fields.txt -o $1
+mongoexport --host $host --port $port -d $database -c contacts --type csv --noHeaderLine --fieldFile fieldsExport.txt -o $1

@@ -4,11 +4,49 @@ var express = require('express')
 , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 , ensureRequest = require('../../config/authorization').ensureRequest
 , Contact = require('../models/Contact')
-, Tag = require('../models/Tag');
+, Tag = require('../models/Tag')
+// Export part
+, conf = require('../../config/config')
+, path = require('path')
+, db = conf.db
+, cwd = conf.root
+, execFile = require('child_process').execFile
+, scriptDir = path.join(cwd, 'scripts/')
+, script = path.join(scriptDir, 'contacts-export.sh')
+, exportsDir = path.join(cwd, 'data', 'downloads/')
+, uuid = require('uuid/v1')
+, fs = require('fs');
 
 // Exports a function to bind Controller
 module.exports = function (app) {
   app.use('/contacts', ensureLoggedIn('/login'), router);
+};
+
+function csvExport(req, res) {
+  console.log('CSV Exports');
+  var filename = path.join(exportsDir, uuid())
+    , options = {
+    cwd : scriptDir,
+    env : db
+  };
+  execFile(script, [ filename ], options, (error, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+
+    if (error) {
+      next(error);
+      return;
+    }
+
+    res.download(filename, "contacts-exports.csv", (err) => {
+      err && console.log(err);
+
+      fs.unlink(filename, (err) => {
+        err && console.log(err);
+      });
+    });
+  });
+
 };
 
 function getTrimmedValue(pInput) {
@@ -64,7 +102,13 @@ function buildQuery(req) {
   return query;
 }
 
-router.get('/', ensureRequest.isPermitted('contact:read'), async function (req, res, next) {
+router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, next) {
+  if (req.query.action === "export.csv") {
+    csvExport(req, res);
+    return;
+  }
+  next();
+}, async function(req, res, next) {
   var query = buildQuery(req), first = parseInt(req.query.first), size = parseInt(req.query.size);
 
   // Sanitize first.
