@@ -11,15 +11,62 @@ module.exports = function (app) {
   app.use('/contacts', ensureLoggedIn('/login'), router);
 };
 
-router.get('/', ensureRequest.isPermitted('contact:read'), async function (req, res, next) {
-  var query = {}, first = parseInt(req.query.first), size = parseInt(req.query.size);
+function getTrimmedValue(pInput) {
+  if (!pInput) {
+    return '';
+  }
+  return pInput.trim();
+}
+
+function escapeRegExp(pInput) {
+  return pInput.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
+function startsWith(pInput, pFlags) {
+  return new RegExp("^" + escapeRegExp(pInput), pFlags);
+}
+/**
+ * Build a Query from the Request.
+ */
+function buildQuery(req) {
+  var query = {}, input = req.query, or = [];
   // Search by all provided tags
-  if (req.query.tagId) {
-    query.tags = { $all : req.query.tagId };
+  if (input.tags) {
+    query.tags = { $all : input.tags };
   }
-  if (req.query.search && req.query.search.trim()) {
-    query.$text = { $search: req.query.search };
+
+  var search = getTrimmedValue(input.search);
+  if (search) {
+    query.$text = { $search: search };
   }
+
+  var name = getTrimmedValue(input.name);
+  if (name) {
+    name = startsWith(name, 'i');
+    or.push({ "name.first" : name});
+    or.push({ "name.last" : name});
+  }
+
+  var zipCode = getTrimmedValue(input['address.code']);
+  if (zipCode) {
+    query.address = { code : zipCode };
+  }
+
+  var organization = getTrimmedValue(input.organization);
+  if (organization) {
+    query.organization = startsWith(organization, 'i');
+  }
+
+  if (or.length != 0) {
+    query.$or = or;
+  }
+  console.log(JSON.stringify(query));
+  return query;
+}
+
+router.get('/', ensureRequest.isPermitted('contact:read'), async function (req, res, next) {
+  var query = buildQuery(req), first = parseInt(req.query.first), size = parseInt(req.query.size);
+
   // Sanitize first.
   if (!first || first < 0 || size != req.query.previousSize) {
     first = 0;
@@ -35,6 +82,8 @@ router.get('/', ensureRequest.isPermitted('contact:read'), async function (req, 
     path: 'tags',
     options: { sort: 'name'}
   }).skip(first).limit(size + 1).exec();
+
+  // Populate tags for search
   data.tags = await Tag.find().exec();
 
   var contacts = data.contacts;
@@ -52,6 +101,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), async function (req, 
   }
   data.size = size;
   data.title = 'Liste de Contact';
+  data.query = req.query;
   res.render('contacts/contactList', data);
 });
 
