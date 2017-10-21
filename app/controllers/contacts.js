@@ -4,11 +4,52 @@ var express = require('express')
 , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 , ensureRequest = require('../../config/authorization').ensureRequest
 , Contact = require('../models/Contact')
-, Tag = require('../models/Tag');
+, Tag = require('../models/Tag')
+// Export part
+, conf = require('../../config/config')
+, path = require('path')
+, db = conf.db
+, cwd = conf.root
+, execFile = require('child_process').execFile
+, scriptDir = path.join(cwd, 'scripts/')
+, script = path.join(scriptDir, 'contacts-export.sh')
+, exportsDir = path.join(cwd, 'data', 'downloads/')
+, uuid = require('uuid/v1')
+, fs = require('fs')
+, EJSON = require('mongodb-extended-json')
+, ObjectID = require('mongodb').ObjectID;
 
 // Exports a function to bind Controller
 module.exports = function (app) {
   app.use('/contacts', ensureLoggedIn('/login'), router);
+};
+
+function csvExport(req, res, next) {
+
+  var filename = path.join(exportsDir, uuid())
+    , options = {
+    cwd : scriptDir,
+    env : db
+  }, query = EJSON.stringify(buildQuery(req));
+  console.log('CSV Exports : ' + query);
+  execFile(script, [ filename, query ], options, (error, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+
+    if (error) {
+      next(error);
+      return;
+    }
+
+    res.download(filename, "contacts-exports.csv", (err) => {
+      err && console.log(err);
+
+      fs.unlink(filename, (err) => {
+        err && console.log(err);
+      });
+    });
+  });
+
 };
 
 function getTrimmedValue(pInput) {
@@ -31,8 +72,17 @@ function startsWith(pInput, pFlags) {
 function buildQuery(req) {
   var query = {}, input = req.query, or = [];
   // Search by all provided tags
-  if (input.tags) {
-    query.tags = { $all : input.tags };
+  if (!input.tags) {
+    input.tags = [];
+  } else if (typeof input.tags == "string") {
+    input.tags = [input.tags];
+  }
+  if (input.tags.length != 0) {
+    let tagsId = [];
+    input.tags.forEach(tag => {
+      tagsId.push(ObjectID.createFromHexString(tag));
+    });
+    query.tags = { $all : tagsId };
   }
 
   var search = getTrimmedValue(input.search);
@@ -64,7 +114,15 @@ function buildQuery(req) {
   return query;
 }
 
-router.get('/', ensureRequest.isPermitted('contact:read'), async function (req, res, next) {
+router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, next) {
+  if (req.query.action === "export.csv") {
+    ensureRequest.isPermitted('contact:export')(req, res, function() {
+      csvExport(req, res, next);
+    });
+    return;
+  }
+  next();
+}, async function(req, res, next) {
   var query = buildQuery(req), first = parseInt(req.query.first), size = parseInt(req.query.size);
 
   // Sanitize first.

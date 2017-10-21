@@ -10,7 +10,9 @@
       <label for="tags">Etiquettes</label>
       <select multiple name="tags" id="tags">
         {{#tags}}
-        <option value="{{ id }}" {{#if ../query.tags }}{{#inArray ../query.tags id}}selected{{/inArray}}{{/if}}>{{ name }}</option>
+        <option value="{{ id }}" {{#inArray ../query.tags id}}selected{{/inArray}}>
+          {{ name }}
+        </option>
         {{/tags}}
       </select>
     </div>

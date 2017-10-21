@@ -45,6 +45,11 @@
         <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
         {{/if}}
     </div>
+    {{#isPermitted "contact:export:csv" }}
+    <div class="padded">
+        <button name="action" type="submit" value="export.csv" class="pure-button pure-button-primary">Exporter</button>
+    </div>
+    {{/isPermitted}}
   </div>
 </form>
 <script>

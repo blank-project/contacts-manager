@@ -1,0 +1,15 @@
+name.first
+name.last
+emails.0.value
+phones.0.value
+phones.1.value
+organization
+title
+addresses.0.number
+addresses.0.street
+addresses.0.code
+addresses.0.city
+note
+tags.0.name
+tags.1.name
+tags.2.name
