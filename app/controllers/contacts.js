@@ -15,21 +15,24 @@ var express = require('express')
 , script = path.join(scriptDir, 'contacts-export.sh')
 , exportsDir = path.join(cwd, 'data', 'downloads/')
 , uuid = require('uuid/v1')
-, fs = require('fs');
+, fs = require('fs')
+, EJSON = require('mongodb-extended-json')
+, ObjectID = require('mongodb').ObjectID;
 
 // Exports a function to bind Controller
 module.exports = function (app) {
   app.use('/contacts', ensureLoggedIn('/login'), router);
 };
 
-function csvExport(req, res) {
-  console.log('CSV Exports');
+function csvExport(req, res, next) {
+
   var filename = path.join(exportsDir, uuid())
     , options = {
     cwd : scriptDir,
     env : db
-  };
-  execFile(script, [ filename ], options, (error, stdout, stderr) => {
+  }, query = EJSON.stringify(buildQuery(req));
+  console.log('CSV Exports : ' + query);
+  execFile(script, [ filename, query ], options, (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
 
@@ -69,8 +72,17 @@ function startsWith(pInput, pFlags) {
 function buildQuery(req) {
   var query = {}, input = req.query, or = [];
   // Search by all provided tags
-  if (input.tags) {
-    query.tags = { $all : input.tags };
+  if (!input.tags) {
+    input.tags = [];
+  } else if (typeof input.tags == "string") {
+    input.tags = [input.tags];
+  }
+  if (input.tags.length != 0) {
+    let tagsId = [];
+    input.tags.forEach(tag => {
+      tagsId.push(ObjectID.createFromHexString(tag));
+    });
+    query.tags = { $all : tagsId };
   }
 
   var search = getTrimmedValue(input.search);
@@ -104,7 +116,9 @@ function buildQuery(req) {
 
 router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, next) {
   if (req.query.action === "export.csv") {
-    csvExport(req, res);
+    ensureRequest.isPermitted('contact:export')(req, res, function() {
+      csvExport(req, res, next);
+    });
     return;
   }
   next();

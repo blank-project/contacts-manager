@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "body-parser": "^1.13.3",
+    "bson": "^1.0.4",
     "chai-as-promised": "^7.1.1",
     "co": "^4.6.0",
     "compression": "^1.5.2",
