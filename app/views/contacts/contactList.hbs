@@ -1,52 +1,52 @@
-{{> contactFilters }}
-<div class="padded">
-  <div class="heading">
-    <h1>Liste des contacts</h1>
-    {{#isPermitted "contact:create" }}
-    <a class="pure-button pure-button-primary left-offset" href="/contacts/edit" title="Nouveau"><i class="fa fa-plus"></i></a>
-    {{/isPermitted }}
-  </div>
-  <table id="contact-list" class="contact-list pure-table pure-table-striped">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Mail</th>
-          <th>Téléphone</th>
-          <th>Organisation</th>
-          <th>Fonction</th>
-          <th>Adresse</th>
-          <th>Etiquettes</th>
-        </tr>
-      </thead>
-      <tbody>
-      {{#contacts}}
-        <tr class="contact-line clickable" data-id="{{ id }}">
-          <td>{{ fullName }}</td>
-          <td>{{ email }}</td>
-          <td>{{ phone }}</td>
-          <td>{{ organization }}</td>
-          <td>{{ title }}</td>
-          <td>{{ formattedAddress }}</td>
-          <td>
-            {{#tags}}
-              {{> tag }}
-            {{/tags}}
-          </td>
-        </tr>
-      {{/contacts}}
-      </tbody>
-  </table>
+<form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
+  {{> contactFilters }}
   <div class="padded">
-    <form method="GET" action="/contacts/" class="pure-form">
-      <input name="previousSize" type="hidden" value="{{ size }}" />
-      <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
-      <button name="first" type="submit" {{#if hasNext}}value="{{ next }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-right"></button>
-      {{#if incomplete}}
-      <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
-      {{/if}}
-    </form>
+    <div class="heading">
+      <h1>Liste des contacts</h1>
+      {{#isPermitted "contact:create" }}
+      <a class="pure-button pure-button-primary left-offset" href="/contacts/edit" title="Nouveau"><i class="fa fa-plus"></i></a>
+      {{/isPermitted }}
+    </div>
+    <table id="contact-list" class="contact-list pure-table pure-table-striped">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Mail</th>
+            <th>Téléphone</th>
+            <th>Organisation</th>
+            <th>Fonction</th>
+            <th>Adresse</th>
+            <th>Etiquettes</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{#contacts}}
+          <tr class="contact-line clickable" data-id="{{ id }}">
+            <td>{{ fullName }}</td>
+            <td>{{ email }}</td>
+            <td>{{ phone }}</td>
+            <td>{{ organization }}</td>
+            <td>{{ title }}</td>
+            <td>{{ formattedAddress }}</td>
+            <td>
+              {{#tags}}
+                {{> tag }}
+              {{/tags}}
+            </td>
+          </tr>
+        {{/contacts}}
+        </tbody>
+    </table>
+    <div class="padded">
+        <input name="previousSize" type="hidden" value="{{ size }}" />
+        <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
+        <button name="first" type="submit" {{#if hasNext}}value="{{ next }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-right"></button>
+        {{#if incomplete}}
+        <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
+        {{/if}}
+    </div>
   </div>
-</div>
+</form>
 <script>
   var contacts = document.getElementById('contact-list');
   delegate(contacts, 'click', '.contact-line', function(e) {
