@@ -16,8 +16,10 @@ var helpers = require('handlebars-helpers')(['collection', 'array']);
 var session = require('express-session');
 var flash = require('connect-flash');
 
-// Auth conf
-var auth = require('./auth');
+// Authentication conf
+var authentication = require('./authentication');
+// Authorization conf
+var authorization = require('./authorization');
 
 // Exports a configuration function.
 module.exports = function(app, config) {
@@ -25,6 +27,8 @@ module.exports = function(app, config) {
   var secret = 'secretkey';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
+
+  helpers.isPermitted = authorization.helpers.isPermitted;
 
   // Register view engine (handlebars).
   app.engine('hbs', exphbs({
@@ -34,6 +38,7 @@ module.exports = function(app, config) {
     partialsDir: [config.root + '/app/views/_partials/'],
     helpers : helpers
   }));
+
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'hbs');
 
@@ -56,8 +61,8 @@ module.exports = function(app, config) {
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
 
-  app.use(auth.initialize());
-  app.use(auth.session());
+  app.use(authentication.initialize());
+  app.use(authentication.session());
 
   app.use(function(req, res, next) {
     // Expose req and user as response-local attribute

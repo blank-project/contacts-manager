@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 var express = require('express');
-var configure = require('../../../config/express');
+var configure = require('../../config/express');
 
 describe('configure express', function() {
   it('should load', function() {

@@ -10,12 +10,17 @@
   </table>
 <div>
 <div class="padded">
+  {{#isPermitted "tag:update" }}
   <a href="edit/{{ id }}" class="pure-button pure-button-primary">Modifier</a>
+  {{/isPermitted }}
+  {{#isPermitted "tag:delete" }}
   <button id="delete" class="pure-button button-error">Supprimer</button>
+  {{/isPermitted }}
 <div>
 <div class="padded">
   <a href="/tags/" class="pure-button">Retour à la liste</a>
 </div>
+{{#isPermitted "tag:delete" }}
 <script>
     var deleteButton = document.getElementById("delete");
     deleteButton.addEventListener('click', function(ev) {
@@ -25,4 +30,6 @@
       .catch(console.log);
     });
 </script>
+{{/isPermitted }}
+
 {{/with}}

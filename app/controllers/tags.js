@@ -1,7 +1,10 @@
 var express = require('express')
   , router = express.Router()
   , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
-  , Tag = require('../models/Tag');
+  , Tag = require('../models/Tag')
+  , TagManager = require('../business/TagManager');
+
+var tagManager = new TagManager();
 
 // Exports a function to bind Controller
 module.exports = function (app) {
@@ -73,10 +76,12 @@ router.post('/', function (req, res, next) {
     catch(err => { next(err); });
 });
 
+
+
 router.delete('/:tagId', function (req, res, next) {
   var id = req.params.tagId;
   console.log('id :' + id);
-  Tag.findByIdAndRemove(id).exec()
+  tagManager.deleteTag(id)
   .then((data) => {
       res.sendStatus(data ? 200 : 404);
   })
