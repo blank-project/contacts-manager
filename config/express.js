@@ -117,11 +117,11 @@ module.exports = function(app, config) {
   } else {
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
-        res.render('error', {
-          message: err.message,
-          error: {},
-          title: 'Une erreur s\'est produite'
-        });
+      res.render('error', {
+        message: err.message,
+        error: {},
+        title: 'Une erreur s\'est produite'
+      });
     });
   }
   return app;

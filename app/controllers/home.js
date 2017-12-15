@@ -32,6 +32,26 @@ router.route('/login')
     failureFlash: true
   }));
 
+router.route('/login2')
+      .get(function (req, res, next) {
+        var data =  {
+          title : 'Contacts Manager - Login'
+        }, flash = req.flash();
+        console.log(flash);
+        if (flash && flash.error) {
+          data.message = {
+            level : 'error',
+            message : flash.error[0]
+          }
+        }
+        res.renderVue('login', data);
+      })
+      .post(auth.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login2',
+        failureFlash: true
+      }));
+
 router.get('/logout', function (req, res, next) {
     req.logout();
     delete res.locals.user;
