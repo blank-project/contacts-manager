@@ -7,7 +7,7 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
-    res.render('home/index', {
+    res.renderVue('home', {
       title : 'Contacts Manager'
     });
 });

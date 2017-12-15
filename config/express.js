@@ -15,6 +15,7 @@ var exphbs = require('express-handlebars');
 var helpers = require('handlebars-helpers')(['collection', 'array']);
 var session = require('express-session');
 var flash = require('connect-flash');
+var expressVue = require('express-vue');
 
 // Authentication conf
 var authentication = require('./authentication');
@@ -29,6 +30,26 @@ module.exports = function(app, config) {
   app.locals.ENV_DEVELOPMENT = env == 'development';
 
   helpers.isPermitted = authorization.helpers.isPermitted;
+
+  const vueOptions = {
+    rootPath: config.root + '/app/views/vue',
+    vue: {
+      head: {
+        title: 'Contacts Manager',
+        meta: [
+          { script: 'https://unpkg.com/vue' },
+          { script: 'https://code.jquery.com/jquery-3.2.1.min.js' },
+          { script: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js' },
+          { style: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css' },
+          { style: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+          { style: '/css/style.css' }
+        ]
+      }
+    },
+  };
+
+  const expressVueMiddleware = expressVue.init(vueOptions);
+  app.use(expressVueMiddleware);
 
   // Register view engine (handlebars).
   app.engine('hbs', exphbs({
