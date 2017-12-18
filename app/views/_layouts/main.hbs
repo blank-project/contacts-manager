@@ -16,6 +16,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/js/contacts-manager-client.js" type="text/javascript"></script>
     <script src="/js/dom.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 <body>
   <header>
@@ -45,7 +46,7 @@
       {{>user}}
     </nav>
   </header>
-  <main>
+  <main id="app">
   {{#with message }}
     {{>message}}
   {{/with }}
@@ -54,5 +55,6 @@
   <footer>
     &copy Erwan Osouf for Belleville Citoyenne
   </footer>
+  <script src="/js/vue.js"></script>
   </body>
 </html>

@@ -13,29 +13,9 @@ router.get('/', function (req, res, next) {
 });
 
 router.route('/login')
-  .get(function (req, res, next) {
-      var data =  {
-        title : 'Contacts Manager - Login'
-      }, flash = req.flash();
-      console.log(flash);
-      if (flash && flash.error) {
-        data.message = {
-          level : 'error',
-          message : flash.error[0]
-        }
-      }
-      res.render('home/login', data);
-  })
-  .post(auth.authenticate('local', {
-    successRedirect: '/contacts',
-    failureRedirect: '/login',
-    failureFlash: true
-  }));
-
-router.route('/login2')
       .get(function (req, res, next) {
         var data =  {
-          title : 'Contacts Manager - Login'
+          title : 'Login'
         }, flash = req.flash();
         console.log(flash);
         if (flash && flash.error) {
@@ -47,8 +27,9 @@ router.route('/login2')
         res.renderVue('login', data);
       })
       .post(auth.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login2',
+        successRedirect: '/contacts',
+        successFlash: true,
+        failureRedirect: '/login',
         failureFlash: true
       }));
 
