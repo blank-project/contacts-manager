@@ -3,12 +3,16 @@
   <tr>
     <td>Nom</td><td>{{ fullName }}</td>
   </tr>
+  {{#each emails}}
   <tr>
-    <td>Mail</td><td>{{ email }}</td>
+    <td>Mail</td><td>{{ value }}</td>
   </tr>
+  {{/each}}
+  {{#each phones}}
   <tr>
-    <td>Téléphone</td><td>{{ phone }}</td>
+    <td>Téléphone</td><td>{{ value }}</td>
   </tr>
+  {{/each}}
   <tr>
     <td>Organisation</td><td>{{ organization }}</td>
   </tr>
