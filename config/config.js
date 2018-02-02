@@ -47,10 +47,7 @@ var config = {
       host : 'localhost',
       port : '27017',
       options : {
-        poolSize : 10,
-        config : {
-          autoIndex : false
-        }
+        poolSize : 10
       }
 
     }
