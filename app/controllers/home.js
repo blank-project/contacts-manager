@@ -43,7 +43,7 @@ router.get('/logout', function (req, res, next) {
 
 router.route('/signup')
   .get(function (req, res, next) {
-      res.render('users/userCreate', {
-        title : 'Contacts Manager - Sign Up'
+      res.renderVue('signup', {
+        title : 'Sign Up'
       });
   });

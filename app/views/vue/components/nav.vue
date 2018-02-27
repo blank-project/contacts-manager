@@ -1,7 +1,7 @@
 <template>
     <nav class="blue lighten-2">
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo"><i class="material-icons">home</i></a>
+            <a href="/" class="brand-logo"><i class="material-icons">home</i></a>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/login" class="waves-effect waves-light">Se connecter</a></li>

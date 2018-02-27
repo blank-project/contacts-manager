@@ -18,7 +18,7 @@
                   <label for="password">Mot de passe</label>
               </div>
               <div class="col s1">
-                  <input id="submit" name="submit" type="submit" value="Soumettre" class="btn center"/>
+                  <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
               </div>
           </form>
         </div>
@@ -33,7 +33,9 @@
 
  export default {
    data: function () {
-     return {};
+     return {
+       message: '',
+     };
    },
    components: {
      mainNav: mainNav,

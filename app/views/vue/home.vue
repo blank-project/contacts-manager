@@ -1,6 +1,6 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
-        <main-nav :test="'youpi'"></main-nav>
+        <main-nav></main-nav>
         <div id="container" class="row">
             <div class="col s12 m12 center-text">
                 <h2>{{ title }}</h2>
