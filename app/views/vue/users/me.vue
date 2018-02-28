@@ -3,7 +3,7 @@
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
           <div class="row" id="container">
-            <table class="col m5">
+            <table>
               <tr>
                 <th><b>Username :<b></th><td>{{ username }}</td>
               </tr>
@@ -46,6 +46,8 @@
   main{
     margin: 0 !important;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   th{
     font-size: 1.2em;
@@ -54,7 +56,7 @@
     text-align: right;
   }
   .row{
-    margin-left: 35vw;
+    margin-left: 37vw;
   }
   table{
     margin: 20vh 0 0 0;
