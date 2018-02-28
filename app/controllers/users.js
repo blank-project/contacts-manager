@@ -133,9 +133,13 @@ router.post('/edit/password', function (req, res, next) {
 router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
   var data = {
     user : req.user,
-    title : 'Profil ' + req.user.username
+    username :req.user.username,
+    email :req.user.email,
+    phone :req.user.phone,
+    organisation : req.user.organization,
+    fonction : req.user.title,
   };
-  res.render('users/userView', data);
+  res.renderVue('users/me', data);
 });
 
 router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:create'), function (req, res, next) {
