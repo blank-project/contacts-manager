@@ -29,7 +29,7 @@
   <tr>
     <td>Etiquettes</td>
     <td>
-      <div id="tag-list" class="padded">
+      <div id="tag-list-{{ id }}" class="padded">
         {{#each tags}}
           {{#isPermitted "contact:update" }}
             {{! TODO Find a way to factor tag and tagEdit}}
@@ -68,7 +68,7 @@
   <a href="edit/{{ id }}" class="pure-button pure-button-primary">Modifier</a>
   {{/isPermitted}}
   {{#isPermitted "contact:delete" }}
-  <button id="delete" class="pure-button button-error">Supprimer</button>
+  <button id="delete-{{ id }}" class="pure-button button-error">Supprimer</button>
   {{/isPermitted}}
 <div>
 {{/with}}
@@ -77,7 +77,7 @@
 </div>
 
 <script>
-    var tags = document.getElementById('tag-list');
+    var tags = document.getElementById('tag-list-{{ contact.id }}');
     delegate(tags, 'click', '.tag-remove', function(e) {
       var id = e.actualTarget.getAttribute("data-id");
       removeTagFromContact(id, '{{ contact.id }}').then(function (response) {
@@ -87,7 +87,7 @@
 </script>
 {{#isPermitted "contact:delete" }}
 <script>
-    var deleteButton = document.getElementById("delete");
+    var deleteButton = document.getElementById("delete-{{ contact.id }}");
     deleteButton.addEventListener('click', function(ev) {
       deleteContact('{{ contact.id }}').then(function (response) {
         location.assign("/contacts/");
