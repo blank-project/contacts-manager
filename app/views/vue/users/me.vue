@@ -3,6 +3,7 @@
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
           <div class="row" id="container">
+            <h5>{{title}}</h5>
             <table>
               <tr>
                 <th><b>Username :<b></th><td>{{ username }}</td>
@@ -17,7 +18,7 @@
                 <th><b>Oganisation :<b></th><td>{{ organisation }}</td>
               </tr>
               <tr>
-                <th><b>Fonction :<b></th><td>{{ title }}</td>
+                <th><b>Fonction :<b></th><td>{{ position }}</td>
               </tr>
             </table>
           </div>
@@ -56,12 +57,17 @@
     text-align: right;
   }
   .row{
-    margin-left: 37vw;
+    margin: auto;
   }
   table{
-    margin: 20vh 0 0 0;
+    margin-top: 10vh;
   }
   #container {
       flex: 1 0 auto;
+  }
+  h5{
+    text-align: center;
+    margin: 10vh 0 0 0;
+    font-weight: bold;
   }
 </style>

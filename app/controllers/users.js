@@ -132,12 +132,13 @@ router.post('/edit/password', function (req, res, next) {
 
 router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
   var data = {
+    title: 'Profil ' + req.user.username,
     user : req.user,
     username :req.user.username,
     email :req.user.email,
     phone :req.user.phone,
     organisation : req.user.organization,
-    fonction : req.user.title,
+    position : req.user.title,
   };
   res.renderVue('users/me', data);
 });
