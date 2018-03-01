@@ -189,10 +189,17 @@ router.get('/duplicates/:ids', ensureRequest.isPermitted('contact:update','conta
   for (var i = 0; i < ids.length; i++) {
     var contactViewerObject = {};
     var newTagsIds = [];
-    contactViewerObject.contact = await Contact.findById(ids[i]).populate({
-      path: 'tags'
-      , options: { sort: 'name'}
-    }).exec();
+    contactViewerObject.contact = await Contact.findById(ids[i]);
+
+    /* if no contact with this id switch to the next */
+    if (contactViewerObject.contact === null) continue;
+
+    /* gather tags for this contact */
+    contactViewerObject.contact = await Contact.populate(contactViewerObject.contact, {
+      path: 'tags',
+      options: { sort: 'name'}
+    });
+
 
     contactViewerObject.contact.tags.forEach(tag => { newTagsIds.push(tag._id) });
 
@@ -224,10 +231,15 @@ router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async funct
   console.log('Displaying contact ' + id);
   var contact, tags, data = {}, ids = [];
 
-  contact = await Contact.findById(id).populate({
+  contact = await Contact.findById(id);
+
+  /* redirect to contact list if no contact found at this address*/
+  if (contact === null) res.redirect('/contacts');
+
+  contact = await Contact.populate(contact, {
     path: 'tags'
     , options: { sort: 'name'}
-  }).exec();
+  });
   contact.tags.forEach(tag => { ids.push(tag._id) });
 
   // Load other tags for edition
@@ -276,7 +288,8 @@ router.post('/', function (req, res, next) {
 
 router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
   var id = req.params.contactId
-  , tagId = req.body.tagId;
+  , tagId = req.body.tagId
+  , backUrl = req.body.urlSource;
   console.log('Associating ' + id + ' with ' + tagId);
   var tag = await Tag.findById(tagId).exec()
   if (tag == null) {
@@ -288,6 +301,10 @@ router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), as
   await Contact.findByIdAndUpdate(id, {
     $addToSet : { tags : tag._id }
   }).exec();
+
+  if (backUrl) {
+    res.redirect(backUrl);
+  }
 
   res.redirect("/contacts/" + id);
 });

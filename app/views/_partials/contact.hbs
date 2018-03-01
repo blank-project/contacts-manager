@@ -49,6 +49,7 @@
             <option value="{{ id }}">{{ name }}</option>
             {{/each}}
           </select>
+          <input id="back-{{ id }}" type="hidden" name="urlSource" value="">
           <button type="submit" class="pure-button pure-input-rounded" {{#isEmpty ../tags }}disabled{{/isEmpty}}>
             <i class="fa fa-plus"></i>
           </button>
@@ -65,7 +66,7 @@
 {{#with contact}}
 <div class="padded">
   {{#isPermitted "contact:update" }}
-  <a href="edit/{{ id }}" class="pure-button pure-button-primary">Modifier</a>
+  <a href="/contacts/edit/{{ id }}" class="pure-button pure-button-primary" target="_blank">Modifier</a>
   {{/isPermitted}}
   {{#isPermitted "contact:delete" }}
   <button id="delete-{{ id }}" class="pure-button button-error">Supprimer</button>
@@ -90,9 +91,15 @@
     var deleteButton = document.getElementById("delete-{{ contact.id }}");
     deleteButton.addEventListener('click', function(ev) {
       deleteContact('{{ contact.id }}').then(function (response) {
-        location.assign("/contacts/");
+        location.assign(window.location.pathname);
       })
       .catch(console.log);
     });
+</script>
+{{/isPermitted}}
+{{#isPermitted "contact:update" }}
+<script>
+    var addTag = document.getElementById("back-{{ contact.id }}");
+    addTag.value = window.location.pathname;
 </script>
 {{/isPermitted}}
