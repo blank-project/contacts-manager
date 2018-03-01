@@ -1,6 +1,6 @@
 <ul>
   {{#each contacts}}
-    <li><a href="duplicates/{{ this.ids }}">
+    <li><a href="/contacts/duplicates/{{ this.ids }}">
       <p> Il y a {{ this.count }} comptes avec pour nom :
       {{#each this._id.name}}
         {{ this }}
