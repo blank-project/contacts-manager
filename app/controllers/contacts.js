@@ -163,6 +163,47 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   res.render('contacts/contactList', data);
 });
 
+router.get('/duplicates/', ensureRequest.isPermitted('contact:update'), async function(req, res, next) {
+  /* find records with the same name */
+  var c = await Contact.aggregate([
+    {
+      $group: {
+        _id: {name: "$name"} ,
+        ids: {$addToSet: "$_id"},
+        count: {$sum: 1}
+      }
+    },
+    {
+      $match: {
+        count: {$gt: 1}
+      }
+    }
+  ]);
+  res.render('contacts/contactDuplicates', { contacts: c });
+});
+
+router.get('/duplicates/:ids', ensureRequest.isPermitted('contact:update','contact:delete'), async function(req, res, next) {
+  var ids = req.params.ids.split(',');
+  var contacts = [];
+  /* retrieve infos on contacts from ids in url */
+  for (var i = 0; i < ids.length; i++) {
+    var contactViewerObject = {};
+    var newTagsIds = [];
+    contactViewerObject.contact = await Contact.findById(ids[i]).populate({
+      path: 'tags'
+      , options: { sort: 'name'}
+    }).exec();
+
+    contactViewerObject.contact.tags.forEach(tag => { newTagsIds.push(tag._id) });
+
+    // Load other tags for edition
+    contactViewerObject.tags = await Tag.find({ _id : { $nin : ids }}).sort('name').exec();
+
+    contacts.push(contactViewerObject);
+  }
+  res.render("contacts/chooseFromDuplicates", { contacts: contacts });
+});
+
 router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {
   res.render('contacts/contactEdit', { contact : {} });
 });
