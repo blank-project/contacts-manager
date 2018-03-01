@@ -160,7 +160,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   data.size = size;
   data.title = 'Liste de Contact';
   data.query = req.query;
-  res.render('contacts/contactList', data);
+  res.renderVue('contacts/contactsList', data);
 });
 
 router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {

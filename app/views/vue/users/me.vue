@@ -21,6 +21,10 @@
                 <th><b>Fonction :<b></th><td>{{ position }}</td>
               </tr>
             </table>
+
+          </div>
+          <div class="padded">
+              <a :href="'edit/' + myId" class="waves-effect waves-light btn" >Modifier</a>
           </div>
         <main-footer></main-footer>
     </main>
@@ -33,13 +37,15 @@
 
  export default {
    data: function () {
-     return {};
+     return {
+     };
    },
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter
    },
  }
+
 </script>
 
 
@@ -70,4 +76,8 @@
     margin: 10vh 0 0 0;
     font-weight: bold;
   }
+  .padded{
+    margin: auto auto 10px auto;
+  }
+
 </style>

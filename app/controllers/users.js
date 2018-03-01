@@ -21,7 +21,7 @@ function checkPasswordMatch(req, res, next) {
     level : 'error',
     message : err.message
   }
-  res.render('users/userEdit', data);
+  res.renderVue('users/userEdit', data);
 }
 
 async function userView(req, res, next, id) {
@@ -88,7 +88,7 @@ router.post('/', function (req, res, next) {
       email : req.body.email,
       phone : req.body.phone,
       organization : req.body.organization,
-      title : req.body.title
+      title : req.body.title,
     });
 
     if (!id) {
@@ -123,7 +123,7 @@ router.post('/edit/password', function (req, res, next) {
         level : 'error',
         message : err.message
       }
-      res.render('users/userEdit', data);
+      res.renderVue('users/userEdit', data);
     } else {
       res.redirect('/');
     }
@@ -139,8 +139,13 @@ router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
     phone :req.user.phone,
     organisation : req.user.organization,
     position : req.user.title,
+    myId: req.user.id
   };
-  res.renderVue('users/me', data);
+  res.renderVue('users/me', data, {
+    data: {
+      id: req.user.id
+    }
+  });
 });
 
 router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:create'), function (req, res, next) {
@@ -148,7 +153,7 @@ router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:c
 });
 
 router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {
-  res.render('users/userEdit', { user : req.user });
+  res.renderVue('users/userEdit', { user : req.user });
 });
 
 router.get('/edit/:userId', ensureLoggedIn('/login'), function (req, res, next) {
@@ -165,7 +170,7 @@ router.get('/edit/:userId', ensureLoggedIn('/login'), function (req, res, next) 
   var id = req.params.userId;
   var user = await User.findById(id).exec();
 
-  res.render('users/userEdit', { user : user });
+  res.renderVue('users/userEdit', { user : user });
 });
 
 router.get('/:userId', ensureLoggedIn('/login'), function (req, res, next) {
