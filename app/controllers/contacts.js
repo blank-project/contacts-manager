@@ -135,14 +135,23 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   console.log('Listing contacts');
 
   var data = {};
-  data.contacts = await Contact.find(query)
-  .populate({
-    path: 'tags',
-    options: { sort: 'name'}
-  }).skip(first).limit(size + 1).exec();
+
+  try {
+    data.contacts = await Contact.find(query)
+    .populate({
+      path: 'tags',
+      options: { sort: 'name'}
+    }).skip(first).limit(size + 1).exec();
+  } catch(err) {
+    next(err);
+  }
 
   // Populate tags for search
-  data.tags = await Tag.find().exec();
+  try {
+    data.tags = await Tag.find().exec();
+  } catch(err) {
+    next(err);
+  }
 
   var contacts = data.contacts;
   if (contacts.length > size) {
@@ -165,48 +174,60 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
 
 router.get('/duplicates/', ensureRequest.isPermitted('contact:update'), async function(req, res, next) {
   /* find records with the same name */
-  var c = await Contact.aggregate([
-    {
-      $group: {
-        _id: {name: "$name"} ,
-        ids: {$addToSet: "$_id"},
-        count: {$sum: 1}
+  try {
+    var c = await Contact.aggregate([
+      {
+        $group: {
+          _id: {name: "$name"} ,
+          ids: {$addToSet: "$_id"},
+          count: {$sum: 1}
+        }
+      },
+      {
+        $match: {
+          count: {$gt: 1}
+        }
       }
-    },
-    {
-      $match: {
-        count: {$gt: 1}
-      }
-    }
-  ]);
-  res.render('contacts/contactDuplicates', { contacts: c });
+    ]);
+    res.render('contacts/contactDuplicates', { contacts: c });
+  } catch(err) {
+    next(err);
+  }
 });
 
 router.get('/duplicates/:ids', ensureRequest.isPermitted('contact:update','contact:delete'), async function(req, res, next) {
   var ids = req.params.ids.split(',');
   var contacts = [];
-  /* retrieve infos on contacts from ids in url */
-  for (var i = 0; i < ids.length; i++) {
-    var contactViewerObject = {};
-    var newTagsIds = [];
-    contactViewerObject.contact = await Contact.findById(ids[i]);
 
-    /* if no contact with this id switch to the next */
-    if (contactViewerObject.contact === null) continue;
-
-    /* gather tags for this contact */
-    contactViewerObject.contact = await Contact.populate(contactViewerObject.contact, {
+  /* get all contacts from ids in route params & populate them with their tags */
+  try {
+    var contactsFromIds = await Contact.find({
+      '_id': { $in: ids }
+    }).populate({
       path: 'tags',
       options: { sort: 'name'}
-    });
+    }).exec();
+  } catch(err) {
+    next(err);
+  }
 
+  /* create array withs contacts to display */
+  for (var i = 0; i < contactsFromIds.length; i++) {
+    var contactViewerObject = {
+      contact: contactsFromIds[i]
+    };
+    var currentTagsIds = [];
 
-    contactViewerObject.contact.tags.forEach(tag => { newTagsIds.push(tag._id) });
+    contactViewerObject.contact.tags.forEach(tag => { currentTagsIds.push(tag._id) });
 
     // Load other tags for edition
-    contactViewerObject.tags = await Tag.find({ _id : { $nin : ids }}).sort('name').exec();
+    try {
+      contactViewerObject.tags = await Tag.find({ _id : { $nin : currentTagsIds }}).sort('name').exec();
 
-    contacts.push(contactViewerObject);
+      contacts.push(contactViewerObject);
+    } catch(err) {
+      next(err);
+    }
   }
   res.render("contacts/chooseFromDuplicates", { contacts: contacts });
 });
@@ -219,11 +240,16 @@ router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), asyn
   console.log('Editing contact');
   var id = req.params.contactId;
   console.log('id :' + id);
-  var contact = await Contact.findById(id).populate('tags').exec();
 
-  res.render('contacts/contactEdit', {
-    contact : contact
-  });
+  try {
+    var contact = await Contact.findById(id).populate('tags').exec();
+
+    res.render('contacts/contactEdit', {
+      contact : contact
+    });
+  } catch(err) {
+    next(err);
+  }
 });
 
 router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async function (req, res, next) {
@@ -231,19 +257,31 @@ router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async funct
   console.log('Displaying contact ' + id);
   var contact, tags, data = {}, ids = [];
 
-  contact = await Contact.findById(id);
+  try {
+    contact = await Contact.findById(id);
+  } catch(err) {
+    next(err);
+  }
 
   /* redirect to contact list if no contact found at this address*/
   if (contact === null) res.redirect('/contacts');
 
-  contact = await Contact.populate(contact, {
-    path: 'tags'
-    , options: { sort: 'name'}
-  });
+  try {
+    contact = await Contact.populate(contact, {
+      path: 'tags'
+      , options: { sort: 'name'}
+    });
+  } catch(err) {
+    next(err);
+  }
   contact.tags.forEach(tag => { ids.push(tag._id) });
 
   // Load other tags for edition
-  tags = await Tag.find({ _id : { $nin : ids }}).sort('name').exec();
+  try {
+    tags = await Tag.find({ _id : { $nin : ids }}).sort('name').exec();
+  } catch(err) {
+    next(err);
+  }
 
   data.contact = contact;
   data.tags = tags;
@@ -259,10 +297,10 @@ router.post('/', function (req, res, next) {
   var contact = null;
   var id = req.body.id;
   if (id) {
-    contact = await Contact.findById(id).exec();
-    if (!contact) {
-      next();
-      return;
+    try {
+      contact = await Contact.findById(id).exec();
+    } catch(err) {
+      next(err);
     }
   } else {
     contact = new Contact();
@@ -282,25 +320,42 @@ router.post('/', function (req, res, next) {
     },
     note : req.body.note,
   });
-  await contact.save();
-  res.redirect(contact.id);
+
+  try {
+    await contact.save();
+    res.redirect(contact.id);
+  } catch(err) {
+    next(err);
+  }
 });
 
 router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
   var id = req.params.contactId
+  , tag
   , tagId = req.body.tagId
   , backUrl = req.body.urlSource;
   console.log('Associating ' + id + ' with ' + tagId);
-  var tag = await Tag.findById(tagId).exec()
+
+  try {
+    tag = await Tag.findById(tagId).exec()
+  } catch(err) {
+    next(err);
+  }
+
   if (tag == null) {
     console.log("Tag " + tagId + ' not found');
     next();
     return;
   }
   // Tag found at this point, add to tag set.
-  await Contact.findByIdAndUpdate(id, {
-    $addToSet : { tags : tag._id }
-  }).exec();
+
+  try {
+    await Contact.findByIdAndUpdate(id, {
+      $addToSet : { tags : tag._id }
+    }).exec();
+  } catch(err) {
+    next(err);
+  }
 
   if (backUrl) {
     res.redirect(backUrl);
@@ -310,17 +365,30 @@ router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), as
 });
 
 router.delete('/:contactId', ensureRequest.isPermitted('contact:delete'), async function (req, res, next) {
-  var id = req.params.contactId;
+  var id = req.params.contactId
+  , data;
   console.log('Removing ' + id);
-  var data = await Contact.findByIdAndRemove(id).exec();
+
+  try {
+    data = await Contact.findByIdAndRemove(id).exec();
+  } catch(err) {
+    next(err);
+  }
+
   res.sendStatus(data ? 200 : 404);
 });
 
 router.delete('/:contactId/tags/:tagId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
   var id = req.params.contactId
-  , tagId = req.params.tagId;
+  , tagId = req.params.tagId
+  , tag;
   console.log('Removing ' + id + ' with ' + tagId);
-  var tag = Tag.findById(tagId).exec();
+
+  try {
+    tag = Tag.findById(tagId).exec();
+  } catch (err) {
+    next(err);
+  }
 
   if (tag == null) {
     console.log("Tag " + tagId + ' not found');
@@ -328,9 +396,13 @@ router.delete('/:contactId/tags/:tagId', ensureRequest.isPermitted('contact:upda
     return;
   }
 
-  await Contact.findByIdAndUpdate(id, {
-    $pull : { tags : tag._id }
-  }).exec();
+  try {
+    await Contact.findByIdAndUpdate(id, {
+      $pull : { tags : tag._id }
+    }).exec();
+  } catch(err) {
+    next(err);
+  }
 
   res.sendStatus(200);
 
