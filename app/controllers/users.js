@@ -153,7 +153,7 @@ router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:c
 });
 
 router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {
-  res.renderVue('users/userEdit', { user : req.user });
+  res.renderVue('users/userEdit', { user : userdata(req.user) });
 });
 
 router.get('/edit/:userId', ensureLoggedIn('/login'), function (req, res, next) {
@@ -169,11 +169,18 @@ router.get('/edit/:userId', ensureLoggedIn('/login'), function (req, res, next) 
 }, async function (req, res, next) {
   var id = req.params.userId;
   var user = await User.findById(id).exec();
+  var dataUser = userdata(req.user);
 
-  res.renderVue('users/userEdit', { user : user });
+  res.renderVue('users/userEdit', { user : dataUser });
 });
 
 router.get('/:userId', ensureLoggedIn('/login'), function (req, res, next) {
   var id = req.params.userId;
   userView(req, res, next, id);
 });
+
+function userdata(user) {
+  var dataUser = user.toJSON();
+  console.log(dataUser);
+  return dataUser;
+}

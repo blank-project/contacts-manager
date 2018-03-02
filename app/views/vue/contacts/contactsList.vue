@@ -3,7 +3,7 @@
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
           <div id="container">
-            <p>test</p>
+            <p>test conatct list</p>
           </div>
         <main-footer></main-footer>
     </main>
