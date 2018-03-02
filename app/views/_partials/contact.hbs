@@ -90,10 +90,12 @@
 <script>
     var deleteButton = document.getElementById("delete-{{ contact.id }}");
     deleteButton.addEventListener('click', function(ev) {
-      deleteContact('{{ contact.id }}').then(function (response) {
-        location.assign(window.location.pathname);
-      })
-      .catch(console.log);
+      if (confirm('Es-tu sur de vouloir supprimer le contact ?')) {
+        deleteContact('{{ contact.id }}').then(function (response) {
+          location.assign(window.location.pathname);
+        })
+        .catch(console.log);
+      }
     });
 </script>
 {{/isPermitted}}
