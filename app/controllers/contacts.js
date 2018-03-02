@@ -359,6 +359,7 @@ router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), as
 
   if (backUrl) {
     res.redirect(backUrl);
+    return;
   }
 
   res.redirect("/contacts/" + id);
