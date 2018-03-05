@@ -21,8 +21,7 @@
             </ul>
           </span>
 
-    <!-- v-if -->
-          <!-- <div class="messages error">{{message}}</div> -->
+        <!--  <div class="messages error">{{message}}</div>--> <!-- Quelle utilitée ? -->
 
 
           <form action="/import" enctype="multipart/form-data" method="POST" class="pure-form " >

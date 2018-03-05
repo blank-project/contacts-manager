@@ -100,7 +100,7 @@ router.post('/', function (req, res, next) {
             level : 'error',
             message : err.message
           }
-          res.render('users/userCreate', data);
+          res.renderVue('users/userCreate', data);
         } else {
           res.redirect('/');
         }
@@ -149,7 +149,7 @@ router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
 });
 
 router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:create'), function (req, res, next) {
-  res.render('users/userCreate');
+  res.renderVue('users/userCreate');
 });
 
 router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {
