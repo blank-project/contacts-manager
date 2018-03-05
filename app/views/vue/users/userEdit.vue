@@ -68,7 +68,7 @@
     margin-top: 5vh;
   }
   h3{
-    font-size: 1.6em;  
+    font-size: 1.6em;
   }
 
 

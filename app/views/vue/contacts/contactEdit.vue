@@ -13,25 +13,24 @@
             <fieldset>
               <div class="col s12">
                 <div class="row">
-              <div class="input-field col s6">
-                <label for="name">Nom</label>
-                <input id="name" type="text" name="name" :value="contact.name"/><br />
-              </div>
-              <div class="input-field col s6">
-                <label for="email">Mail</label>
-                <input id="email" type="email" name="email" :value="contact.email" /><br />
-              </div>
-              <div class="input-field col s6">
-                <label for="phone">Téléphone</label>
-                <input id="phone" type="tel" name="phone" :value="contact.phone" /><br />
-              </div> <div class="input-field col s6">
-                <label for="organization">Organisation</label>
-                <input id="organization" type="text" name="organization" :value="contact.organization" /><br />
-              </div> <div class="input-field col s6">
-                <label for="title">Fonction</label>
-                <input id="title" type="text" name="title" :value="contact.title" /><br />
-              </div>
-              </div>
+                  <div class="input-field col s6">
+                    <label for="name">Nom</label>
+                    <input id="name" type="text" name="name" :value="contact.name"/>
+                  </div>
+                  <div class="input-field col s6">
+                    <label for="email">Mail</label>
+                    <input id="email" type="email" name="email" :value="contact.email" />
+                  </div>
+                  <div class="input-field col s6">
+                    <label for="phone">Téléphone</label>
+                    <input id="phone" type="tel" name="phone" :value="contact.phone" />
+                  </div> <div class="input-field col s6">
+                    <label for="organization">Organisation</label>
+                    <input id="organization" type="text" name="organization" :value="contact.organization" />
+                  </div> <div class="input-field col s6">
+                    <label for="title">Fonction</label>
+                    <input id="title" type="text" name="title" :value="contact.title" />
+                </div>
               </div>
             </fieldset>
             <fieldset>
@@ -39,29 +38,29 @@
               </br>
               <div class="col s12">
                 <div class="row">
-              <div class="input-field col s6">
-                <label for="address.number">N°</label>
-                <input id="address.number" type="text" name="address.number" :value="contact.address.number" /><br />
-              </div>
-              <div class="input-field col s6">
-                <label for="address.street">Rue</label>
-                <input id="address.street" type="text" name="address.street" :value="contact.address.street" /><br />
-              </div>
-              <div class="input-field col s6">
-                <label for="address.code">Code Postal</label>
-                <input id="address.code" type="text" name="address.code" :value="contact.address.code" /><br />
-              </div>
-              <div class="input-field col s6">
-                <label for="address.city">N°</label>
-                <input id="address.city" type="text" name="address.city" :value="contact.address.city" /><br />
-              </div>
-              </div>
+                  <div class="input-field col s6">
+                    <label for="address.number">N°</label>
+                    <input id="address.number" type="text" name="address.number" :value="contact.address.number" />
+                  </div>
+                  <div class="input-field col s6">
+                    <label for="address.street">Rue</label>
+                    <input id="address.street" type="text" name="address.street" :value="contact.address.street" />
+                  </div>
+                  <div class="input-field col s6">
+                    <label for="address.code">Code Postal</label>
+                    <input id="address.code" type="text" name="address.code" :value="contact.address.code" />
+                  </div>
+                  <div class="input-field col s6">
+                    <label for="address.city">N°</label>
+                    <input id="address.city" type="text" name="address.city" :value="contact.address.city" />
+                  </div>
+                </div>
               </div>
             </fieldset>
-<!--placement bouttons-->
+<!--placement bouttons a faire-->
             <div class="input-field col s6">
               <label for="note">Note</label>
-              <textarea id="note" name="note">{{ note }}</textarea><br />
+              <textarea id="note" name="note">{{ note }}</textarea>
             </div>
             <fieldset class="padded">
               <input type="submit" name="submit" value="Soumettre" class="pure-button pure-button-primary"/>
