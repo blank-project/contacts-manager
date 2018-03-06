@@ -20,7 +20,6 @@
             <li>Note</li>
             </ul>
           </span>
-        <!--  <div class="messages error">{{message}}</div>--> <!-- Quelle utilitée ? -->
           <form action="/import" enctype="multipart/form-data" method="POST" >
             <div class="file-field input-field">
               <div class="btn">

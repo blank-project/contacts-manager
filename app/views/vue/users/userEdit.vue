@@ -3,13 +3,13 @@
         <main-nav></main-nav>
           <div class="row" id="container">
             <span class="fa fa-user"></span>
-            <h3>Editer</h3>
+            <h5>{{ title }}</h5>
             <form action="/users/" method="POST" class="pure-form">
                 <input type="hidden" name="id" :value="user.id" />
                 <fieldset>
                     <input id="firstname" name="firstname" type="text"  placeholder="Prenom" :value="user.name.first" required />
                     <input id="lastname" name="lastname" type="text"  placeholder="Nom" :value="user.name.last" required />
-                      <input id="email" name="email" type="email" placeholder="Email" :value="user.email" required />
+                    <input id="email" name="email" type="email" placeholder="Email" :value="user.email" required />
                 </fieldset>
                 <div>
                   <input id="submit" name="submit" type="submit" value="Soumettre" class="waves-effect waves-light btn"/>

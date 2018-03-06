@@ -13,9 +13,9 @@
               <input id="color" type="color" name="color" :value="tag.color"/>
             </div>
             <fieldset class="padded">
-              <input type="submit" name="submit" value="Soumettre"/>
-              <a v-if="id" :href="'/tags/' + tag.id">Annuler</a> <!--bug avec id ici -->
-              <a v-else :href="/tags/">Annuler</a>
+              <input type="submit" name="submit" value="Soumettre" class="waves-effect waves-light btn"/>
+              <a v-if="id" :href="'/tags/' + tag.id" class="waves-effect waves-light btn">Annuler</a>
+              <a v-else :href="/tags/" class="waves-effect waves-light btn">Annuler</a>
             </fieldset>
           </form>
         </div>

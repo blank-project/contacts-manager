@@ -19,12 +19,15 @@
                   <div class="input-field col s6">
                     <label for="phone">Téléphone</label>
                     <input id="phone" type="tel" name="phone" :value="contact.phone" />
-                  </div> <div class="input-field col s6">
+                  </div>
+                  <div class="input-field col s6">
                     <label for="organization">Organisation</label>
                     <input id="organization" type="text" name="organization" :value="contact.organization" />
-                  </div> <div class="input-field col s6">
+                  </div>
+                  <div class="input-field col s6">
                     <label for="title">Fonction</label>
                     <input id="title" type="text" name="title" :value="contact.title" />
+                  </div>
                 </div>
               </div>
             </fieldset>
@@ -53,14 +56,18 @@
               </div>
             </fieldset>
 <!--placement bouttons a faire-->
-            <div class="input-field col s6">
-              <label for="note">Note</label>
-              <textarea id="note" name="note">{{ note }}</textarea>
+            <div class="col s12">
+              <div class="row">
+                <div class="input-field col s6">
+                  <label for="note">Note</label>
+                  <textarea class="materialize-textarea" id="note" name="note">{{ note }}</textarea>
+                </div>
+              </div>
             </div>
-            <fieldset class="padded">
-              <input type="submit" name="submit" value="Soumettre" class="pure-button pure-button-primary"/>
-              <a v-if="id" :href="'/contacts/' + contact.id" class="pure-button">Annuler</a> <!--pb ici -->
-              <a v-else href="input-field inline/contacts/" class="pure-button">Annuler</a>
+            <fieldset class="padded buttons">
+              <input type="submit" name="submit" value="Soumettre" class="waves-effect waves-light btn"/>
+              <a v-if="id" :href="'/contacts/' + contact.id" class="waves-effect waves-light btn">Annuler</a> <!--pb ici -->
+              <a v-else href="input-field inline/contacts/" class="waves-effect waves-light btn">Annuler</a>
             </fieldset>
         </form>
       </div>
@@ -101,5 +108,11 @@
  legend{
    margin-left: 21vw;
 
+ }
+ .buttons{
+   margin: 10vh 20vw;
+ }
+ a{
+   margin-left: 4vw;
  }
 </style>
