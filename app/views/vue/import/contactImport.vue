@@ -21,7 +21,7 @@
             </ul>
           </span>
         <!--  <div class="messages error">{{message}}</div>--> <!-- Quelle utilitée ? -->
-          <form action="/import" enctype="multipart/form-data" method="POST" class="pure-form " >
+          <form action="/import" enctype="multipart/form-data" method="POST" >
             <div class="file-field input-field">
               <div class="btn">
                 <span>File</span>

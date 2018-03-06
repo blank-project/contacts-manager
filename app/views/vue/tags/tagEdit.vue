@@ -2,7 +2,7 @@
   <main class="grey lighten-4 blue-grey-text">
       <main-nav></main-nav>
         <div class="row" id="container">
-          <form action="/tags/" method="POST" class="pure-form pure-form-aligned">
+          <form action="/tags/" method="POST">
             <input v-if="id" type="hidden" name="id" :value="tag.id" />
             <div class="pure-control-group">
               <label for="name">Nom :</label>
@@ -13,9 +13,9 @@
               <input id="color" type="color" name="color" :value="tag.color"/>
             </div>
             <fieldset class="padded">
-              <input type="submit" name="submit" value="Soumettre" class="pure-button pure-button-primary" />
-              <a v-if="id" :href="'/tags/' + tag.id" class="pure-button">Annuler</a> <!--bug avec id ici -->
-              <a v-else :href="/tags/" class="pure-button">Annuler</a>
+              <input type="submit" name="submit" value="Soumettre"/>
+              <a v-if="id" :href="'/tags/' + tag.id">Annuler</a> <!--bug avec id ici -->
+              <a v-else :href="/tags/">Annuler</a>
             </fieldset>
           </form>
         </div>

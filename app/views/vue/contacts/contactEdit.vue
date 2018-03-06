@@ -3,7 +3,7 @@
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
         <div id="container">
-          <form action="/contacts/" method="POST" class="pure-form pure-form-aligned">
+          <form action="/contacts/" method="POST">
             <input v-if="id" type="hidden" name="id" :value="contact.id" />
             <fieldset>
               <div class="col s12">

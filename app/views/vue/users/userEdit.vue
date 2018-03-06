@@ -6,7 +6,7 @@
             <h3>Editer</h3>
             <form action="/users/" method="POST" class="pure-form">
                 <input type="hidden" name="id" :value="user.id" />
-                <fieldset class="pure-group">
+                <fieldset>
                     <input id="firstname" name="firstname" type="text"  placeholder="Prenom" :value="user.name.first" required />
                     <input id="lastname" name="lastname" type="text"  placeholder="Nom" :value="user.name.last" required />
                       <input id="email" name="email" type="email" placeholder="Email" :value="user.email" required />
@@ -17,7 +17,7 @@
             </form>
             <br />
             <h3>Changer de mot de passe</h3>
-            <form action="/users/edit/password" method="POST" class="pure-form">
+            <form action="/users/edit/password" method="POST">
                 <input type="hidden" name="id" :value="user.id" />
                 <fieldset class="pure-group">
                   <input id="passwordOld" name="passwordOld" type="password" placeholder="Old Password" required />

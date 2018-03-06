@@ -5,13 +5,13 @@
       <main-nav></main-nav>
         <div class="row" id="container">
           <span class="fa fa-user"></span>
-          <form action="/users/" method="POST" class="pure-form">
+          <form action="/users/" method="POST">
               <fieldset class="pure-group">
                   <input id="firstname" name="firstname" type="text"  placeholder="Prenom" :value="user.name.first" required />
                   <input id="lastname" name="lastname" type="text"  placeholder="Nom" :value="user.name.last" required />
                     <input id="email" name="email" type="email" placeholder="Email" :value="user.email" required />
               </fieldset>
-              <fieldset class="pure-group">
+              <fieldset>
                     <input v-if="id" type="hidden" name="id" :value="user.id"/>
                     <input v-else id="username" name="username" type="text"  placeholder="User Name" :value="user.username" required />
                     <input v-if="id" id="passwordOld" name="passwordOld" type="password" placeholder="Old Password" required />
@@ -19,7 +19,7 @@
                   <input id="passwordConfirm" name="passwordConfirm" type="password" placeholder="Confirm Password" required />
               </fieldset>
               <div>
-                <input id="submit" name="submit" type="submit" value="Soumettre" class="pure-button pure-button-primary"/>
+                <input id="submit" name="submit" type="submit" value="Soumettre"/>
               </div>
           </form>
         </div>
