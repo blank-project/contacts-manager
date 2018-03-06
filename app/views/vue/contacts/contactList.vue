@@ -1,13 +1,11 @@
 <template>
-
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
           <div id="container">
-            <p>test conatct list</p>
+            <p>test contact list</p>
           </div>
         <main-footer></main-footer>
     </main>
-
 </template>
 
 
@@ -33,9 +31,7 @@
      min-height: 100vh;
      flex-direction: column;
  }
-
  #container {
      flex: 1 0 auto;
  }
-
 </style>

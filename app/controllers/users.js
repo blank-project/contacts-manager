@@ -181,6 +181,5 @@ router.get('/:userId', ensureLoggedIn('/login'), function (req, res, next) {
 
 function userdata(user) {
   var dataUser = user.toJSON();
-  console.log(dataUser);
   return dataUser;
 }

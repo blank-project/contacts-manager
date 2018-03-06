@@ -1,43 +1,31 @@
 <template>
-
   <main class="grey lighten-4 blue-grey-text">
       <main-nav></main-nav>
         <div class="row" id="container">
-
-
           <form action="/tags/" method="POST" class="pure-form pure-form-aligned">
-
-            <!-- {{#if id }} -->
-            <input v-if="id" type="hidden" name="id" :value=" tag.id " />
-            <!-- {{/if}} -->
+            <input v-if="id" type="hidden" name="id" :value="tag.id" />
             <div class="pure-control-group">
               <label for="name">Nom :</label>
-              <input id="name" type="text" name="name" :value=" tag.name "/>
+              <input id="name" type="text" name="name" :value="tag.name"/>
             </div>
             <div class="pure-control-group">
               <label for="color">Couleur :</label>
-              <input id="color" type="color" name="color" :value=" tag.color " />
+              <input id="color" type="color" name="color" :value="tag.color"/>
             </div>
             <fieldset class="padded">
               <input type="submit" name="submit" value="Soumettre" class="pure-button pure-button-primary" />
-              <!-- {{#if id }} -->
               <a v-if="id" :href="'/tags/' + tag.id" class="pure-button">Annuler</a> <!--bug avec id ici -->
-              <!-- {{else}} -->
               <a v-else :href="/tags/" class="pure-button">Annuler</a>
-              <!-- {{/if}} -->
             </fieldset>
-
           </form>
         </div>
       <main-footer></main-footer>
     </main>
-
 </template>
 
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
-
  export default {
    data: function () {
      return {
@@ -48,9 +36,7 @@
      mainFooter: mainFooter
    },
  }
-
 </script>
-
 
 <style scoped>
   main{

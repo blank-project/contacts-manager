@@ -1,9 +1,8 @@
 <template>
-
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
           <div class="row" id="container">
-            <h5>{{title}}</h5>
+            <h5>{{ title }}</h5>
             <table>
               <tr>
                 <th><b>Username :<b></th><td>{{ username }}</td>
@@ -21,20 +20,17 @@
                 <th><b>Fonction :<b></th><td>{{ position }}</td>
               </tr>
             </table>
-
           </div>
           <div class="padded">
               <a :href="'edit/' + myId" class="waves-effect waves-light btn" >Modifier</a>
           </div>
         <main-footer></main-footer>
     </main>
-
 </template>
 
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
-
  export default {
    data: function () {
      return {
@@ -45,9 +41,7 @@
      mainFooter: mainFooter
    },
  }
-
 </script>
-
 
 <style scoped>
   main{
@@ -79,5 +73,4 @@
   .padded{
     margin: auto auto 10px auto;
   }
-
 </style>

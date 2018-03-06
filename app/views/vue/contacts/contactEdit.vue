@@ -1,15 +1,10 @@
-<!-- ou accede t'on aux infos sur adresse du contact ? -->
-<template>
 
+<template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
-
         <div id="container">
           <form action="/contacts/" method="POST" class="pure-form pure-form-aligned">
-<!--
-            {{#if id }} -->
-            <input v-if="id" type="hidden" name="id" :value="contact.id " />
-            <!-- {{/if}} -->
+            <input v-if="id" type="hidden" name="id" :value="contact.id" />
             <fieldset>
               <div class="col s12">
                 <div class="row">
@@ -64,26 +59,18 @@
             </div>
             <fieldset class="padded">
               <input type="submit" name="submit" value="Soumettre" class="pure-button pure-button-primary"/>
-              <!-- {{#if id }} -->
-              <a v-if="id" :href="'/contacts/' + contact.id" class="pure-button">Annuler</a>
-              <!-- {{else}} -->
+              <a v-if="id" :href="'/contacts/' + contact.id" class="pure-button">Annuler</a> <!--pb ici -->
               <a v-else href="input-field inline/contacts/" class="pure-button">Annuler</a>
-              <!-- {{/if}} -->
             </fieldset>
-
         </form>
-
       </div>
     <main-footer></main-footer>
   </main>
-
 </template>
-
 
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
-
  export default {
    data: function () {
      return {};
@@ -115,5 +102,4 @@
    margin-left: 21vw;
 
  }
-
 </style>

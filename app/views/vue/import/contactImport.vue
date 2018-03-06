@@ -1,7 +1,7 @@
 <template>
   <main class="grey lighten-4 blue-grey-text" id="container">
       <main-nav></main-nav>
-          <h5>{{title}}</h5>
+          <h5>{{ title }}</h5>
           <span class="instructions">
             <p><b>Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".</b></p><br/></br>
             <b>Les colonnes sont :</b>
@@ -20,10 +20,7 @@
             <li>Note</li>
             </ul>
           </span>
-
         <!--  <div class="messages error">{{message}}</div>--> <!-- Quelle utilitée ? -->
-
-
           <form action="/import" enctype="multipart/form-data" method="POST" class="pure-form " >
             <div class="file-field input-field">
               <div class="btn">
@@ -38,16 +35,13 @@
               </div>
             </div>
           </form>
-
       <main-footer></main-footer>
   </main>
 </template>
 
-
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
-
  export default {
    data: function () {
      return {};
@@ -59,7 +53,6 @@
  }
 </script>
 
-
 <style scoped>
   main{
     margin: 0 !important;
@@ -67,11 +60,9 @@
     display: flex;
     flex-direction: column;
   }
-
   #container {
       flex: 1 0 auto;
   }
-
   span{
     margin: auto;
   }
@@ -90,5 +81,4 @@
     display: flex;
     margin: auto;
   }
-
 </style>
