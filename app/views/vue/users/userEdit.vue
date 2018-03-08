@@ -1,10 +1,11 @@
+<!--pb quand passe par user/EDIT , Quelles data envoyer ?-->
 <template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
           <div class="row" id="container">
             <span class="fa fa-user"></span>
-            <h5>{{ title }}</h5>
             <form action="/users/" method="POST" class="pure-form">
+                <h3>{{ title }}</h3>
                 <input type="hidden" name="id" :value="user.id" />
                 <fieldset>
                     <input id="firstname" name="firstname" type="text"  placeholder="Prenom" :value="user.name.first" required />
@@ -16,8 +17,8 @@
                 </div>
             </form>
             <br />
-            <h3>Changer de mot de passe</h3>
             <form action="/users/edit/password" method="POST">
+                <h4>Changer de mot de passe</h4>
                 <input type="hidden" name="id" :value="user.id" />
                 <fieldset class="pure-group">
                   <input id="passwordOld" name="passwordOld" type="password" placeholder="Old Password" required />
@@ -63,7 +64,7 @@
   .btn{
     margin-top: 5vh;
   }
-  h3{
-    font-size: 1.6em;
+  form{
+    margin: 10vh;
   }
 </style>

@@ -8,6 +8,7 @@
             <fieldset>
               <div class="col s12">
                 <div class="row">
+                  <h3>{{ title }}</h3>
                   <div class="input-field col s6">
                     <label for="name">Nom</label>
                     <input id="name" type="text" name="name" :value="contact.name"/>
@@ -55,7 +56,7 @@
                 </div>
               </div>
             </fieldset>
-<!--placement bouttons a faire-->
+
             <div class="col s12">
               <div class="row">
                 <div class="input-field col s6">
@@ -115,4 +116,5 @@
  a{
    margin-left: 4vw;
  }
+
 </style>

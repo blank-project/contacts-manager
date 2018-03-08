@@ -164,7 +164,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
 });
 
 router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {
-  res.renderVue('contacts/contactEdit', { contact : { address: {}} });
+  res.renderVue('contacts/contactEdit', { contact : { address: {}}, title : 'Editer contact' });
 });
 
 router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
@@ -174,7 +174,8 @@ router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), asyn
   var contact = await Contact.findById(id).populate('tags').exec();
 
   res.renderVue('contacts/contactEdit', {
-    contact : contact
+    contact : contact,
+    title : 'Editer contact'
   });
 });
 

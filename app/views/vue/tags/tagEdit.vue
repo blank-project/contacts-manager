@@ -3,6 +3,7 @@
       <main-nav></main-nav>
         <div class="row" id="container">
           <form action="/tags/" method="POST">
+            <h3>{{ title }}</h3>
             <input v-if="id" type="hidden" name="id" :value="tag.id" />
             <div class="pure-control-group">
               <label for="name">Nom :</label>

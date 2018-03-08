@@ -2,7 +2,7 @@
     <main class="grey lighten-4 blue-grey-text">
         <main-nav></main-nav>
           <div class="row" id="container">
-            <h5>{{ title }}</h5>
+            <h3>{{ title }}</h3>
             <table>
               <tr>
                 <th><b>Username :<b></th><td>{{ username }}</td>

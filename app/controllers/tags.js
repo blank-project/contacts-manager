@@ -12,7 +12,7 @@ module.exports = function (app) {
 };
 
 router.get('/edit/', function (req, res, next) {
-    res.renderVue('tags/tagEdit', { tag : {} });
+    res.renderVue('tags/tagEdit', { tag : {} , title : 'Editer le tag'});
 });
 
 router.get('/edit/:tagId', function (req, res, next) {
@@ -22,7 +22,7 @@ router.get('/edit/:tagId', function (req, res, next) {
     Tag.findById(id).exec().
     then(data => {
         res.renderVue('tags/tagEdit', {
-          tag : data
+          tag : data , title : 'Editer le tag'
         });
       }).
     catch(err => { next(err); });

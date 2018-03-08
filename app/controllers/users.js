@@ -153,7 +153,7 @@ router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:c
 });
 
 router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {
-  res.renderVue('users/userEdit', { user : userdata(req.user) });
+  res.renderVue('users/userEdit', { user : userdata(req.user) , title : 'Editer Profil' });
 });
 
 router.get('/edit/:userId', ensureLoggedIn('/login'), function (req, res, next) {
