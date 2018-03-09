@@ -399,7 +399,7 @@ router.delete('/:contactId/tags/:tagId', ensureRequest.isPermitted('contact:upda
 
   try {
     await Contact.findByIdAndUpdate(id, {
-      $pull : { tags : tag._id }
+      $pull : { tags : tagId }
     }).exec();
   } catch(err) {
     next(err);
