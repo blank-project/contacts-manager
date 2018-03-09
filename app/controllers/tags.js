@@ -81,7 +81,7 @@ router.post('/', function (req, res, next) {
 router.delete('/:tagId', function (req, res, next) {
   var id = req.params.tagId;
   console.log('id :' + id);
-  tagManager.deleteTag(id)
+  tagManager.delete(id)
   .then((data) => {
       res.sendStatus(data ? 200 : 404);
   })

@@ -7,6 +7,8 @@ module.exports = function() {
   // Connection URL
   var url = 'mongodb://' + conf.host + ':' + conf.port + '/' + conf.database;
 
+  console.log('Connecting to ' + conf.database);
+
   // Set default Promise
   mongoose.Promise = global.Promise;
 
