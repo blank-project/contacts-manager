@@ -65,10 +65,9 @@
   #container {
       flex: 1 0 auto;
   }
-  h5{
+  h3{
     text-align: center;
     margin: 10vh 0 0 0;
-    font-weight: bold;
   }
   .padded{
     margin: auto auto 10px auto;

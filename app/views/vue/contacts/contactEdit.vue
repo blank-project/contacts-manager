@@ -56,20 +56,23 @@
                 </div>
               </div>
             </fieldset>
-
-            <div class="col s12">
-              <div class="row">
-                <div class="input-field col s6">
-                  <label for="note">Note</label>
-                  <textarea class="materialize-textarea" id="note" name="note">{{ note }}</textarea>
-                </div>
-              </div>
-            </div>
+              <div class="col s12">
+                <div class="row">
+                  <div class="input-field col s6">
+                    <label for="note">Note</label>
+                    <textarea class="materialize-textarea" id="note" name="note">{{ note }}</textarea>
+                  </div>
+                  <div class="col s12">
+            <div class="row">
             <fieldset class="padded buttons">
               <input type="submit" name="submit" value="Soumettre" class="waves-effect waves-light btn"/>
               <a v-if="id" :href="'/contacts/' + contact.id" class="waves-effect waves-light btn">Annuler</a> <!--pb ici -->
               <a v-else href="input-field inline/contacts/" class="waves-effect waves-light btn">Annuler</a>
             </fieldset>
+          </div>
+        </div>
+      </div>
+              </div>
         </form>
       </div>
     <main-footer></main-footer>
@@ -111,7 +114,9 @@
 
  }
  .buttons{
-   margin: 10vh 20vw;
+  display: flex;
+  margin: auto;
+  margin-left: -5vw;
  }
  a{
    margin-left: 4vw;

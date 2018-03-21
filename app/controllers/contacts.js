@@ -134,15 +134,17 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   }
   console.log('Listing contacts');
 
-  var data = {};
+  var data = {
+  };
+  
   data.contacts = await Contact.find(query)
   .populate({
     path: 'tags',
     options: { sort: 'name'}
-  }).skip(first).limit(size + 1).exec();
+  }).skip(first).limit(size + 1);
 
   // Populate tags for search
-  data.tags = await Tag.find().exec();
+  data.tags = await Tag.find();
 
   var contacts = data.contacts;
   if (contacts.length > size) {

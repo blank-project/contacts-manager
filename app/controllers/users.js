@@ -143,7 +143,7 @@ router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
   };
   res.renderVue('users/me', data, {
     data: {
-      id: req.user.id
+      id: req.user.id //?//
     }
   });
 });
