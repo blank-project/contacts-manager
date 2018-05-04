@@ -32,7 +32,7 @@ router.get('/', function (req, res, next) {
     console.log('Listing tags');
     var tags = Tag.find({}).sort('name').exec();
     tags.then(data => {
-      res.render('tags/tagList', {
+      res.renderVue('tags/tagList', {
         title : 'Liste d\'etiquettes',
         tags : data
       });

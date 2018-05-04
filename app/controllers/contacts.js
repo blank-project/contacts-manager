@@ -136,7 +136,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
 
   var data = {
   };
-  
+
   data.contacts = await Contact.find(query)
   .populate({
     path: 'tags',
@@ -190,15 +190,22 @@ router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async funct
     path: 'tags'
     , options: { sort: 'name'}
   }).exec();
+
   contact.tags.forEach(tag => { ids.push(tag._id) });
 
   // Load other tags for edition
   tags = await Tag.find({ _id : { $nin : ids }}).sort('name').exec();
 
-  data.contact = contact;
+  // Can not use contact directly, it causes a bug in Vueœ
+  // Exports as a plain JSON Object
+  data.contact = contact.toObject({ getters: true, virtuals: true });
+  console.log(data.contact);
   data.tags = tags;
-  data.title = 'Fiche Contact ' + data.contact.fullName;
-  res.render('contacts/contactView', data);
+  data.title = 'Fiche Contact' + contact.fullName;
+
+  console.log('Done loading contact for display ' + id);
+
+  res.renderVue('contacts/contactView', data);
 });
 
 router.post('/', function (req, res, next) {
@@ -258,7 +265,7 @@ router.delete('/:contactId', ensureRequest.isPermitted('contact:delete'), async 
   var id = req.params.contactId;
   console.log('Removing ' + id);
   var data = await Contact.findByIdAndRemove(id).exec();
-  res.sendStatus(data ? 200 : 404);
+  res.renderVue('contacts/contactView');
 });
 
 router.delete('/:contactId/tags/:tagId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {

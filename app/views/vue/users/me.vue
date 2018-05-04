@@ -5,19 +5,19 @@
             <h3>{{ title }}</h3>
             <table>
               <tr>
-                <th><b>Username :<b></th><td>{{ username }}</td>
+                <th><b>Utilisateur :<b></th><td><span>{{ username }}</span></td>
               </tr>
               <tr>
-                <th><b>Mail :<b></th><td>{{ email }}</td>
+                <th><b>Email :<b></th><td><span>{{ email }}</span></td>
               </tr>
               <tr>
-                <th><b>Téléphone :<b></th><td>{{ phone }}</td>
+                <th><b>Téléphone :<b></th><td><span>{{ phone }}</span></td>
               </tr>
               <tr>
-                <th><b>Oganisation :<b></th><td>{{ organisation }}</td>
+                <th><b>Oganisation :<b></th><td><span>{{ organisation }}</span></td>
               </tr>
               <tr>
-                <th><b>Fonction :<b></th><td>{{ position }}</td>
+                <th><b>Fonction :<b></th><td><span>{{ position }}</span></td>
               </tr>
             </table>
           </div>
@@ -49,6 +49,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+
   }
   th{
     font-size: 1.2em;
@@ -61,6 +62,13 @@
   }
   table{
     margin-top: 10vh;
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 2px 1px #656565;
+    -moz-box-shadow: 0px 0px 2px 1px #656565;
+    filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
+    zoom:1;
+    box-shadow: 0 0 20px 0px #65656521;
+    width: 40vw;
   }
   #container {
       flex: 1 0 auto;
@@ -72,4 +80,11 @@
   .padded{
     margin: auto auto 10px auto;
   }
+ b {
+  margin-left: 1vw;
+}
+span{
+  margin: 1vw;
+}
+
 </style>

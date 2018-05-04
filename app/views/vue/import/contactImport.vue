@@ -1,7 +1,7 @@
 <template>
   <main class="grey lighten-4 blue-grey-text" id="container">
       <main-nav></main-nav>
-          <h5>{{ title }}</h5>
+          <h4>{{ title }}</h4>
           <span class="instructions">
             <p><b>Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".</b></p><br/></br>
             <b>Les colonnes sont :</b>
@@ -67,11 +67,13 @@
   }
   p{
     font-size: 1.2em;
+    margin-left: 3vw;
+    margin-top: 1vw;
   }
   form{
     margin: auto;
   }
-  h5{
+  h4{
     text-align: center;
     margin: 10vh 0 0 0;
     font-weight: bold;
@@ -79,5 +81,27 @@
   .file-field{
     display: flex;
     margin: auto;
+  }
+  .instructions {
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 2px 1px #656565;
+    -moz-box-shadow: 0px 0px 2px 1px #656565;
+    filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
+    zoom:1;
+    box-shadow: 0 0 20px 0px #65656521;
+    margin:5vw 0 5vw 20vw;
+    width: 60vw;
+  }
+
+   ul, li {
+    margin-left: 13vw;
+    margin-bottom: 1vh;
+  }
+
+  span>b{
+    margin-left: 13vw;
+  }
+  p>b{
+    margin: 2vw;
   }
 </style>

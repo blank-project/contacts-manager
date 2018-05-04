@@ -1,19 +1,15 @@
+
 <template>
-    <main class="grey lighten-4 blue-grey-text">
+    <main>
         <main-nav></main-nav>
-        <div id="container" class="row">
-            <div class="col s12 m12 center-text">
-                <h2>{{ title }}</h2>
-            </div>
-        </div>
-        <main-footer></main-footer>
-    </main>
+      <p>test</p>
+    <main-footer></main-footer>
+  </main>
 </template>
 
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
-
  export default {
    data: function () {
      return {};
@@ -31,11 +27,11 @@
      display: flex;
      min-height: 100vh;
      flex-direction: column;
-  
  }
 
  #container {
      flex: 1 0 auto;
  }
+
 
 </style>

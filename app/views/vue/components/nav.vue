@@ -1,7 +1,7 @@
 <template>
-    <nav class="blue lighten-2">
+    <nav>
         <div class="nav-wrapper">
-            <a href="/" class="brand-logo"><i class="material-icons">home</i></a>
+            <a href="/" class="brand-logo"><img id="logo" src="/images/logoBC.png" alt="logo Belleville Citoyenne"></img></a>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/login" class="waves-effect waves-light">Se connecter</a></li>
@@ -26,4 +26,20 @@
  a.brand-logo {
      padding-left: 6px !important;
  }
+ nav {
+   background-color: #00d2ff;
+ }
+
+ #logo{
+   height: 7vh;
+   margin-top: 1vh;
+   margin-left: 1vh;
+ }
+ @media screen and (max-width: 640px){
+  #logo {
+     margin-top: 2vh;
+      margin-left: 0;
+  }
+}
+
 </style>

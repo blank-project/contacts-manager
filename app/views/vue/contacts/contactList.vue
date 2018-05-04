@@ -7,11 +7,9 @@
               <div class="padded">
                 <div class="heading">
                   <h1>Liste des contacts</h1>
-                    <!-- {{#isPermitted "contact:create" }}  v if ? ou server side rendering vuejs -->
-                    <a class="pure-button pure-button-primary left-offset" href="/contacts/edit" title="Nouveau"><i class="fa fa-plus"></i></a>
-                    <!-- {{/isPermitted }} -->
-                    </div>
-                    <table id="contact-list" class="contact-list pure-table pure-table-striped">
+                </div>
+                <div id="medium">
+                  <table id="contact-list" class="contact-list pure-table pure-table-striped">
                     <thead>
                       <tr>
                         <th>Nom</th>
@@ -25,8 +23,9 @@
                     </thead>
                     <tbody>
                       <!-- <tr class="contact-line clickable" data-id="{{ id }}"> -->
-                      <tr v-for="contact in contacts">
-                        <td>{{ contact.name.first + ' ' + contact.name.last }}</td>
+                      <tr v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)" ><!-- doit etre clickable et renvoyer sur edit -->
+                        <td >{{ contact.name.first }}</td> <!--ne renvoi pas la bonne vue ? ou data ? -->
+                        <td v-if="contact.name.last">{{ contact.name.last }}</td>
                         <td v-for="email in contact.emails">{{ email.value }}</td>
                         <td v-for="phone in contact.phones">{{ phone.value }}</td>
                         <td>{{ contact.organization }}</td>
@@ -34,7 +33,6 @@
                         <td v-for="address in contact.addresses">{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</td>
                         <td v-for="tag in contact.tags">{{ tag.name }}</td>
                       </tr>
-                        <!-- <td>{{ formattedAddress }}</td>  -->
                         <!-- <td>
                         {{#tags}}
                             {{> tag }}
@@ -43,6 +41,27 @@
                       <!-- </tr> -->
                     </tbody>
                 </table>
+                </div>
+                <div id="small">
+
+                    <!-- <tr class="contact-line clickable" data-id="{{ id }}"> -->
+                    <div class="carte" v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)" ><!-- doit etre clickable et renvoyer sur edit -->
+                      <p><b>Nom : </b> {{ contact.name.first }}</p>
+                      <p v-if="contact.name.last"><b>Nom de famille : </b>{{ contact.name.last }}</p>
+                      <p v-for="email in contact.emails"><b>Email : </b>{{ email.value }}</p>
+                      <p v-for="phone in contact.phones"><b>Telephone : </b>{{ phone.value }}</p>
+                      <p><b>Organisation : </b>{{ contact.organization }}</p>
+                      <p><b>titre : </b>{{ contact.title }}</p>
+                      <p v-for="address in contact.addresses"><b> Adresse : </b>{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</p>
+                      <p v-for="tag in contact.tags"><b>Etiquettes : </b>{{ tag.name }}</p>
+                    </div>
+                      <!-- <td>
+                      {{#tags}}
+                          {{> tag }}
+                        {{/tags}}
+                      </td> -->
+                    <!-- </tr> -->
+                </div>
                 <div class="padded">
                     <!-- <input name="previousSize" type="hidden" value="{{ size }}" />
                     <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
@@ -51,11 +70,20 @@
                     <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
                     {{/if}} -->
                 </div>
+
+
+                <div class="buttons">
                 <!-- {{#isPermitted "contact:export:csv" }}-->
                 <div class="padded">
-                    <button name="action" type="submit" value="export.csv" class="pure-button pure-button-primary">Exporter</button>
+                    <button name="action" type="submit" value="export.csv" class="btn">Exporter</button>
                 </div>
                 <!--{{/isPermitted}}-->
+                <!-- {{#isPermitted "contact:create" }}  v if ? ou server side rendering vuejs ou mixins--> <!-- ou se positionne t il , role ?-->
+                <div class="padded">
+                <button class="btn" title="Nouveau">editer<i class="fa fa-plus"></i></a>
+                </div>
+                <!-- {{/isPermitted }} -->
+              </div>
               </div>
             </form>
 
@@ -77,6 +105,11 @@
      mainNav: mainNav,
      mainFooter: mainFooter,
    },
+   methods: {
+     goTo: function(url) {
+       location.href = url;
+     }
+   }
  }
 
 
@@ -92,4 +125,59 @@
  #container {
      flex: 1 0 auto;
  }
+
+ #small {
+   display: none;
+ }
+
+ #medium{
+   background-color: white;
+   -webkit-box-shadow: 0px 0px 2px 1px #656565;
+   -moz-box-shadow: 0px 0px 2px 1px #656565;
+   filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
+   zoom:1;
+   box-shadow: 0 0 20px 0px #65656521;
+   width: 80vw;
+   margin-left: 10vw;
+ }
+
+ .btn{
+   margin-left: 10vw;
+   margin-right: -10vw;
+ }
+
+ a{
+   font-size: 1.3em;
+ }
+
+ h1{
+   margin-left: 5vw;
+ }
+.buttons {
+  display: flex;
+}
+   @media screen and (max-width: 640px){
+    #medium {
+      display: none;
+    }
+    #small {
+      display: block;
+    }
+    .carte{
+      margin: 2vh;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      border-radius: 2%;
+      width: 85vw;
+      padding: 15px;
+      -webkit-box-shadow: 0px 0px 2px 1px #656565;
+      -moz-box-shadow: 0px 0px 2px 1px #656565;
+      filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
+      zoom:1;
+      box-shadow: 0 0 20px 0px #65656521;
+}
+    }
+
+   }
 </style>
