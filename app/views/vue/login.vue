@@ -57,4 +57,8 @@
      flex: 1 0 auto;
  }
 
+i, input, label{
+
+}
+
 </style>

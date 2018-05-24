@@ -1,7 +1,7 @@
 <template>
   <main class="grey lighten-4 blue-grey-text" id="container">
       <main-nav></main-nav>
-          <h4>{{ title }}</h4>
+          <h3>{{ title }}</h3>
           <span class="instructions">
             <p><b>Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".</b></p><br/></br>
             <b>Les colonnes sont :</b>
@@ -30,7 +30,7 @@
                 <input class="file-path validate" type="text">
               </div>
               <div class="file-path-wrapper">
-                <input  id="submit" name="submit" type="submit" value="Soumettre" class="waves-effect waves-light btn"/>
+                <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
               </div>
             </div>
           </form>
@@ -73,11 +73,11 @@
   form{
     margin: auto;
   }
-  h4{
+  h3{
     text-align: center;
-    margin: 10vh 0 0 0;
-    font-weight: bold;
+    margin: 5vh 0 0 0;
   }
+
   .file-field{
     display: flex;
     margin: auto;
@@ -89,11 +89,12 @@
     filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
     zoom:1;
     box-shadow: 0 0 20px 0px #65656521;
-    margin:5vw 0 5vw 20vw;
+    margin: 10vh 0 10vh 35vh;
+    padding-bottom: 5vh;
     width: 60vw;
   }
 
-   ul, li {
+span  ul, span li {
     margin-left: 13vw;
     margin-bottom: 1vh;
   }
@@ -104,4 +105,27 @@
   p>b{
     margin: 2vw;
   }
+
+
+
+  @media screen and (max-width: 640px){
+    .instructions {
+      width: 80vw;
+      margin:5vw 0 5vw 10vw;
+    }
+    .file-field{
+      display: flex;
+      flex-direction: column;
+      margin: auto;
+    }
+    btn{
+      margin: auto;
+    }
+  #submit{
+      margin-left: 3vw;
+      margin-bottom: 5vw;
+    }
+   }
+
+
 </style>

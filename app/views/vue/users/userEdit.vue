@@ -7,7 +7,7 @@
             <div class="col m6">
             <span class="fa fa-user"></span>
             <form action="/users/" method="POST" class="pure-form">
-                <h4>{{ title }}</h4>
+                <h4>Modifier le Profil</h4>
                   <div class="carte">
                 <input type="hidden" name="id" :value="user.id" />
                 <fieldset>

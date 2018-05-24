@@ -3,9 +3,9 @@
 <template>
   <main class="grey lighten-4 blue-grey-text">
       <main-nav></main-nav>
+        <h3>{{ title }}</h3>
         <div class="row" id="container">
           <form action="/tags/" method="POST">
-            <h3>{{ title }}</h3>
             <input v-if="id" type="hidden" name="id" :value="tag.id" />
             <div class="pure-control-group">
               <label for="name">Nom :</label>
@@ -63,5 +63,18 @@
   }
   a{
     margin-left: 4vw;
+  }
+  form{
+    background-color: white;
+    padding: 2vh;
+    -webkit-box-shadow: 0px 0px 2px 1px #656565;
+    -moz-box-shadow: 0px 0px 2px 1px #656565;
+    filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
+    zoom:1;
+    box-shadow: 0 0 20px 0px #65656521;
+  }
+  h3{
+    margin: auto;
+    margin-top: 5vh;
   }
 </style>

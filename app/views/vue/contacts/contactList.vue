@@ -163,6 +163,9 @@
     #small {
       display: block;
     }
+    .btn{
+      margin: auto;
+    }
     .carte{
       margin: 2vh;
       display: flex;
