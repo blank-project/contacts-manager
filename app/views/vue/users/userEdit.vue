@@ -5,37 +5,37 @@
         <main-nav></main-nav>
           <div class="row" id="container">
             <div class="col m6">
-            <span class="fa fa-user"></span>
-            <form action="/users/" method="POST" class="pure-form">
+              <span class="fa fa-user"></span>
+              <form action="/users/" method="POST" class="pure-form">
                 <h4>Modifier le Profil</h4>
-                  <div class="carte">
-                <input type="hidden" name="id" :value="user.id" />
-                <fieldset>
+                <div class="carte">
+                  <input type="hidden" name="id" :value="user.id" />
+                  <fieldset>
                     <input id="firstname" name="firstname" type="text"  placeholder="Prenom" :value="user.name.first" required />
                     <input id="lastname" name="lastname" type="text"  placeholder="Nom" :value="user.name.last" required />
                     <input id="email" name="email" type="email" placeholder="Email" :value="user.email" required />
-                </fieldset>
+                  </fieldset>
                 </div>
                 <div>
                   <input id="submit" name="submit" type="submit" value="Soumettre" class="waves-effect waves-light btn"/>
                 </div>
-            </form>
+              </form>
             </div>
             <div class="col m6">
-            <form action="/users/edit/password" method="POST">
+              <form action="/users/edit/password" method="POST">
                 <h4>Changer de mot de passe</h4>
                 <div class="carte">
-                <input type="hidden" name="id" :value="user.id" />
-                <fieldset class="pure-group">
-                  <input id="passwordOld" name="passwordOld" type="password" placeholder="Old Password" required />
-                  <input id="password" name="password" type="password" placeholder="Password" required />
-                  <input id="passwordConfirm" name="passwordConfirm" type="password" placeholder="Confirm Password" required />
-                </fieldset>
+                  <input type="hidden" name="id" :value="user.id" />
+                  <fieldset class="pure-group">
+                    <input id="passwordOld" name="passwordOld" type="password" placeholder="Old Password" required />
+                    <input id="password" name="password" type="password" placeholder="Password" required />
+                    <input id="passwordConfirm" name="passwordConfirm" type="password" placeholder="Confirm Password" required />
+                  </fieldset>
                 </div>
                 <div>
                   <input id="submit" name="submit" type="submit" value="Soumettre" class="waves-effect waves-light btn"/>
                 </div>
-            </form>
+              </form>
             </div>
           </div>
         <main-footer></main-footer>

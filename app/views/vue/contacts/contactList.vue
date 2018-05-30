@@ -132,10 +132,11 @@
  h1{
    margin-left: 5vw;
  }
-.buttons {
+ .buttons {
   display: flex;
-}
-@media screen and (max-width: 640px){
+  }
+
+  @media screen and (max-width: 640px){
 
     #medium {
       display: none;
@@ -159,8 +160,7 @@
       filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
       zoom:1;
       box-shadow: 0 0 20px 0px #65656521;
-      }
     }
   }
-  
+
 </style>

@@ -7,7 +7,7 @@
         <h2>{{ title }}</h2>
       </div>
       <form action="/users/" method="POST" class="col s12">
-        <div class="encadré">
+        <div class="encadre">
           <input v-if="id" type="hidden" name="id" :value="id" />
           <div class="input-field col s12 row">
             <div class="col s12 m6">
@@ -85,7 +85,7 @@ main {
 #container {
   flex: 1 0 auto;
 }
-.encadré{
+.encadre{
   padding: 5vh;
   background-color: white;
   -webkit-box-shadow: 0px 0px 2px 1px #656565;
