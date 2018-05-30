@@ -8,7 +8,7 @@
       </div>
       <form action="/users/" method="POST" class="col s12">
         <div class="encadré">
-        <input v-if="id" type="hidden" name="id" :value="id" />
+          <input v-if="id" type="hidden" name="id" :value="id" />
           <div class="input-field col s12 row">
             <div class="col s12 m6">
               <input id="firstname" name="firstname" type="text"  placeholder="Prenom" :value="firstname" required />
@@ -42,7 +42,6 @@
           <div class="col s1">
             <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
           </div>
-
       </form>
     </div>
     <main-footer></main-footer>

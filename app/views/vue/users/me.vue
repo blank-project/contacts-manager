@@ -82,9 +82,9 @@
   }
  b {
   margin-left: 1vw;
-}
-span{
+  }
+  span{
   margin: 1vw;
-}
+  }
 
 </style>

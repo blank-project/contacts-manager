@@ -22,9 +22,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- <tr class="contact-line clickable" data-id="{{ id }}"> -->
-                      <tr v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)" ><!-- doit etre clickable et renvoyer sur edit -->
-                        <td >{{ contact.name.first }}</td> <!--ne renvoi pas la bonne vue ? ou data ? -->
+                      <tr v-for="contact in contacts" v-on:click="goTo('/contacts/' + contact._id)">
+                        <td>{{ contact.name.first }}</td>
                         <td v-if="contact.name.last">{{ contact.name.last }}</td>
                         <td v-for="email in contact.emails">{{ email.value }}</td>
                         <td v-for="phone in contact.phones">{{ phone.value }}</td>
@@ -33,19 +32,11 @@
                         <td v-for="address in contact.addresses">{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</td>
                         <td v-for="tag in contact.tags">{{ tag.name }}</td>
                       </tr>
-                        <!-- <td>
-                        {{#tags}}
-                            {{> tag }}
-                          {{/tags}}
-                        </td> -->
-                      <!-- </tr> -->
                     </tbody>
                 </table>
                 </div>
                 <div id="small">
-
-                    <!-- <tr class="contact-line clickable" data-id="{{ id }}"> -->
-                    <div class="carte" v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)" ><!-- doit etre clickable et renvoyer sur edit -->
+                    <div class="carte" v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)">
                       <p><b>Nom : </b> {{ contact.name.first }}</p>
                       <p v-if="contact.name.last"><b>Nom de famille : </b>{{ contact.name.last }}</p>
                       <p v-for="email in contact.emails"><b>Email : </b>{{ email.value }}</p>
@@ -55,12 +46,6 @@
                       <p v-for="address in contact.addresses"><b> Adresse : </b>{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</p>
                       <p v-for="tag in contact.tags"><b>Etiquettes : </b>{{ tag.name }}</p>
                     </div>
-                      <!-- <td>
-                      {{#tags}}
-                          {{> tag }}
-                        {{/tags}}
-                      </td> -->
-                    <!-- </tr> -->
                 </div>
                 <div class="padded">
                     <!-- <input name="previousSize" type="hidden" value="{{ size }}" />
@@ -70,8 +55,6 @@
                     <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
                     {{/if}} -->
                 </div>
-
-
                 <div class="buttons">
                 <!-- {{#isPermitted "contact:export:csv" }}-->
                 <div class="padded">
@@ -84,17 +67,15 @@
                 </div>
                 <!-- {{/isPermitted }} -->
               </div>
-              </div>
-            </form>
-
-          </div>
-        <main-footer></main-footer>
+            </div>
+          </form>
+        </div>
+      <main-footer></main-footer>
     </main>
 </template>
 
 
 <script type="text/javascript">
-
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
  export default {
@@ -111,8 +92,6 @@
      }
    }
  }
-
-
  </script>
 
 <style scoped>
@@ -156,7 +135,8 @@
 .buttons {
   display: flex;
 }
-   @media screen and (max-width: 640px){
+@media screen and (max-width: 640px){
+
     #medium {
       display: none;
     }
@@ -179,8 +159,8 @@
       filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
       zoom:1;
       box-shadow: 0 0 20px 0px #65656521;
-}
+      }
     }
-
-   }
+  }
+  
 </style>

@@ -24,11 +24,8 @@
                 </td>
               </tr>
             {{/tags}} -->
-
-            <tr v-for="tag in tags"v-on:click="goTo('/tags/' + tag._id)" >
-
-              <td :backgrounds= "tag.color">{{ tag.name }}</td>
-              <td>{{ tag.color }}</td>
+              <tr v-for="tag in tags"v-on:click="goTo('/tags/' + tag._id)" >
+              <td v-bind:style="{ backgroundColor: tag.color, color: tag.color}">{{ tag.name }}</td>
             </tbody>
         </table>
       </div>
@@ -73,11 +70,18 @@
     margin-left: 29vw;
     margin-top: 5vh;
     margin-bottom: 5vh;
+    border-style: solid;
+    border-color: white;
+    border-width: 1vw;
   }
 
   h3 {
     margin: auto;
     margin-top: 5vh;
+  }
+
+  tbody{
+    width: 5vw;
   }
 
 </style>

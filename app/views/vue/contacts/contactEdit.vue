@@ -106,7 +106,7 @@
      flex: 1 0 auto;
  }
 
- .formedit{ /* ne s'applique pas pb de selecteur */
+ .formedit{ 
    background-color: white;
    width: 80vw;
    -webkit-box-shadow: 0px 0px 2px 1px #656565;

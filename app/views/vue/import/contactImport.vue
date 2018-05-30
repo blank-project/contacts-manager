@@ -106,8 +106,6 @@ span  ul, span li {
     margin: 2vw;
   }
 
-
-
   @media screen and (max-width: 640px){
     .instructions {
       width: 80vw;
@@ -126,6 +124,4 @@ span  ul, span li {
       margin-bottom: 5vw;
     }
    }
-
-
 </style>

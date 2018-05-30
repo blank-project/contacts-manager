@@ -19,7 +19,6 @@
           <tr>
             <td>Fonction</td><td>{{ contact.title }}</td>
           </tr>
-
       <!--    <tr>
             <td>Adresse</td>
               <td>
