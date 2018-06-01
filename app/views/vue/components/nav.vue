@@ -1,9 +1,11 @@
 <template>
     <nav>
+      <!--test de reception des datas (erreure)--><p>{{ connected }}</p>
         <div class="nav-wrapper">
             <a href="/" class="brand-logo"><img id="logo" src="/images/logoBC.png" alt="logo Belleville Citoyenne"></img></a>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <!-- :v-if=""  utilisateur connecté alors tu affiche -->
                 <li><a href="/contacts" class="waves-effect waves-light">Contacts</a></li>
                 <li><a href="/tags" class="waves-effect waves-light">Etiquettes</a></li>
                 <li><a href="/import" class="waves-effect waves-light">Import</a></li>
@@ -21,7 +23,7 @@
 
 <script type="text/javascript">
  export default {
-   props: ['navElements']
+   props: ['navElements', 'user']
  }
 </script>
 

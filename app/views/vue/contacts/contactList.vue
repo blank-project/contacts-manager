@@ -1,12 +1,14 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
-        <main-nav></main-nav>
+        <main-nav :connected="data.user"></main-nav> <!--passer data "session" en attribut -->
           <div id="container">
             <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
                <!-- integrer template du filter -->
               <div class="padded">
                 <div class="heading">
                   <h1>Liste des contacts</h1>
+                  <!--Check reception data user (qui marche bien) <p>{{ user }}</p> -->
+
                 </div>
                 <div id="medium">
                   <table id="contact-list" class="contact-list pure-table pure-table-striped">

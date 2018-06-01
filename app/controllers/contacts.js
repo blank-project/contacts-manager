@@ -133,8 +133,13 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
     size = 20;
   }
   console.log('Listing contacts');
+  //test de recup de la session id//
+  console.log(req.sessionID);
+  //test de recup du user (dans bdd)//
+  console.log(req.user)
 
   var data = {
+    user: req.user
   };
 
   data.contacts = await Contact.find(query)
