@@ -1,0 +1,19 @@
+# Make up the contacts-manager app by composing a mongo DB and the web-app.
+version: "3"
+services:
+  web:
+    build: .
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+    links:
+      - mongo:dev.database.contact-manager.com
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
