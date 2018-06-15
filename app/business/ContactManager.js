@@ -1,6 +1,22 @@
-var Contact = require('../models/Contact')
-, ObjectID = require('mongodb').ObjectID;
+const Contact = require('../models/Contact')
+    , ObjectID = require('mongodb').ObjectID;
 
+/**
+ * A RegExp that matches regex special chars.
+ */
+const REGEXP_ESCAPE_REGEXP = /[-\/\\^$*+?.()|[\]{}]/g;
+/**
+ * Pass this value as second parameter to String.prototype.replace
+ * to prefix a match with "\", effectively esacping it.
+ * Special value $& is a placeholder for the matched substring.
+ */
+const ESCAPED_MATCH = '\\$&';
+
+/**
+ * Shorthand function to trim a value.
+ * @param {String} [pInput] a value.
+ * @return the parameter, trimmed, or an empty String.
+ */
 function getTrimmedValue(pInput) {
   if (!pInput) {
     return '';
@@ -8,14 +24,30 @@ function getTrimmedValue(pInput) {
   return pInput.trim();
 }
 
+/**
+ * Escapes the RegExp special chars from the given String.
+ * @param {String} pInput a value.
+ * @return A string with its RegExp special chars escaped.
+ */
 function escapeRegExp(pInput) {
-  return pInput.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  return pInput.replace(REGEXP_ESCAPE_REGEXP, ESCAPED_MATCH);
 }
 
+/**
+ * Converts the given value to a "Starts With" RegExp with given flags.
+ * Example : given "test" and "i" as parameters, returns /^test/i
+ * RegExp specials chars in the input are escaped.
+ * @param {String} pInput a value.
+ * @param {String} pFlags the Regexp Flags.
+ * @return a RegExp matching Strings starting with pInput, with given flags.
+ */
 function startsWith(pInput, pFlags) {
   return new RegExp("^" + escapeRegExp(pInput), pFlags);
 }
 
+/**
+ * Builds an item in the tags query.
+ */
 function buildTagsQueryItem(tag) {
   if (typeof tag == "string") {
     return ObjectID.createFromHexString(tag);
@@ -23,6 +55,9 @@ function buildTagsQueryItem(tag) {
   return tag;
 }
 
+/**
+ * Buils the tags query part.
+ */
 function buildTagsQueryPart(tags, query) {
   // No Value provided
   if (typeof tags === 'undefined') {

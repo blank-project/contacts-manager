@@ -52,6 +52,41 @@ describe('ContactManagerTest', function() {
           expect(result).to.deep.equal({});
       });
 
+
+
+      describe("#buildQuery(query.organization)", function() {
+
+        it('should not add query term when query.organization is blank', function() {
+            var result = this.sut.buildQuery({
+              organization : '  '
+            });
+            expect(result).to.not.have.property('organization');
+        });
+
+        it('should add a RegExp query term when query.organization is provided', function() {
+          var result = this.sut.buildQuery({
+            organization : 'test'
+          });
+          expect(result).to.have.property('organization').that.is.a('RegExp');
+          expect(result.organization).to.satisfy(sut => sut.test('test'));
+          expect(result.organization).to.satisfy(sut => sut.test('TEST'));
+          expect(result.organization).to.satisfy(sut => sut.test('testaaa'))
+          expect(result.organization).to.not.satisfy(sut => sut.test('tes'));
+        });
+
+        it('should add an escaped RegExp query term when query.organization is provided', function() {
+          var result = this.sut.buildQuery({
+            organization : '.*'
+          });
+          expect(result).to.have.property('organization').that.is.a('RegExp');
+          // Should match as it is escaped
+          expect(result.organization).to.satisfy(sut => sut.test('.*'));
+          // Would match if not escaped.
+          expect(result.organization).to.not.satisfy(sut => sut.test('test'));
+        });
+
+      });
+
       describe("#buildQuery(query.tags)", function() {
 
         it('should build a proper $all query for the tag property when given one tag as a String', function() {
