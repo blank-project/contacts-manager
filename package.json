@@ -11,7 +11,7 @@
     "test:unit": "mocha --recursive test/middleware test/models test/routes",
     "test:integration": "mocha --recursive test/integration",
     "less" : "gulp less",
-    "assets" : "bower install"
+    "assets" : "bower --allow-root install"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
