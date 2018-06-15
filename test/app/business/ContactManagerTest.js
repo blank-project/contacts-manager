@@ -23,8 +23,10 @@ describe('ContactManagerTest', function() {
      * Clean test DB after each test.
      */
     afterEach(async function() {
-      await Contact.deleteMany({}).exec();
-      await Tag.deleteMany({}).exec();
+      await Promise.all([
+        Contact.deleteMany({}).exec(),
+        Tag.deleteMany({}).exec()
+      ]);
     });
 
     it('should load', function() {
