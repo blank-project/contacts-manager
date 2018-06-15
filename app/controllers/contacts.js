@@ -5,6 +5,7 @@ var express = require('express')
 , ensureRequest = require('../../config/authorization').ensureRequest
 , Contact = require('../models/Contact')
 , Tag = require('../models/Tag')
+, ContactManager = require('../business/ContactManager')
 // Export part
 , conf = require('../../config/config')
 , path = require('path')
@@ -19,6 +20,10 @@ var express = require('express')
 , EJSON = require('mongodb-extended-json')
 , ObjectID = require('mongodb').ObjectID;
 
+// Instantiate and replace ContactManager;
+
+ContactManager = new ContactManager();
+
 // Exports a function to bind Controller
 module.exports = function (app) {
   app.use('/contacts', ensureLoggedIn('/login'), router);
@@ -30,7 +35,7 @@ function csvExport(req, res, next) {
     , options = {
     cwd : scriptDir,
     env : db
-  }, query = EJSON.stringify(buildQuery(req));
+  }, query = EJSON.stringify(ContactManager.buildQuery(req.query));
   console.log('CSV Exports : ' + query);
   execFile(script, [ filename, query ], options, (error, stdout, stderr) => {
     console.log(stdout);
@@ -52,68 +57,6 @@ function csvExport(req, res, next) {
 
 };
 
-function getTrimmedValue(pInput) {
-  if (!pInput) {
-    return '';
-  }
-  return pInput.trim();
-}
-
-function escapeRegExp(pInput) {
-  return pInput.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-
-function startsWith(pInput, pFlags) {
-  return new RegExp("^" + escapeRegExp(pInput), pFlags);
-}
-/**
- * Build a Query from the Request.
- */
-function buildQuery(req) {
-  var query = {}, input = req.query, or = [];
-  // Search by all provided tags
-  if (!input.tags) {
-    input.tags = [];
-  } else if (typeof input.tags == "string") {
-    input.tags = [input.tags];
-  }
-  if (input.tags.length != 0) {
-    let tagsId = [];
-    input.tags.forEach(tag => {
-      tagsId.push(ObjectID.createFromHexString(tag));
-    });
-    query.tags = { $all : tagsId };
-  }
-
-  var search = getTrimmedValue(input.search);
-  if (search) {
-    query.$text = { $search: search };
-  }
-
-  var name = getTrimmedValue(input.name);
-  if (name) {
-    name = startsWith(name, 'i');
-    or.push({ "name.first" : name});
-    or.push({ "name.last" : name});
-  }
-
-  var zipCode = getTrimmedValue(input['address.code']);
-  if (zipCode) {
-    query.address = { code : zipCode };
-  }
-
-  var organization = getTrimmedValue(input.organization);
-  if (organization) {
-    query.organization = startsWith(organization, 'i');
-  }
-
-  if (or.length != 0) {
-    query.$or = or;
-  }
-  console.log(JSON.stringify(query));
-  return query;
-}
-
 router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, next) {
   if (req.query.action === "export.csv") {
     ensureRequest.isPermitted('contact:export')(req, res, function() {
@@ -123,7 +66,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   }
   next();
 }, async function(req, res, next) {
-  var query = buildQuery(req), first = parseInt(req.query.first), size = parseInt(req.query.size);
+  var query = ContactManager.buildQuery(req.query), first = parseInt(req.query.first), size = parseInt(req.query.size);
 
   // Sanitize first.
   if (!first || first < 0 || size != req.query.previousSize) {

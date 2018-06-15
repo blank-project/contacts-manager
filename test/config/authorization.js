@@ -60,7 +60,6 @@ describe('authorization', function() {
     var sut = authorization.ensureRequest.options;
 
     it('should load', function() {
-      console.log(sut.onDenied.toString());
       expect(sut).to.be.a('object');
     });
 
