@@ -23,5 +23,5 @@ ADD . /app/
 RUN npm run less
 
 # Expose the port and the app/ folder
-EXPOSE 3000
+EXPOSE 3000 9229
 VOLUME /app/

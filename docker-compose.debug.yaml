@@ -1,0 +1,7 @@
+# Make up the contacts-manager app by composing a mongo DB and the web-app.
+version: "3"
+services:
+  web:
+    command: npm run debug
+    ports:
+      - "9229:9229"
