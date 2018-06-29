@@ -17,24 +17,6 @@ const CONF = require('../../config/config')
 
 const ContactManager = new (require('../business/ContactManager'))();
 
-/*
-function csvExport(req, res, next) {
-
-
-
-
-    res.download(filename, "contacts-exports.csv", (err) => {
-      err && console.log(err);
-
-      fs.unlink(filename, (err) => {
-        err && console.log(err);
-      });
-    });
-  });
-
-};
-*/
-
 module.exports = class ExportManager {
 
   /**
