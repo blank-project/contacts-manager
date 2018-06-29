@@ -140,6 +140,7 @@ class ContactManager {
         path: 'tags',
         options: { sort: 'name'}
       })
+      .sort("name.last")
       .skip(first)
       .limit(size)
       .exec();

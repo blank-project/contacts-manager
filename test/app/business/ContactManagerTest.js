@@ -1,6 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect
+ , Helper = require('./Helper')
  , Contact = require('../../../app/models/Contact')
  , Tag = require('../../../app/models/Tag')
  , ContactManager = require('../../../app/business/ContactManager')
@@ -18,16 +19,6 @@ describe('ContactManagerTest', function() {
   });
 
   describe('ContactManager', function() {
-
-    /**
-     * Clean test DB after each test.
-     */
-    afterEach(async function() {
-      await Promise.all([
-        Contact.deleteMany({}).exec(),
-        Tag.deleteMany({}).exec()
-      ]);
-    });
 
     it('should load', function() {
       expect(ContactManager).to.be.a('function');
@@ -141,6 +132,11 @@ describe('ContactManagerTest', function() {
         this.sut = new ContactManager();
       });
 
+      /**
+       * Clean test DB after each test.
+       */
+      afterEach(Helper.clear);
+
       it('should find all objects', async function() {
           var contact = await new Contact({ fullName : "Test 1"}).save();
           var result = this.sut.find({});
@@ -155,29 +151,9 @@ describe('ContactManagerTest', function() {
         var tags, contacts;
 
         beforeEach(async function() {
-          // GIVEN 2 tags
-          tags = await Promise.all([
-            new Tag({ name : 'Test1'}).save(),
-            new Tag({ name : 'Test2'}).save()
-          ]);
-
-          contacts = await Promise.all([
-            // GIVEN 1 contact with no tag
-            new Contact({ fullName : "No Tags"}).save(),
-
-            // GIVEN 1 contact with one tag
-            new Contact({
-              fullName : "1 Tag",
-              tags : [ tags[0]._id ]
-            }).save(),
-
-            // GIVEN 1 contact with two tag
-            new Contact({
-              fullName : "2 Tag",
-              tags : [ tags[0]._id, tags[1]._id]
-            }).save()
-          ]);
-
+           var data = await Helper.defaultData();
+           tags = data.tags;
+           contacts = data.contacts;
         });
 
         it('should find objects by tag', async function() {
