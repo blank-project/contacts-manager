@@ -1,61 +1,33 @@
 var express = require('express')
-, co = require('co')
 , router = express.Router()
 , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
 , ensureRequest = require('../../config/authorization').ensureRequest
 , Contact = require('../models/Contact')
 , Tag = require('../models/Tag')
 , ContactManager = require('../business/ContactManager')
-// Export part
-, conf = require('../../config/config')
-, path = require('path')
-, db = conf.db
-, cwd = conf.root
-, execFile = require('child_process').execFile
-, scriptDir = path.join(cwd, 'scripts/')
-, script = path.join(scriptDir, 'contacts-export.sh')
-, exportsDir = path.join(cwd, 'data', 'downloads/')
-, uuid = require('uuid/v1')
-, fs = require('fs')
-, EJSON = require('mongodb-extended-json')
-, ObjectID = require('mongodb').ObjectID;
+, ExportManager = require('../business/ExportManager');
 
 // Instantiate and replace ContactManager;
-
 ContactManager = new ContactManager();
+// Instantiate and replace ExportManager;
+ExportManager = new ExportManager();
 
 // Exports a function to bind Controller
 module.exports = function (app) {
   app.use('/contacts', ensureLoggedIn('/login'), router);
 };
 
-function csvExport(req, res, next) {
+async function csvExport(req, res, next) {
+  var query = req.query;
+  const csvExport = await ExportManager.generateExport(query);
 
-  var filename = path.join(exportsDir, uuid())
-    , options = {
-    cwd : scriptDir,
-    env : db
-  }, query = EJSON.stringify(ContactManager.buildQuery(req.query));
-  console.log('CSV Exports : ' + query);
-  execFile(script, [ filename, query ], options, (error, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
-
-    if (error) {
-      next(error);
-      return;
+  res.download(csvExport.path, "contacts-exports.csv", function(err) {
+    if (err) {
+      console.log(err);
     }
-
-    res.download(filename, "contacts-exports.csv", (err) => {
-      err && console.log(err);
-
-      fs.unlink(filename, (err) => {
-        err && console.log(err);
-      });
-    });
+    csvExport.remove();
   });
-
-};
+}
 
 router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, next) {
   if (req.query.action === "export.csv") {
@@ -111,7 +83,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   }
   data.size = size;
   data.title = 'Liste de Contact';
-  data.query = req.query;
+  data.query = query;
   res.render('contacts/contactList', data);
 });
 
