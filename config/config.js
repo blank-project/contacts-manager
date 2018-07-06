@@ -11,7 +11,7 @@ var config = {
     port: process.env.PORT || 3000,
     db : {
       database : 'contacts-manager-development',
-      host : 'localhost',
+      host : 'dev.database.contact-manager.com',
       port : '27017',
       options : {
         poolSize : 10
