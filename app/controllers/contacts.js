@@ -40,23 +40,14 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
 }, async function(req, res, next) {
   var query = ContactManager.buildQuery(req.query), first = parseInt(req.query.first), size = parseInt(req.query.size);
 
-  // Sanitize first.
-  if (!first || first < 0 || size != req.query.previousSize) {
-    first = 0;
-  }
-  if (!size || size <= 0) {
-    size = 20;
-  }
   console.log('Listing contacts');
 
-  var data = {};
+  var data = {}, options = { first, size };
 
   try {
-    data.contacts = await Contact.find(query)
-    .populate({
-      path: 'tags',
-      options: { sort: 'name'}
-    }).skip(first).limit(size + 1).exec();
+    data.contacts = await ContactManager.find(req.query, options);
+    // Get updated pagination values after sanitization.
+    ({ first, size } = options);
   } catch(err) {
     next(err);
   }

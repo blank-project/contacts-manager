@@ -7,7 +7,8 @@ const expect = require('chai').expect
     , CWD = require('../../../config/config').root
     , TEST_DIR = path.join(__dirname, 'FILES/')
     , Helper = require('./Helper')
-    , parse = require('csv-parse/lib/sync');
+    , parse = require('csv-parse/lib/sync')
+    , mongoose = require('mongoose');
 
 
 const ExportManager = require('../../../app/business/ExportManager');
@@ -18,6 +19,10 @@ describe('ExportManager', function() {
   after(function(done) {
     fs.remove(TEST_DIR, done);
   })
+
+  after(function(done) {
+    mongoose.connection.close(done);
+  });
 
   it('should load', function() {
     expect(ExportManager).to.be.a('function');

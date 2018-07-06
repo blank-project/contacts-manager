@@ -5,7 +5,8 @@ const expect = require('chai').expect
  , Contact = require('../../../app/models/Contact')
  , Tag = require('../../../app/models/Tag')
  , ContactManager = require('../../../app/business/ContactManager')
- , ObjectID = require('mongodb').ObjectID;
+ , ObjectID = require('mongodb').ObjectID
+ , mongoose = require('mongoose');
 
 var db;
 
@@ -17,6 +18,11 @@ describe('ContactManagerTest', function() {
   before(async function() {
     db = await require('../../../config/db')();
   });
+
+  after(function(done) {
+    mongoose.connection.close(done);
+  });
+
 
   describe('ContactManager', function() {
 
@@ -144,6 +150,29 @@ describe('ContactManagerTest', function() {
           result = await result;
           expect(result).to.be.an('array');
           expect(result).to.have.lengthOf(1);
+      });
+
+
+      it('should sort all objects', async function() {
+          var contacts = await Promise.all([
+              new Contact({ fullName : "Z Z"}).save(),
+              new Contact({ fullName : "A Z"}).save(),
+              new Contact({ fullName : "Z A"}).save(),
+              new Contact({ fullName : "A A"}).save()
+          ]);
+
+          var result = this.sut.find({});
+          expect(result).to.be.a("Promise");
+          result = await result;
+
+          expect(result).to.be.an('array');
+          expect(result).to.have.lengthOf(4);
+
+          // Should be sorted in reverse order.
+          expect(result[0]).to.satisfy(ctct => ctct._id.equals(contacts[3]._id));
+          expect(result[2]).to.satisfy(ctct => ctct._id.equals(contacts[1]._id));
+          expect(result[1]).to.satisfy(ctct => ctct._id.equals(contacts[2]._id));
+          expect(result[3]).to.satisfy(ctct => ctct._id.equals(contacts[0]._id));
       });
 
       context('when finding by tags', function() {

@@ -120,19 +120,17 @@ class ContactManager {
   /**
    * Finds all Contacts matching the given request.
    */
-  find(req, options) {
-    options = options || {};
-
+  find(req, options = {}) {
     var query = this.buildQuery(req),
     first = options.first,
     size = options.size;
 
     if (!first || first < 0) {
-      first = 0;
+      options.first = first = 0;
     }
 
     if (!size || size <= 0) {
-      size = 20;
+      options.size = size = 20;
     }
 
     return Contact.find(query)
@@ -140,7 +138,7 @@ class ContactManager {
         path: 'tags',
         options: { sort: 'name'}
       })
-      .sort("name.last")
+      .sort({ 'name.last' : 'asc', 'name.first' : 'asc' })
       .skip(first)
       .limit(size)
       .exec();
