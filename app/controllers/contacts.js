@@ -53,7 +53,6 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
     }
   };
 
-<<<<<<< HEAD
   var data = {}, options = { first, size };
 
   try {
@@ -63,15 +62,6 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   } catch(err) {
     next(err);
   }
-=======
-  res.locals = data;
-
-  data.contacts = await Contact.find(query)
-  .populate({
-    path: 'tags',
-    options: { sort: 'name'}
-  }).skip(first).limit(size + 1);
->>>>>>> fix login & contacts page (WIP)
 
   // Populate tags for search
   try {
