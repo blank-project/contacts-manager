@@ -83,7 +83,8 @@
  import mainFooter from './components/footer.vue';
  export default {
    data: function () {
-     return {};
+     return {
+     };
    },
    components: {
      mainNav: mainNav,

@@ -53,7 +53,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
     }
   };
 
-  var data = {}, options = { first, size };
+  var options = { first, size };
 
   try {
     data.contacts = await ContactManager.find(req.query, options);

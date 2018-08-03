@@ -1,6 +1,6 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
-        <main-nav></main-nav>
+        <main-nav :user="user"></main-nav>
         <div id="container" class="row">
             <div class="col s12 m12 center-text">
                 <h2>{{ title }}</h2>
@@ -16,7 +16,9 @@
 
  export default {
    data: function () {
-     return {};
+     return {
+       user: null
+     };
    },
    components: {
      mainNav: mainNav,
@@ -31,7 +33,7 @@
      display: flex;
      min-height: 100vh;
      flex-direction: column;
-  
+
  }
 
  #container {
