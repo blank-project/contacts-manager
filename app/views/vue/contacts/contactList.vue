@@ -64,11 +64,6 @@
                     <button name="action" type="submit" value="export.csv" class="btn">Exporter</button>
                 </div>
                 <!--{{/isPermitted}}-->
-                <!-- {{#isPermitted "contact:create" }}  v if ? ou server side rendering vuejs ou mixins--> <!-- ou se positionne t il , role ?-->
-                <div class="padded">
-                <button class="btn" title="Nouveau">editer<i class="fa fa-plus"></i></a>
-                </div>
-                <!-- {{/isPermitted }} -->
               </div>
             </div>
           </form>
