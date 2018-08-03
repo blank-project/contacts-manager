@@ -1,6 +1,6 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
-      <main-nav></main-nav>
+      <main-nav :user="user"></main-nav>
         <h3>Editer un contact</h3>
   <!--remettre vif apres design-->
         <form  action="/contacts/" method="POST" class="row">
@@ -80,7 +80,9 @@
  import mainFooter from './components/footer.vue';
  export default {
    data: function () {
-     return {};
+     return {
+       user: null
+     };
    },
    components: {
      mainNav: mainNav,
@@ -106,7 +108,7 @@
      flex: 1 0 auto;
  }
 
- .formedit{ 
+ .formedit{
    background-color: white;
    width: 80vw;
    -webkit-box-shadow: 0px 0px 2px 1px #656565;
