@@ -47,9 +47,13 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   console.log(req.user)
 
   var data = {
-    user: req.user
+    user: {
+      permissions: req.user.permissions,
+      username: req.user.username
+    }
   };
 
+<<<<<<< HEAD
   var data = {}, options = { first, size };
 
   try {
@@ -59,6 +63,15 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   } catch(err) {
     next(err);
   }
+=======
+  res.locals = data;
+
+  data.contacts = await Contact.find(query)
+  .populate({
+    path: 'tags',
+    options: { sort: 'name'}
+  }).skip(first).limit(size + 1);
+>>>>>>> fix login & contacts page (WIP)
 
   // Populate tags for search
   try {

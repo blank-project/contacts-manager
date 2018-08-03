@@ -1,6 +1,6 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
-        <main-nav></main-nav>
+        <main-nav :user="user"></main-nav>
         <alerts v-if="message" :message="message"></alerts>
         <div id="container" class="row">
           <div class="center-text">
@@ -35,6 +35,7 @@
    data: function () {
      return {
        message: '',
+       user: null,
      };
    },
    components: {
