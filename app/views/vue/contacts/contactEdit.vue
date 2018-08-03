@@ -53,7 +53,7 @@
                       <input id="address.code" type="text" name="address.code" :value="contact.address.code" /><br />
                     </div>
                     <div class="pure-control-group">
-                      <label for="address.city">N°</label>
+                      <label for="address.city">Ville</label>
                       <input id="address.city" type="text" name="address.city" :value="contact.address.city" /><br />
                     </div>
                   </div>
