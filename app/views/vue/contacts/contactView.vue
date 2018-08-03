@@ -1,104 +1,7 @@
-
 <template>
-    <main>
-        <main-nav :user="user"></main-nav>
-        <h3>{{contact.fullName}}</h3>
-        <table class="contact pure-table">
-          <tr>
-            <td class="title">Nom</td><td>{{ contact.fullName }}</td>
-          </tr>
-          <tr>
-            <td>Mail</td><td>{{ contact.email }}</td>
-          </tr>
-          <tr>
-            <td>Téléphone</td><td>{{ contact.phone }}</td>
-          </tr>
-          <tr>
-            <td>Organisation</td><td>{{ contact.organization }}</td>
-          </tr>
-          <tr>
-            <td>Fonction</td><td>{{ contact.title }}</td>
-          </tr>
-      <!--    <tr>
-            <td>Adresse</td>
-              <td>
-              <address>
-               <span>{{ contact.adress.number }}</span> <span>{{ contact.adress.street }}</span><br />
-               <span>{{ contact.adress.code }}</span> <span>{{ contact.adress.city }}</span><br />
-             </address>
-            </td>
-          </tr> -->
-<!--
-          <tr>
-            <td>Etiquettes</td>
-            <td>
-              <div id="tag-list" class="padded">
-                {{#each tags}}
-                  {{#isPermitted "contact:update" }}
-                    {{! TODO Find a way to factor tag and tagEdit}}
-                    {{>tagEdit}}
-                  {{else}}
-                    {{>tag}}
-                  {{/isPermitted}}
-                {{else}}
-                  Aucune étiquette
-                {{/each}}
-              </div>
-              {{#isPermitted "contact:update" }}
-              <div class="padded">
-                <form method="POST" action="/contacts/{{ id }}/tags/" class="pure-form">
-                  <select name="tagId" id="tagId">
-                    {{#each ../tags}}
-                    <option value="{{ id }}">{{ name }}</option>
-                    {{/each}}
-                  </select>
-                  <button type="submit" class="pure-button pure-input-rounded" {{#isEmpty ../tags }}disabled{{/isEmpty}}>
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </form>
-              </div>
-              {{/isPermitted}}
-            </td>
-          </tr>
-          <tr>
-            <td>Note</td><td>{{ note }}</td>
-          </tr>
-      -->  </table> <!--
-        {{/with}}
-        {{#with contact}}
-        <div class="padded">
-          {{#isPermitted "contact:update" }}
-          <a href="edit/{{ id }}" class="pure-button pure-button-primary">Modifier</a>
-          {{/isPermitted}}
-          {{#isPermitted "contact:delete" }}
-          <button id="delete" class="pure-button button-error">Supprimer</button>
-          {{/isPermitted}}
-        <div>
-        {{/with}}
-        <div class="padded">
-        <a href="/contacts/" class="pure-button">Retour à la liste</a>
-        </div>
-
-        <script>
-            var tags = document.getElementById('tag-list');
-            delegate(tags, 'click', '.tag-remove', function(e) {
-              var id = e.actualTarget.getAttribute("data-id");
-              removeTagFromContact(id, '{{ contact.id }}').then(function (response) {
-                window.location.reload(true);
-              }).catch(console.log);
-            });
-        </script>
-        {{#isPermitted "contact:delete" }}
-        <script>
-            var deleteButton = document.getElementById("delete");
-            deleteButton.addEventListener('click', function(ev) {
-              deleteContact('{{ contact.id }}').then(function (response) {
-                location.assign("/contacts/");
-              })
-              .catch(console.log);
-            });
-        </script>
-        {{/isPermitted}}-->
+  <main>
+    <main-nav :user="user"></main-nav>
+    <contact :contact="contact"></contact>
     <main-footer></main-footer>
   </main>
 </template>
@@ -106,13 +9,15 @@
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
+ import Contact from './components/contact.vue';
  export default {
    data: function () {
      return {};
    },
    components: {
      mainNav: mainNav,
-     mainFooter: mainFooter
+     mainFooter: mainFooter,
+     contact: Contact
    },
  }
 </script>
