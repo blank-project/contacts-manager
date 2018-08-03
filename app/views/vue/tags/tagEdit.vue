@@ -2,7 +2,7 @@
 
 <template>
   <main class="grey lighten-4 blue-grey-text">
-      <main-nav></main-nav>
+      <main-nav :user="user"></main-nav>
         <h3>{{ title }}</h3>
         <div class="row" id="container">
           <form action="/tags/" method="POST">

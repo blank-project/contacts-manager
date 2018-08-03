@@ -1,7 +1,7 @@
 
 <template>
     <main>
-        <main-nav></main-nav>
+        <main-nav :user="user"></main-nav>
         <h3>{{contact.fullName}}</h3>
         <table class="contact pure-table">
           <tr>

@@ -1,6 +1,6 @@
 <template>
   <main class="grey lighten-4 blue-grey-text" id="container">
-      <main-nav></main-nav>
+      <main-nav :user="user"></main-nav>
           <h3>{{ title }}</h3>
           <span class="instructions">
             <p><b>Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".</b></p><br/></br>
