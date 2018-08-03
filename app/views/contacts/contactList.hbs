@@ -11,6 +11,7 @@
         <thead>
           <tr>
             <th>Nom</th>
+            <th>Prénom</th>
             <th>Mail</th>
             <th>Téléphone</th>
             <th>Organisation</th>
@@ -22,7 +23,8 @@
         <tbody>
         {{#contacts}}
           <tr class="contact-line clickable" data-id="{{ id }}">
-            <td>{{ fullName }}</td>
+            <td>{{ name.last }}</td>
+            <td>{{ name.first }}</td>
             <td>{{ email }}</td>
             <td>{{ phone }}</td>
             <td>{{ organization }}</td>

@@ -1,5 +1,7 @@
 'use strict';
 
+const mongoose = require('mongoose');
+
 var expect = require('chai').expect;
 var Tag = require('../../../app/models/Tag');
 var Contact = require('../../../app/models/Contact');
@@ -10,6 +12,10 @@ describe('TagManager', function() {
 
   before(async function() {
     db = await require('../../../config/db')();
+  });
+
+  after(function(done) {
+    mongoose.connection.close(done);
   });
 
   afterEach(async function() {

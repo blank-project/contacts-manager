@@ -11,7 +11,8 @@ var config = {
     port: process.env.PORT || 3000,
     db : {
       database : 'contacts-manager-development',
-      host : 'localhost',
+      // References the host in the docker-compose file.
+      host : 'dev.database.contact-manager.com',
       port : '27017',
       options : {
         poolSize : 10
@@ -47,10 +48,7 @@ var config = {
       host : 'localhost',
       port : '27017',
       options : {
-        poolSize : 10,
-        config : {
-          autoIndex : false
-        }
+        poolSize : 10
       }
 
     }

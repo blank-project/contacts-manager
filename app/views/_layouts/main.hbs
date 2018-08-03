@@ -42,6 +42,11 @@
           <a class="pure-menu-link" href="/import">Importer</a>
         </li>
         {{/isPermitted}}
+        {{#isPermitted "contact:update" "contact:delete" }}
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/contacts/duplicates">Gérer les doublons</a>
+        </li>
+        {{/isPermitted}}
       </ul>
       {{>user}}
     </nav>
