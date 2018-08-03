@@ -149,7 +149,7 @@ router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
 });
 
 router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:create'), function (req, res, next) {
-  res.renderVue('users/userCreate');
+  res.renderVue('users/userCreate', { user: { username: req.user.username, permissions: req.user.permissions }});
 });
 
 router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {

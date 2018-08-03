@@ -81,7 +81,6 @@
  export default {
    data: function () {
      return {
-       user: null
      };
    },
    components: {
