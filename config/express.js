@@ -92,6 +92,25 @@ module.exports = function(app, config) {
     next();
   });
 
+  // Hack to always have access to data from res.locals in rendering data.
+  // It is the default behavior, but it is not supported by express-vue.
+  app.use(function(req, res, next) {
+    var old = res.renderVue;
+
+    // Override original version.
+    res.renderVue = function(componentPath, data = {}, vueOptions = {}) {
+      if (req.user && !data.user) {
+        data.user = {
+          permissions: req.user.permissions,
+          username: req.user.username
+        };
+      }
+      // Call original version.
+      old(componentPath, data, vueOptions);
+    };
+    next();
+  });
+
   // Register all controllers
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach(function (controller) {
