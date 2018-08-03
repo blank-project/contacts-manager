@@ -24,7 +24,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="contact in contacts" v-on:click="goTo('/contacts/' + contact._id)">
+                      <tr class="clickable" v-for="contact in contacts" @click="goTo('/contacts/' + contact._id)">
                         <td>{{ contact.name.first }}</td>
                         <td v-if="contact.name.last">{{ contact.name.last }}</td>
                         <td v-for="email in contact.emails">{{ email.value }}</td>
@@ -132,6 +132,19 @@
  }
  .buttons {
   display: flex;
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  .clickable td {
+    transition: all 0.5s;
+    background-color: rgba(0,0,0,0);
+  }
+
+  .clickable:hover td {
+    background-color: rgba(0,0,0,.3);
   }
 
   @media screen and (max-width: 640px){
