@@ -8,7 +8,7 @@
                 <div class="heading">
                   <h1>Liste des contacts</h1>
                   <!--Check reception data user (qui marche bien) <p>{{ user }}</p> -->
-
+                  <a class="btn" href="/contacts/edit" title="Nouveau">+</a>
                 </div>
                 <div id="medium">
                   <table id="contact-list" class="contact-list pure-table pure-table-striped">
@@ -118,7 +118,7 @@
    margin-left: 10vw;
  }
 
- .btn{
+ button[type=submit]{
    margin-left: 10vw;
    margin-right: -10vw;
  }
