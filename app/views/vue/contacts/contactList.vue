@@ -2,7 +2,6 @@
     <main class="grey lighten-4 blue-grey-text">
         <main-nav :user="user"></main-nav> <!--passer data "session" en attribut -->
           <div id="container">
-            <p>{{ user }}</p>
             <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
                <!-- integrer template du filter -->
               <div class="padded">
