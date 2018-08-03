@@ -1,6 +1,6 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
-        <main-nav></main-nav>
+        <main-nav :user="user"></main-nav>
           <div class="row" id="container">
             <h3>{{ title }}</h3>
             <table>

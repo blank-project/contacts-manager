@@ -2,7 +2,7 @@
 
 <template>
     <main class="grey lighten-4 blue-grey-text">
-        <main-nav></main-nav>
+        <main-nav :user="user"></main-nav>
           <div class="row" id="container">
             <div class="col m6">
               <span class="fa fa-user"></span>

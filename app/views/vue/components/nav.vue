@@ -1,7 +1,6 @@
 <template>
     <nav>
         <div class="nav-wrapper">
-            <a>{{ user }}</a>
             <a href="/" class="brand-logo"><img id="logo" src="/images/logoBC.png" alt="logo Belleville Citoyenne"></img></a>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down" v-if="user">
