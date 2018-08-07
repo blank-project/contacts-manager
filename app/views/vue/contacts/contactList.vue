@@ -4,6 +4,36 @@
           <div id="container">
             <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
                <!-- integrer template du filter -->
+               <div class="padded">
+                  <input type="checkbox" id="filters-toggle-state" class="toggle-state" name="active" value="true" :checked="query.active">
+                  <label for="filters-toggle-state" id="toggle-filter" class="pure-button fa fa-filter toggle-state-button-active" title="Filtrer"></label>
+                  <div id="filters" class="toggle-state-visible">
+                    <div>
+                      <label for="search">Recherche</label>
+                      <input type="text" name="search" id="search" class="pure-input-rounded" :value="query.search" placeholder="Rechercher"/>
+                    </div>
+                    <div>
+                      <label for="tags">Etiquettes</label>
+                      <select multiple name="tags" id="tags">
+                          {{ tags }}
+                      </select>
+                    </div>
+                    <div>
+                      <label for="name">Nom</label>
+                      <input type="text" name="name" id="name" class="pure-input-rounded" :value="query.name" placeholder="Nom" />
+                    </div>
+                    <div>
+                      <label for="address.code">Code Postal</label>
+                      <input type="text" name="address.code" id="address.code" class="pure-input-rounded" :value="query['address.code'] ? query['address.code'] : ''" placeholder="Code Postal"/>
+                    </div>
+                    <div>
+                      <label for="organization">Organisation</label>
+                      <input type="text" name="organization" id="organization" class="pure-input-rounded" :value="query.organization" placeholder="Organisation"/>
+                    </div>
+
+                    <input type="submit" value="Filtrer" class="btn" />
+                  </div>
+                </div>
               <div class="padded">
                 <div class="heading">
                   <h1>Liste des contacts</h1>
