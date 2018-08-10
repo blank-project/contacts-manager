@@ -5,15 +5,15 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "debug": "nodemon --inspect=0.0.0.0:9229 app.js",
+    "debug": "nodemon --inspect=0.0.0.0:9229 app.js -e js,vue",
     "test": "NODE_ENV=test mocha --recursive test",
     "test:coverage": "nyc npm test",
     "test:unit": "mocha --recursive test/middleware test/models test/routes",
     "test:integration": "mocha --recursive test/integration",
     "less": "gulp less",
     "assets": "bower --allow-root install",
-    "docker-up" : "docker-compose up",
-    "docker-debug" : "docker-compose -f docker-compose.yaml -f docker-compose.debug.yaml up"
+    "docker-up": "docker-compose up",
+    "docker-debug": "docker-compose -f docker-compose.yaml -f docker-compose.debug.yaml up"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
