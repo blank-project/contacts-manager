@@ -4,9 +4,8 @@
       <div class="padded">
         <div class="heading">
           <h3>Liste des Etiquettes</h3>
-          <div v-if="checkPermissions(user, 'tag:create')" class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau">
-            <i class="fa fa-plus"></i>
-            I Can add !
+          <div v-if="checkPermissions(user, 'tag:create')">
+            <a class="btn" href="/tags/edit" title="Nouveau">+</a>
           </div>
         </div>
         <table id="tag-list" class="tag-list pure-table">
@@ -16,14 +15,7 @@
               </tr>
             </thead>
             <tbody>
-            <!-- {{#tags}}
-              <tr class="tag-line clickable"  data-id="{{ id }}">
-                <td>
-                  {{> tag }}
-                </td>
-              </tr>
-            {{/tags}} -->
-              <tr v-for="tag in tags" v-on:click="goTo('/tags/' + tag._id)" >
+              <tr v-for="tag in tags" class="clickable" v-on:click="goTo('/tags/' + tag._id)" >
               <td :style="{ backgroundColor: tag.color, color: tag.textColor}">{{ tag.name }}</td>
             </tbody>
         </table>
