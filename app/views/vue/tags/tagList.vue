@@ -7,7 +7,10 @@
         <div class="heading">
           <h3>Liste des Etiquettes</h3>
           <!-- {{#isPermitted "tag:create" }} -->
-          <a class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau"><i class="fa fa-plus"></i></a>
+          <div v-if="checkPermissions(user, 'tag:create')" class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau">
+            <i class="fa fa-plus"></i>
+            I Can add !
+          </div>
           <!-- {{/isPermitted }} -->
         </div>
         <table id="tag-list" class="tag-list pure-table">
@@ -35,11 +38,13 @@
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
+ import permissionMixin from './mixins/permissions.vue';
  export default {
    data: function () {
      return {
      };
    },
+   mixins : [permissionMixin],
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter
