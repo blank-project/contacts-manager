@@ -19,7 +19,8 @@ router.get('/edit/', async function (req, res, next) {
   });
 });
 
-router.get('/edit/:tagId', async function (req, res, next) {
+// Must have read permission to access the modify page, as data are displayed.
+router.get('/edit/:tagId', ensureRequest.isPermitted('tag:read,update'), async function (req, res, next) {
   var id = req.params.tagId, tag;
   console.log('Editing tag ' + id);
   try {
@@ -34,7 +35,7 @@ router.get('/edit/:tagId', async function (req, res, next) {
   });
 });
 
-router.get('/', async function (req, res, next) {
+router.get('/', ensureRequest.isPermitted('tag:read'), async function (req, res, next) {
   var tags;
   try {
    tags = await Tag.find({}).sort('name').exec();
@@ -50,7 +51,7 @@ router.get('/', async function (req, res, next) {
   });
 });
 
-router.get('/:tagId', function (req, res, next) {
+router.get('/:tagId', ensureRequest.isPermitted('tag:read'), function (req, res, next) {
     console.log('Showing tag ' + id);
     var id = req.params.tagId;
     Tag.findById(id).exec().
@@ -63,6 +64,9 @@ router.get('/:tagId', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
+  // Wrap in a middleware as role to check depends on body.
+  ensureRequest.isPermitted(req.body.id ? 'tag:update' : 'tag:create')(req, res, next);
+}, function (req, res, next) {
     console.log('Submitting tag ');
     var tag = null;
     var id = req.body.id;
@@ -88,7 +92,7 @@ router.post('/', function (req, res, next) {
 
 
 
-router.delete('/:tagId', function (req, res, next) {
+router.delete('/:tagId', ensureRequest.isPermitted('tag:delete'), function (req, res, next) {
   var id = req.params.tagId;
   console.log('id :' + id);
   tagManager.delete(id)
