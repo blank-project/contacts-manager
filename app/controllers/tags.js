@@ -1,6 +1,7 @@
 var express = require('express')
   , router = express.Router()
   , ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
+  , ensureRequest = require('../../config/authorization').ensureRequest
   , Tag = require('../models/Tag')
   , TagManager = require('../business/TagManager');
 
@@ -11,38 +12,47 @@ module.exports = function (app) {
   app.use('/tags', ensureLoggedIn('/login'), router);
 };
 
-router.get('/edit/', function (req, res, next) {
-    res.renderVue('tags/tagEdit', { tag : {} , title : 'Editer le tag'});
+router.get('/edit/', async function (req, res, next) {
+  res.renderVue('tags/tagEdit', {
+    title : 'Créer un tag',
+    tag : {}
+  });
 });
 
-router.get('/edit/:tagId', function (req, res, next) {
-    console.log('Editing tag');
-    var id = req.params.tagId;
-    console.log('id :' + id);
-    Tag.findById(id).exec().
-    then(data => {
-        res.renderVue('tags/tagEdit', {
-          tag : data , title : 'Editer le tag'
-        });
-      }).
-    catch(err => { next(err); });
+router.get('/edit/:tagId', async function (req, res, next) {
+  var id = req.params.tagId, tag;
+  console.log('Editing tag ' + id);
+  try {
+    tag = await Tag.findById(id).exec();
+  } catch(e) {
+    next(e);
+    return;
+  }
+  res.renderVue('tags/tagEdit', {
+    title : 'Editer le tag ' + tag.name,
+    tag : tag.toObject({virtuals : true})
+  });
 });
 
-router.get('/', function (req, res, next) {
-    console.log('Listing tags');
-    var tags = Tag.find({}).sort('name').exec();
-    tags.then(data => {
-      res.renderVue('tags/tagList', {
-        title : 'Liste d\'etiquettes',
-        tags : data
-      });
-    });
+router.get('/', async function (req, res, next) {
+  var tags;
+  try {
+   tags = await Tag.find({}).sort('name').exec();
+  } catch(e) {
+    next(e);
+    return;
+  }
+  tags = tags.map(tag => tag.toObject({virtuals : true}));
+
+  res.renderVue('tags/tagList', {
+    title : 'Liste d\'etiquettes',
+    tags : tags
+  });
 });
 
 router.get('/:tagId', function (req, res, next) {
-    console.log('Showing tag');
+    console.log('Showing tag ' + id);
     var id = req.params.tagId;
-    console.log('id :' + id);
     Tag.findById(id).exec().
     then(data => {
         res.render('tags/tagView', {

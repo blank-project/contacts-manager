@@ -1,17 +1,13 @@
-
-
 <template>
   <main class="grey lighten-4 blue-grey-text">
       <main-nav :user="user"></main-nav>
       <div class="padded">
         <div class="heading">
           <h3>Liste des Etiquettes</h3>
-          <!-- {{#isPermitted "tag:create" }} -->
           <div v-if="checkPermissions(user, 'tag:create')" class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau">
             <i class="fa fa-plus"></i>
             I Can add !
           </div>
-          <!-- {{/isPermitted }} -->
         </div>
         <table id="tag-list" class="tag-list pure-table">
             <thead>
@@ -27,8 +23,8 @@
                 </td>
               </tr>
             {{/tags}} -->
-              <tr v-for="tag in tags"v-on:click="goTo('/tags/' + tag._id)" >
-              <td v-bind:style="{ backgroundColor: tag.color, color: tag.color}">{{ tag.name }}</td>
+              <tr v-for="tag in tags" v-on:click="goTo('/tags/' + tag._id)" >
+              <td :style="{ backgroundColor: tag.color, color: tag.textColor}">{{ tag.name }}</td>
             </tbody>
         </table>
       </div>
@@ -45,6 +41,11 @@
      };
    },
    mixins : [permissionMixin],
+   methods: {
+     goTo: function(url) {
+       location.href = url;
+     }
+   },
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter

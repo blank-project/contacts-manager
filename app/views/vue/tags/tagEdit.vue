@@ -1,12 +1,10 @@
-<!--n edite pas , creer un nouveau-->
-
 <template>
   <main class="grey lighten-4 blue-grey-text">
       <main-nav :user="user"></main-nav>
         <h3>{{ title }}</h3>
         <div class="row" id="container">
           <form action="/tags/" method="POST">
-            <input v-if="id" type="hidden" name="id" :value="tag.id" />
+            <input v-if="tag.id" type="hidden" name="id" :value="tag.id" />
             <div class="pure-control-group">
               <label for="name">Nom :</label>
               <input id="name" type="text" name="name" :value="tag.name"/>
