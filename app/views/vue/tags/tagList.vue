@@ -1,7 +1,7 @@
 <template>
   <main class="grey lighten-4 blue-grey-text">
       <main-nav :user="user"></main-nav>
-      <div class="padded">
+      <div id="container" class="padded">
         <div class="heading">
           <h3>Liste des Etiquettes</h3>
           <div v-if="checkPermissions(user, 'tag:create')" class="pure-button pure-button-primary left-offset" href="edit" title="Nouveau">

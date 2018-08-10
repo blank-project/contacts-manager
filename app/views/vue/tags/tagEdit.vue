@@ -1,6 +1,7 @@
 <template>
   <main class="grey lighten-4 blue-grey-text">
       <main-nav :user="user"></main-nav>
+      <div id="container">
         <h3>{{ title }}</h3>
         <div class="row" id="container">
           <form action="/tags/" method="POST">
@@ -20,6 +21,7 @@
             </fieldset>
           </form>
         </div>
+      </div>
       <main-footer></main-footer>
     </main>
 </template>

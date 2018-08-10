@@ -1,7 +1,9 @@
 <template>
   <main>
     <main-nav :user="user"></main-nav>
-    <contact :contact="contact"></contact>
+    <div id="container">
+      <contact :contact="contact" :user="user"></contact>
+    </div>
     <main-footer></main-footer>
   </main>
 </template>
@@ -34,32 +36,8 @@
      flex: 1 0 auto;
  }
 
-table{
-  background-color: white;
-  width: 30vw;
-  margin: auto;
-  margin-top: 5vh;
-  -webkit-box-shadow: 0px 0px 2px 1px #656565;
-  -moz-box-shadow: 0px 0px 2px 1px #656565;
-  filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
-  zoom:1;
-  box-shadow: 0 0 20px 0px #65656521;
-  padding-left: 10vw;
-}
-
-h3{
-  margin: auto;
-  margin-bottom: 5vh;
-  margin-top: 5vh;
-}
-
-.title{
-  width: 10vw;
-}
-
-@media screen and (max-width: 640px){
- table {
-   margin-bottom: 10vh;
+ #container > div {
+   height: 100%;
  }
-}
+
 </style>
