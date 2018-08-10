@@ -1,40 +1,42 @@
 <template>
   <main class="grey lighten-4 blue-grey-text" id="container">
-      <main-nav :user="user"></main-nav>
-          <h3>{{ title }}</h3>
-          <span class="instructions">
-            <p><b>Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".</b></p><br/></br>
-            <b>Les colonnes sont :</b>
-            <ul>
-            <li>Prénom</li>
-            <li>Nom</li>
-            <li>E-mail</li>
-            <li>Téléphone 1</li>
-            <li>Téléphone 2</li>
-            <li>Organisation</li>
-            <li>Fonction</li>
-            <li>N° de Rue</li>
-            <li>Rue</li>
-            <li>Code Postal</li>
-            <li>Ville</li>
-            <li>Note</li>
-            </ul>
-          </span>
-          <form action="/import" enctype="multipart/form-data" method="POST" >
-            <div class="file-field input-field">
-              <div class="btn">
-                <span>File</span>
-                <input id="upload" name="upload" type="file" required>
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-              </div>
-              <div class="file-path-wrapper">
-                <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
-              </div>
-            </div>
-          </form>
-      <main-footer></main-footer>
+    <main-nav :user="user"></main-nav>
+    <div id="container">
+      <h3>{{ title }}</h3>
+      <span class="instructions">
+        <p><b>Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".</b></p><br/></br>
+        <b>Les colonnes sont :</b>
+        <ul>
+        <li>Prénom</li>
+        <li>Nom</li>
+        <li>E-mail</li>
+        <li>Téléphone 1</li>
+        <li>Téléphone 2</li>
+        <li>Organisation</li>
+        <li>Fonction</li>
+        <li>N° de Rue</li>
+        <li>Rue</li>
+        <li>Code Postal</li>
+        <li>Ville</li>
+        <li>Note</li>
+        </ul>
+      </span>
+      <form action="/import" enctype="multipart/form-data" method="POST" >
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input id="upload" name="upload" type="file" required>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+          <div class="file-path-wrapper">
+            <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
+          </div>
+        </div>
+      </form>
+    </div>
+    <main-footer></main-footer>
   </main>
 </template>
 

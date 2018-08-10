@@ -1,102 +1,102 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav :user="user"></main-nav> <!--passer data "session" en attribut -->
-          <div id="container">
-            <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
-               <!-- integrer template du filter -->
-               <div class="padded">
-                  <input type="checkbox" id="filters-toggle-state" class="toggle-state" name="active" value="true" :checked="query.active">
-                  <label for="filters-toggle-state" id="toggle-filter" class="pure-button fa fa-filter toggle-state-button-active" title="Filtrer"></label>
-                  <div id="filters" class="toggle-state-visible">
-                    <div>
-                      <label for="search">Recherche</label>
-                      <input type="text" name="search" id="search" class="pure-input-rounded" :value="query.search" placeholder="Rechercher"/>
-                    </div>
-                    <div>
-                      <label for="tags">Etiquettes</label>
-                      <select multiple name="tags" id="tags">
-                          {{ tags }}
-                      </select>
-                    </div>
-                    <div>
-                      <label for="name">Nom</label>
-                      <input type="text" name="name" id="name" class="pure-input-rounded" :value="query.name" placeholder="Nom" />
-                    </div>
-                    <div>
-                      <label for="address.code">Code Postal</label>
-                      <input type="text" name="address.code" id="address.code" class="pure-input-rounded" :value="query['address.code'] ? query['address.code'] : ''" placeholder="Code Postal"/>
-                    </div>
-                    <div>
-                      <label for="organization">Organisation</label>
-                      <input type="text" name="organization" id="organization" class="pure-input-rounded" :value="query.organization" placeholder="Organisation"/>
-                    </div>
-
-                    <input type="submit" value="Filtrer" class="btn" />
+        <div id="container">
+          <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
+             <!-- integrer template du filter -->
+             <div class="padded">
+                <input type="checkbox" id="filters-toggle-state" class="toggle-state" name="active" value="true" :checked="query.active">
+                <label for="filters-toggle-state" id="toggle-filter" class="pure-button fa fa-filter toggle-state-button-active" title="Filtrer"></label>
+                <div id="filters" class="toggle-state-visible">
+                  <div>
+                    <label for="search">Recherche</label>
+                    <input type="text" name="search" id="search" class="pure-input-rounded" :value="query.search" placeholder="Rechercher"/>
                   </div>
+                  <div>
+                    <label for="tags">Etiquettes</label>
+                    <select multiple name="tags" id="tags">
+                        {{ tags }}
+                    </select>
+                  </div>
+                  <div>
+                    <label for="name">Nom</label>
+                    <input type="text" name="name" id="name" class="pure-input-rounded" :value="query.name" placeholder="Nom" />
+                  </div>
+                  <div>
+                    <label for="address.code">Code Postal</label>
+                    <input type="text" name="address.code" id="address.code" class="pure-input-rounded" :value="query['address.code'] ? query['address.code'] : ''" placeholder="Code Postal"/>
+                  </div>
+                  <div>
+                    <label for="organization">Organisation</label>
+                    <input type="text" name="organization" id="organization" class="pure-input-rounded" :value="query.organization" placeholder="Organisation"/>
+                  </div>
+
+                  <input type="submit" value="Filtrer" class="btn" />
                 </div>
-              <div class="padded">
-                <div class="heading">
-                  <h1>Liste des contacts</h1>
-                  <!--Check reception data user (qui marche bien) <p>{{ user }}</p> -->
-                  <a class="btn" href="/contacts/edit" title="Nouveau">+</a>
-                </div>
-                <div id="medium">
-                  <table id="contact-list" class="contact-list pure-table pure-table-striped">
-                    <thead>
-                      <tr>
-                        <th>Nom</th>
-                        <th>Mail</th>
-                        <th>Téléphone</th>
-                        <th>Organisation</th>
-                        <th>Fonction</th>
-                        <th>Adresse</th>
-                        <th>Etiquettes</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="clickable" v-for="contact in contacts" @click="goTo('/contacts/' + contact._id)">
-                        <td>{{ contact.name.first }}</td>
-                        <td v-if="contact.name.last">{{ contact.name.last }}</td>
-                        <td v-for="email in contact.emails">{{ email.value }}</td>
-                        <td v-for="phone in contact.phones">{{ phone.value }}</td>
-                        <td>{{ contact.organization }}</td>
-                        <td>{{ contact.title }}</td>
-                        <td v-for="address in contact.addresses">{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</td>
-                        <td v-for="tag in contact.tags">{{ tag.name }}</td>
-                      </tr>
-                    </tbody>
-                </table>
-                </div>
-                <div id="small">
-                    <div class="carte" v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)">
-                      <p><b>Nom : </b> {{ contact.name.first }}</p>
-                      <p v-if="contact.name.last"><b>Nom de famille : </b>{{ contact.name.last }}</p>
-                      <p v-for="email in contact.emails"><b>Email : </b>{{ email.value }}</p>
-                      <p v-for="phone in contact.phones"><b>Telephone : </b>{{ phone.value }}</p>
-                      <p><b>Organisation : </b>{{ contact.organization }}</p>
-                      <p><b>titre : </b>{{ contact.title }}</p>
-                      <p v-for="address in contact.addresses"><b> Adresse : </b>{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</p>
-                      <p v-for="tag in contact.tags"><b>Etiquettes : </b>{{ tag.name }}</p>
-                    </div>
-                </div>
-                <div class="padded">
-                    <!-- <input name="previousSize" type="hidden" value="{{ size }}" />
-                    <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
-                    <button name="first" type="submit" {{#if hasNext}}value="{{ next }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-right"></button> -->
-                    <!-- {{#if incomplete}}
-                    <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
-                    {{/if}} -->
-                </div>
-                <div class="buttons">
-                <!-- {{#isPermitted "contact:export:csv" }}-->
-                <div class="padded">
-                    <button name="action" type="submit" value="export.csv" class="btn">Exporter</button>
-                </div>
-                <!--{{/isPermitted}}-->
               </div>
+            <div class="padded">
+              <div class="heading">
+                <h1>Liste des contacts</h1>
+                <!--Check reception data user (qui marche bien) <p>{{ user }}</p> -->
+                <a class="btn" href="/contacts/edit" title="Nouveau">+</a>
+              </div>
+              <div id="medium">
+                <table id="contact-list" class="contact-list pure-table pure-table-striped">
+                  <thead>
+                    <tr>
+                      <th>Nom</th>
+                      <th>Mail</th>
+                      <th>Téléphone</th>
+                      <th>Organisation</th>
+                      <th>Fonction</th>
+                      <th>Adresse</th>
+                      <th>Etiquettes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="clickable" v-for="contact in contacts" @click="goTo('/contacts/' + contact._id)">
+                      <td>{{ contact.name.first }}</td>
+                      <td v-if="contact.name.last">{{ contact.name.last }}</td>
+                      <td v-for="email in contact.emails">{{ email.value }}</td>
+                      <td v-for="phone in contact.phones">{{ phone.value }}</td>
+                      <td>{{ contact.organization }}</td>
+                      <td>{{ contact.title }}</td>
+                      <td v-for="address in contact.addresses">{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</td>
+                      <td v-for="tag in contact.tags">{{ tag.name }}</td>
+                    </tr>
+                  </tbody>
+              </table>
+              </div>
+              <div id="small">
+                  <div class="carte" v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)">
+                    <p><b>Nom : </b> {{ contact.name.first }}</p>
+                    <p v-if="contact.name.last"><b>Nom de famille : </b>{{ contact.name.last }}</p>
+                    <p v-for="email in contact.emails"><b>Email : </b>{{ email.value }}</p>
+                    <p v-for="phone in contact.phones"><b>Telephone : </b>{{ phone.value }}</p>
+                    <p><b>Organisation : </b>{{ contact.organization }}</p>
+                    <p><b>titre : </b>{{ contact.title }}</p>
+                    <p v-for="address in contact.addresses"><b> Adresse : </b>{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</p>
+                    <p v-for="tag in contact.tags"><b>Etiquettes : </b>{{ tag.name }}</p>
+                  </div>
+              </div>
+              <div class="padded">
+                  <!-- <input name="previousSize" type="hidden" value="{{ size }}" />
+                  <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
+                  <button name="first" type="submit" {{#if hasNext}}value="{{ next }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-right"></button> -->
+                  <!-- {{#if incomplete}}
+                  <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
+                  {{/if}} -->
+              </div>
+              <div class="buttons">
+              <!-- {{#isPermitted "contact:export:csv" }}-->
+              <div class="padded">
+                  <button name="action" type="submit" value="export.csv" class="btn">Exporter</button>
+              </div>
+              <!--{{/isPermitted}}-->
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
+      </div>
       <main-footer></main-footer>
     </main>
 </template>

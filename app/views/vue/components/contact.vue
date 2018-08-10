@@ -1,22 +1,33 @@
 <template>
-  <div v-if="contact" :id="contact.fullName">
-    <h3>{{contact.fullName}}</h3>
+  <div v-if="contact" :id="contact.fullName" class="contact-container">
+    <div class="row">
+      <div class="col s12 m6 offset-m3">
+        <div class="card white">
+          <div class="card-content grey-text text-darken-4">
+            <p class="card-title">{{ contact.fullName }}</p>
+            <p><b>Mail</b> : {{ contact.email }}</p>
+            <p><b>Téléphone</b> : {{ contact.phone }}</p>
+            <p><b>Organisation</b> : {{ contact.organization }}</p>
+            <p><b>Fonction</b> : {{ contact.title }}</p>
+            <p><b>Adresse</b> :
+              {{ contact.address.number }}
+              {{ contact.address.street}}
+              {{ contact.address.code }}
+              {{ contact.address.city }}
+            </p>
+          </div>
+          <div class="card-action" v-if="user">
+            <a :href="'edit/' + contact.id" v-if="checkPermissions(user, 'contact:update')">
+              <i class="material-icons">create</i> Modifier
+            </a>
+            <a :href="contact.id" v-if="checkPermissions(user, 'contact:delete')">
+              <i class="material-icons">create</i> Supprimer (WIP)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
     <table class="contact pure-table">
-      <tr>
-        <td class="title">Nom</td><td>{{ contact.fullName }}</td>
-      </tr>
-      <tr>
-        <td>Mail</td><td>{{ contact.email }}</td>
-      </tr>
-      <tr>
-        <td>Téléphone</td><td>{{ contact.phone }}</td>
-      </tr>
-      <tr>
-        <td>Organisation</td><td>{{ contact.organization }}</td>
-      </tr>
-      <tr>
-        <td>Fonction</td><td>{{ contact.title }}</td>
-      </tr>
   <!--    <tr>
         <td>Adresse</td>
           <td>
@@ -101,57 +112,30 @@
 </template>
 
 <script>
+  import permissionMixin from './mixins/permissions.vue';
+
   export default {
     data() {
       return { }
     },
+    mixins : [permissionMixin],
     props : {
       'contact': {
         default: undefined
+      },
+      'user': {
+        type: Object
       }
     }
   }
 </script>
 
 <style scoped>
-main {
-    margin: 0;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+.contact-container {
+  height: 100%;
 }
 
-#container {
-    flex: 1 0 auto;
-}
-
-table{
- background-color: white;
- width: 30vw;
- margin: auto;
- margin-top: 5vh;
- -webkit-box-shadow: 0px 0px 2px 1px #656565;
- -moz-box-shadow: 0px 0px 2px 1px #656565;
- filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
- zoom:1;
- box-shadow: 0 0 20px 0px #65656521;
- padding-left: 10vw;
-}
-
-h3{
-  text-align: center;
+.contact-container > div.row {
   margin: auto;
-  margin-bottom: 5vh;
-  margin-top: 5vh;
-}
-
-.title{
- width: 10vw;
-}
-
-@media screen and (max-width: 640px){
-  table {
-    margin-bottom: 10vh;
-  }
 }
 </style>
