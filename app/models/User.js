@@ -4,6 +4,9 @@ var mongoose = require('mongoose')
   , Email = require('./Email')
 //  , Profile = require('./Profile')
   , passportLocalMongoose = require('passport-local-mongoose');
+
+const Permissions = require('./Permissions');
+
 // Base Schema
 // TODO Factor with Contact as BaseEntity ?
 // TODO Using ES6 Classes as definition ?
@@ -113,6 +116,11 @@ schema.virtual('phone').get(function() {
     phones.push(new Phone());
   }
   phones[0].value = v;
+});
+
+schema.method('isPermitted', function() {
+  var claim = this._claim || (this._claim = Permissions.considerSubject(this));
+  return claim.isPermitted(arguments);
 });
 
 /*
