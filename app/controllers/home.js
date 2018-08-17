@@ -27,7 +27,7 @@ router.route('/login')
         res.renderVue('login', data);
       })
       .post(auth.authenticate('local', {
-        successRedirect: '/contacts',
+        successReturnToOrRedirect: '/contacts',
         successFlash: true,
         failureRedirect: '/login',
         failureFlash: true
