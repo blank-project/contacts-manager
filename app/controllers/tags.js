@@ -51,16 +51,18 @@ router.get('/', ensureRequest.isPermitted('tag:read'), async function (req, res,
   });
 });
 
-router.get('/:tagId', ensureRequest.isPermitted('tag:read'), function (req, res, next) {
-    console.log('Showing tag ' + id);
+router.get('/:tagId', ensureRequest.isPermitted('tag:read'), async function (req, res, next) {
     var id = req.params.tagId;
-    Tag.findById(id).exec().
-    then(data => {
-        res.render('tags/tagView', {
-          tag : data
-        });
-      }).
-    catch(err => { next(err); });
+    console.log('Showing tag ' + id);
+    try {
+      var tag = await Tag.findById(id).exec();
+      res.renderVue('tags/tagView', {
+        tag : tag.toObject({virtuals : true})
+      });
+    } catch(err) {
+      next(err);
+      return;
+    }
 });
 
 router.post('/', function (req, res, next) {

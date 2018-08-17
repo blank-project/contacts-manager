@@ -1,25 +1,23 @@
 <template>
   <main class="grey lighten-4 blue-grey-text">
       <main-nav :user="user"></main-nav>
-      <div id="container">
-        <h3>{{ title }}</h3>
-        <div class="row" id="container">
-          <form action="/tags/" method="POST">
-            <input v-if="tag.id" type="hidden" name="id" :value="tag.id" />
-            <div class="pure-control-group">
-              <label for="name">Nom :</label>
-              <input id="name" type="text" name="name" :value="tag.name"/>
+      <div class="row" id="container">
+        <div class="col s12 m6 offset-m3">
+          <div class="card white">
+            <div class="card-content grey-text text-darken-4">
+              <p :style="{ backgroundColor: tag.color, color: tag.textColor}" class="card-title">
+                {{ tag.name }}
+              </p>
+              <div class="card-action">
+                <a :href="'edit/' + tag.id" v-if="checkPermissions(user, 'tag:update')">
+                  <i class="material-icons">edit</i> Modifier
+                </a>
+                <a @click.prevent.stop="deleteTag" v-if="checkPermissions(user, 'tag:delete')">
+                  <i class="material-icons">delete</i> Supprimer
+                </a>
+              </div>
             </div>
-            <div class="pure-control-group">
-              <label for="color">Couleur :</label>
-              <input id="color" type="color" name="color" :value="tag.color"/>
-            </div>
-            <fieldset class="padded">
-              <input type="submit" name="submit" value="Soumettre" class="waves-effect waves-light btn"/>
-              <a v-if="tag.id" :href="'/tags/' + tag.id" class="waves-effect waves-light btn">Annuler</a>
-              <a v-else :href="/tags/" class="waves-effect waves-light btn">Annuler</a>
-            </fieldset>
-          </form>
+          </div>
         </div>
       </div>
       <main-footer></main-footer>
@@ -29,15 +27,27 @@
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
+ import permissionMixin from './mixins/permissions.vue';
+
+
  export default {
    data: function () {
      return {
+       tag : null
      };
    },
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter
    },
+   mixins : [permissionMixin],
+   methods : {
+     deleteTag : function() {
+       var id = this.tag.id;
+       fetch("/tags/" + id, { method : 'DELETE'})
+       .then(function() { location.assign("/tags/"); });
+     }
+   }
  }
 </script>
 
