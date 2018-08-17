@@ -82,13 +82,12 @@ permissions['considerSubject'] = function considerSubject(subject) {
   return this.considerPermissions(permissions);
 };
 
-permissions['checkPermissions'] = function(/*user , permissions... */) {
-  if (arguments.length <= 1) {
-    return true;
-  }
-  var user, permissions;
-  [user, ...permissions] = arguments;
+permissions['checkPermissions'] = function(user, ...permissions) {
   if (!user) {
+    // No user -> Unauthenticated user -> false
+    return false;
+  }
+  if (permissions.length == 0) {
     return false;
   }
   return this.considerSubject(user).isPermitted(permissions);
