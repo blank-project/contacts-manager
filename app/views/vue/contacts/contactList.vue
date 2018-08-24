@@ -1,44 +1,42 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav :user="user"></main-nav> <!--passer data "session" en attribut -->
-        <div id="container">
+        <div id="container" class="container">
           <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
              <!-- integrer template du filter -->
              <div class="padded">
-                <input type="checkbox" id="filters-toggle-state" class="toggle-state" name="active" value="true" :checked="query.active">
-                <label for="filters-toggle-state" id="toggle-filter" class="pure-button fa fa-filter toggle-state-button-active" title="Filtrer"></label>
-                <div id="filters" class="toggle-state-visible">
-                  <div>
-                    <label for="search">Recherche</label>
-                    <input type="text" name="search" id="search" class="pure-input-rounded" :value="query.search" placeholder="Rechercher"/>
+               <div class="heading">
+                 <h1>Liste des contacts</h1>
+               </div>
+               <div class="filters padded">
+                  <input type="checkbox" id="filters-toggle-state" class="toggle-state" name="active" value="true" :checked="query.active">
+                  <label for="filters-toggle-state" id="toggle-filter" class="btn" title="Filtrer"><i class="material-icons">filter_list</i></label>
+                  <div id="filters" class="padded toggle-state-visible">
+                    <div>
+                      <label for="search">Recherche</label>
+                      <input type="text" name="search" id="search" class="pure-input-rounded" :value="query.search" placeholder="Rechercher"/>
+                    </div>
+                    <div>
+                      <label for="tags">Etiquettes</label>
+                      <select multiple name="tags" id="tags">
+                          {{ tags }}
+                      </select>
+                    </div>
+                    <div>
+                      <label for="name">Nom</label>
+                      <input type="text" name="name" id="name" class="pure-input-rounded" :value="query.name" placeholder="Nom" />
+                    </div>
+                    <div>
+                      <label for="address.code">Code Postal</label>
+                      <input type="text" name="address.code" id="address.code" class="pure-input-rounded" :value="query['address.code'] ? query['address.code'] : ''" placeholder="Code Postal"/>
+                    </div>
+                    <div>
+                      <label for="organization">Organisation</label>
+                      <input type="text" name="organization" id="organization" class="pure-input-rounded" :value="query.organization" placeholder="Organisation"/>
+                    </div>
+                    <input type="submit" value="Filtrer" class="btn" />
                   </div>
-                  <div>
-                    <label for="tags">Etiquettes</label>
-                    <select multiple name="tags" id="tags">
-                        {{ tags }}
-                    </select>
-                  </div>
-                  <div>
-                    <label for="name">Nom</label>
-                    <input type="text" name="name" id="name" class="pure-input-rounded" :value="query.name" placeholder="Nom" />
-                  </div>
-                  <div>
-                    <label for="address.code">Code Postal</label>
-                    <input type="text" name="address.code" id="address.code" class="pure-input-rounded" :value="query['address.code'] ? query['address.code'] : ''" placeholder="Code Postal"/>
-                  </div>
-                  <div>
-                    <label for="organization">Organisation</label>
-                    <input type="text" name="organization" id="organization" class="pure-input-rounded" :value="query.organization" placeholder="Organisation"/>
-                  </div>
-
-                  <input type="submit" value="Filtrer" class="btn" />
                 </div>
-              </div>
-            <div class="padded">
-              <div class="heading">
-                <h1>Liste des contacts</h1>
-                <!--Check reception data user (qui marche bien) <p>{{ user }}</p> -->
-                <a class="btn" href="/contacts/edit" title="Nouveau">+</a>
               </div>
               <div id="medium">
                 <table id="contact-list" class="contact-list pure-table pure-table-striped">
@@ -89,13 +87,14 @@
               </div>
               <div class="buttons">
               <!-- {{#isPermitted "contact:export:csv" }}-->
-              <div class="padded">
-                  <button name="action" type="submit" value="export.csv" class="btn">Exporter</button>
-              </div>
+                <div class="padded">
+                    <button name="action" type="submit" value="export.csv" class="btn"><i class="material-icons">save_alt</i></button>
+                    <a class="btn" href="/contacts/edit" title="Nouveau"><i class="material-icons">add</i></a>
+                </div>
               <!--{{/isPermitted}}-->
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
       </div>
       <main-footer></main-footer>
     </main>
@@ -137,29 +136,19 @@
    display: none;
  }
 
- #medium{
+ #medium, #filters {
    background-color: white;
    -webkit-box-shadow: 0px 0px 2px 1px #656565;
    -moz-box-shadow: 0px 0px 2px 1px #656565;
    filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
    zoom:1;
    box-shadow: 0 0 20px 0px #65656521;
-   width: 80vw;
-   margin-left: 10vw;
- }
-
- button[type=submit]{
-   margin-left: 10vw;
-   margin-right: -10vw;
  }
 
  a{
    font-size: 1.3em;
  }
 
- h1{
-   margin-left: 5vw;
- }
  .buttons {
   display: flex;
   }

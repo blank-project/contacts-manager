@@ -1,24 +1,26 @@
 <template>
   <main class="grey lighten-4 blue-grey-text">
       <main-nav :user="user"></main-nav>
-      <div id="container" class="padded">
+      <div id="container" class="padded container">
         <div class="heading">
           <h3>Liste des Etiquettes</h3>
-          <div v-if="checkPermissions(user, 'tag:create')">
-            <a class="btn" href="/tags/edit" title="Nouveau">+</a>
-          </div>
         </div>
-        <table id="tag-list" class="tag-list pure-table">
-            <thead>
-              <tr>
-                <th>Nom</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="tag in tags" class="clickable" v-on:click="goTo('/tags/' + tag._id)" >
-              <td :style="{ backgroundColor: tag.color, color: tag.textColor}">{{ tag.name }}</td>
-            </tbody>
-        </table>
+        <div class="row">
+          <table id="tag-list" class="tag-list col s12 m6 offset-m3">
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="tag in tags" class="clickable" v-on:click="goTo('/tags/' + tag._id)" >
+                <td :style="{ backgroundColor: tag.color, color: tag.textColor}">{{ tag.name }}</td>
+              </tbody>
+          </table>
+        </div>
+        <div v-if="checkPermissions(user, 'tag:create')" class="row">
+          <a href="/tags/edit" title="Nouveau" class="btn col offset-m3"><i class="material-icons">add</i></a>
+        </div>
       </div>
       <main-footer></main-footer>
     </main>
@@ -64,13 +66,9 @@
     filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
     zoom:1;
     box-shadow: 0 0 20px 0px #65656521;
-    width: 40vw;
-    margin-left: 29vw;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
     border-style: solid;
     border-color: white;
-    border-width: 1vw;
+    border-width: 16px;
   }
 
   h3 {

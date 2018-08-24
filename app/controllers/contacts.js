@@ -150,7 +150,7 @@ router.get('/duplicates/:ids', ensureRequest.isPermitted('contact:update','conta
 });
 
 router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {
-  res.renderVue('contacts/contactEdit', { contact : { address: {}}, title : 'Create contact',
+  res.renderVue('contacts/contactEdit', { contact : { address: {}}, title : 'Créer un contact',
     user: { username: req.user.username, permissions: req.user.permissions } });
 });
 
@@ -163,8 +163,8 @@ router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), asyn
     var contact = await Contact.findById(id).populate('tags').exec();
 
     res.renderVue('contacts/contactEdit', {
-      contact : contact,
-      title : 'Editer contact'
+      contact : contact.toJSON(),
+      title : 'Editer un contact'
     });
   } catch(err) {
     next(err);
