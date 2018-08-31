@@ -119,8 +119,13 @@ schema.virtual('phone').get(function() {
 });
 
 schema.method('isPermitted', function() {
-  var claim = this._claim || (this._claim = Permissions.considerSubject(this));
+  var claim = this._claim || (this._claim = Permissions.considerPermissions([].concat(this.permissions)));
   return claim.isPermitted(arguments);
+});
+
+schema.method('ban', function(ban) {
+  var meta = this.meta || (this.meta = {});
+  meta.disabled = ban === false ? null : new Date();
 });
 
 /*

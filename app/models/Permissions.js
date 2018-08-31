@@ -1,7 +1,8 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.authorization = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = {
   considerSubject: considerSubject,
-  considerPermissions: considerPermissions
+  considerPermissions: considerPermissions,
+  coalescePermissions: flatten
 }
 
 function considerSubject(subject) {
@@ -16,18 +17,24 @@ function considerPermissions(/* permission ... or [permission, ....] */) {
   return claim;
 }
 
-function coalescePermissions(/* permission ... or [permission, ...] */) {
-  var permissions = [], i;
-  for (i=0; i < arguments.length; i++) {
-    if (arguments[i] != null && arguments[i] != undefined){
-      permissions = permissions.concat(arguments[i]);
+function isArray(value) {
+  return Array.isArray(value) || (typeof value === "object" && Number.isInteger(value.length));
+}
+
+function flatten(arr, result = []) {
+  for (let i = 0, length = arr.length; i < length; i++) {
+    const value = arr[i];
+    if (isArray(value)) {
+      flatten(value, result);
+    } else {
+      result.push(value);
     }
   }
-  return permissions;
+  return result;
 }
 
 function isPermitted(/* permission ... or [permission, ...] */) {
-  var permissions = coalescePermissions.apply(null, arguments);
+  var permissions = flatten(arguments);
   if (permissions.length == 0) return false;
   for (var i=0; i<permissions.length; i++) {
     if (!this.test(permissions[i])) return false;
@@ -36,7 +43,7 @@ function isPermitted(/* permission ... or [permission, ...] */) {
 }
 
 function compileClaim(/* permission ... or [permission, ....] */) {
-  var permissions = coalescePermissions.apply(null, arguments);
+  var permissions = flatten(arguments);
   if (permissions.length == 0) return new RegExp("$false^");
 
   function compilePermission(permission) {
