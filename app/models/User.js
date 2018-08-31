@@ -39,7 +39,7 @@ schema.plugin(passportLocalMongoose, {
   attemptsField : 'meta.attempts',
   lastLoginField : 'meta.lastLogin',
   populateFields : 'profile',
-  usernameUnique : false,
+  usernameUnique : true,
   findByUsername: function(model, queryParameters) {
     // Add additional query parameter - AND condition - active: true
     queryParameters["meta.disabled"] = null;
