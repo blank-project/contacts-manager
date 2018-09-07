@@ -35,7 +35,7 @@
    data: function () {
      return {
        message: '',
-       user: null,
+       user: null
      };
    },
    components: {

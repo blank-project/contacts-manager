@@ -13,7 +13,7 @@ var express = require('express')
 
 // Exports a function to bind Controller
 module.exports = function (app) {
-  app.use('/import', ensureLoggedIn('/login'), ensureRequest.isPermitted('contact:import', 'contact:create'), router);
+  app.use('/import', ensureLoggedIn('/login'), ensureRequest.isPermitted('contact:import'), router);
 };
 
 router.get('/', function (req, res, next) {

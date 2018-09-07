@@ -86,12 +86,10 @@
                   {{/if}} -->
               </div>
               <div class="buttons">
-              <!-- {{#isPermitted "contact:export:csv" }}-->
                 <div class="padded">
-                    <button name="action" type="submit" value="export.csv" class="btn"><i class="material-icons">save_alt</i></button>
-                    <a class="btn" href="/contacts/edit" title="Nouveau"><i class="material-icons">add</i></a>
+                    <button v-if="checkPermissions(user, 'contact:export:csv')" name="action" type="submit" value="export.csv" class="btn"><i class="material-icons">save_alt</i></button>
+                    <a v-if="checkPermissions(user, 'contact:create')" class="btn" href="/contacts/edit" title="Nouveau"><i class="material-icons">add</i></a>
                 </div>
-              <!--{{/isPermitted}}-->
               </div>
             </div>
           </form>
@@ -104,6 +102,8 @@
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
+ import permissionMixin from './mixins/permissions.vue';
+
  export default {
    data: function () {
      return {
@@ -113,6 +113,7 @@
      mainNav: mainNav,
      mainFooter: mainFooter,
    },
+   mixins : [permissionMixin],
    methods: {
      goTo: function(url) {
        location.href = url;
