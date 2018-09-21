@@ -28,7 +28,8 @@ var schema = new Schema({
   timestamps: {
     createdAt : 'meta.creationDate',
     updatedAt : 'meta.modificationDate'
-  }
+  },
+  usePushEach: true
 });
 
 schema.index({

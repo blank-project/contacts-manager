@@ -5,24 +5,21 @@
             <h3>{{ title }}</h3>
             <table>
               <tr>
-                <th><b>Utilisateur :<b></th><td><span>{{ username }}</span></td>
+                <th><b>Utilisateur :<b></th><td><span>{{ user.username }}</span></td>
               </tr>
               <tr>
-                <th><b>Email :<b></th><td><span>{{ email }}</span></td>
+                <th><b>Email :<b></th><td><span>{{ user.email }}</span></td>
               </tr>
               <tr>
-                <th><b>Téléphone :<b></th><td><span>{{ phone }}</span></td>
+                <th><b>Téléphone :<b></th><td><span>{{ user.phone }}</span></td>
               </tr>
               <tr>
-                <th><b>Oganisation :<b></th><td><span>{{ organisation }}</span></td>
-              </tr>
-              <tr>
-                <th><b>Fonction :<b></th><td><span>{{ position }}</span></td>
+                <th><b>Organisation :<b></th><td><span>{{ user.organisation }}</span></td>
               </tr>
             </table>
           </div>
           <div class="padded">
-              <a :href="'edit/' + myId" class="waves-effect waves-light btn" >Modifier</a>
+              <a :href="'edit/' + user.id" class="waves-effect waves-light btn" >Modifier</a>
           </div>
         <main-footer></main-footer>
     </main>
@@ -34,6 +31,7 @@
  export default {
    data: function () {
      return {
+       user: null
      };
    },
    components: {

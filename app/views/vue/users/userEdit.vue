@@ -1,12 +1,10 @@
-<!--pb quand passe par user/EDIT , Quelles data envoyer ? est ce le bon chemin pr le router ?-->
-
 <template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav :user="user"></main-nav>
           <div class="row" id="container">
             <div class="col m6">
               <span class="fa fa-user"></span>
-              <form action="/users/" method="POST" class="pure-form">
+              <form :action="'/users/' + user.id + '/'" method="POST" class="pure-form">
                 <h4>Modifier le Profil</h4>
                 <div class="carte">
                   <input type="hidden" name="id" :value="user.id" />
@@ -22,7 +20,7 @@
               </form>
             </div>
             <div class="col m6">
-              <form action="/users/edit/password" method="POST">
+              <form :action="'/users/' + user.id + '/password'" method="POST">
                 <h4>Changer de mot de passe</h4>
                 <div class="carte">
                   <input type="hidden" name="id" :value="user.id" />
@@ -48,7 +46,8 @@
  export default {
    data: function () {
      return {
-     };
+      user: null
+    };
    },
    components: {
      mainNav: mainNav,

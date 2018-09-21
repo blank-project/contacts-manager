@@ -15,6 +15,9 @@ module.exports = function (app) {
 /**
  * Middleware for checking that the password match.
  * Calls the next middleware if 'req.body.password' and 'req.body.passwordConfirm' match.
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 function checkPasswordMatch(req, res, next) {
   if (req.body.password === req.body.passwordConfirm) {
@@ -30,35 +33,29 @@ function checkPasswordMatch(req, res, next) {
 };
 
 /**
- * Returns a Middleware for checking access to a given user.
- * Allows access to own user or if authenticated user has given permissions.
+ * Trabsforms the user to a DTO.
+ * @param {User} user
  */
-function checkAccess(...permissions) {
-  return function(req, res, next) {
-    if (req.body.id === req.user.id) {
-      // Allow access for own edit.
-      next();
-      return;
-    }
-
-    // Wrap in a middleware as role to check depends on body.
-    ensureRequest.isPermitted(...permissions)(req, res, next);
-  }
-};
-
 function userData(user) {
   return user ? user.toObject({ virtuals : true}) : {};
 }
 
-async function userView(req, res, next, id) {
-  console.log('Displaying user ' + id);
-
-    var user, data = {};
-
-    user = await User.findById(id).exec();
-    data.user = userData(user);
-    data.title = 'Profil : ' + data.user.username;
-    res.renderVue('users/userView', data);
+/**
+ *
+ * @param {String} id the id of the user to load. If == 'me', loads the user from the request.
+ * @param {*} req the request
+ * @param {*} next the next middleware?
+ */
+async function loadUser(id, req, next) {
+  if (id === req.user.id || id == 'me') {
+    return req.user;
+  }
+  try {
+    return await User.findById(id).exec();
+  } catch(err) {
+    next(err);
+    return null;
+  }
 }
 
 /**
@@ -69,24 +66,71 @@ router.get('/', ensureRequest.isPermitted('user:read'), function (req, res, next
   next(new Error('not available now'));
 });
 
+// DISPLAY
+async function displayUser(id, req, res, next) {
+  const user = await loadUser(id, req, next);
+  if (user) {
+    console.log('Displaying user ' + id);
+    const data = {}
+    data.user = userData(user);
+    data.title = 'Profil : ' + data.user.username;
+    res.renderVue('users/userView', data);
+  }
+}
 /**
- * Manages own profile.
+ * Display Self profile.
  */
-router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
-  res.renderVue('users/me', userData(req.user));
+router.get('/me', ensureLoggedIn('/login'),  function (req, res, next) {
+  displayUser('me', req, res, next);
 });
 
+/**
+ * Display generic profile.
+ */
 router.get('/:userId', ensureRequest.isPermitted('user:read'), function (req, res, next) {
-  var id = req.params.userId;
-  userView(req, res, next, id);
+  displayUser(req.params.userId, req, res, next);
 });
+
+// EDITION
+async function editUser(id, req, res, next) {
+  const user = await loadUser(id, req, next);
+  if (user) {
+    try {
+      await UserManager.update(user, req.body);
+      res.redirect('/users/' + id);
+    } catch(e) {
+      next(e);
+      return;
+    }
+  }
+}
+/**
+ * Edit Self route.
+ */
+router.post('/me/', function (req, res, next) {
+  editUser('me', req, res, next);
+});
+
+/**
+ * Edit User route.
+ */
+router.post('/:userId', ensureRequest.isPermitted('user:update'), function (req, res, next) {
+  const id = req.params.userId;
+  editUser(id, req, res, next);
+});
+
+// CREATION
 
 /**
  * Create User route.
  */
-router.post('/', async function (req, res, next) {
+router.post('/', checkPasswordMatch, async function (req, res, next) {
   try {
     var created = await UserManager.create(req.body, req.user);
+    if (created.meta.disabled) {
+      console.log(`User ${created.username} was created disabled`);
+      // TODO send flash message.
+    }
     res.redirect('/users/me');
   } catch(e) {
     next(e);
@@ -94,126 +138,69 @@ router.post('/', async function (req, res, next) {
   }
 });
 
-/**
- * Front `POST /` route.
- * Forward controls to next route if allowed.
- */
- /*
-router.post('/', function (req, res, next) {
-  if (!req.user && !req.body.id) {
-    // Allow access for signup.
-    next('route');
-    return;
-  }
-  next();
-},
-ensureLoggedIn('/login'),
-checkAccess('user:)
-, checkPasswordMatch
- ,
-*/
-/**
- * Actual `POST /` route, called by previous one if and only if validation passes.
- */
- /*
-router.post('/', async function (req, res, next) {
-   console.log('Submitting User ');
-   var user;
-   var id = req.body.id;
-   if (id) {
-     user = await User.findById(id).exec();
-     if (!user) {
-       next();
-       return;
-     }
-   } else {
-     user = new User({
-       username : req.body.username,
-       meta : {
-         // Disable self registration of user for now.
-         disabled : new Date()
-       }
-     });
-   }
-
-   user.set({
-     name : {
-       first : req.body.firstname,
-       last : req.body.lastname
-     },
-     email : req.body.email,
-     phone : req.body.phone,
-     organization : req.body.organization,
-     title : req.body.title,
-   });
-
-   if (!id) {
-     User.register(user, req.body.password, function(err) {
-       if (err) {
-         console.log(err);
-         data = req.body || {};
-         data.message = {
-           level : 'error',
-           message : err.message
-         }
-         res.renderVue('users/userCreate', data);
-       } else {
-         res.redirect('/');
-       }
-     });
-   } else {
-     try {
-        user.save();
-        res.redirect('/users/me');
-     } catch(err) {
-       next(err);
-       return;
-     }
-   }
-
- });
- */
-
-router.post('/edit/password', function (req, res, next) {
-  var user = req.user;
-  user.changePassword(req.body.passwordOld, req.body.password, function(err) {
-    if (err) {
-      console.log(err);
-      data = req.body || {};
-      data.user = user;
-      data.message = {
-        level : 'error',
-        message : err.message
-      }
+async function editUserPassword(id, req, res, next) {
+  const user = await loadUser(id, req, next);
+  if (user) {
+    if (req.body.password !== req.body.passwordConfirm) {
+      // Should be factor with displayEdit
+      // TODO For all form we should handle error and forward to input with data already filled.
+      const data = req.body;
+      data.user = userData(user);
+      data.title = 'Editer le Profil : ' + data.user.username;
       res.renderVue('users/userEdit', data);
-    } else {
-      res.redirect('/');
+      return;
     }
-  });
-});
-
-router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:create'), function (req, res, next) {
-  res.renderVue('users/userCreate', { user: { username: req.user.username, permissions: req.user.permissions }});
-});
-
-router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {
-  res.renderVue('users/userEdit', { user : userData(req.user) , title : 'Editer Profil' });
-});
-
-router.get('/edit/:userId', ensureLoggedIn('/login'), function (req, res, next) {
-
-  if (req.params.userId === req.user.id) {
-    // Allow access for own edit.
-    next();
-    return;
+    try {
+      await UserManager.updatePassword(user, req.body.passwordOld, req.body.password);
+      res.redirect('/users/' + id);
+    } catch(e) {
+      next(e);
+      return;
+    }
   }
+}
 
-  // Wrap in a middleware as role to check depends on body.
-  ensureRequest.isPermitted('user:update')(req, res, next);
-}, async function (req, res, next) {
+// PASSWORD EDITION
+
+/**
+ * Edit Self password.
+ */
+router.post('/me/password', ensureLoggedIn('/login'), function (req, res, next) {
+  editUserPassword('me', req, res, next);
+});
+
+/**
+ * Edit User password.
+ */
+router.post('/:userId/password', ensureRequest.isPermitted('user:update'), function (req, res, next) {
+    const id = req.params.userId;
+    editUserPassword(id, req, res, next);
+});
+
+// DISPLAY EDITION
+
+
+async function displayUserEdition(id, req, res, next) {
+  const user = await loadUser(id, req, next);
+  if (user) {
+    const data = {}
+    data.user = userData(user);
+    data.title = 'Editer le Profil : ' + data.user.username;
+    res.renderVue('users/userEdit', data);
+  }
+}
+
+/**
+ * Display Self edition
+ */
+router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {
+  displayUserEdition('me', req, res, next);
+});
+
+/**
+ * Display User edition
+ */
+router.get('/edit/:userId', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:update'), async function (req, res, next) {
   var id = req.params.userId;
-  var user = await User.findById(id).exec();
-  var dataUser = userData(req.user);
-
-  res.renderVue('users/userEdit', { user : dataUser });
+  displayUserEdition(id, req, res, next);
 });
