@@ -61,9 +61,24 @@ async function loadUser(id, req, next) {
 /**
  * Display list of user if allowed.
  */
-router.get('/', ensureRequest.isPermitted('user:read'), function (req, res, next) {
-  // Not implemented.
-  next(new Error('not available now'));
+router.get('/', ensureRequest.isPermitted('user:read'), async function (req, res, next) {
+  var first = parseInt(req.query.first), size = parseInt(req.query.size);
+  var options = { first, size };
+
+  try {
+    var users = await UserManager.find(req.query, options);
+   let data = {
+     ...options,
+     users,
+     title : 'Liste de Contact'
+    };
+
+    res.renderVue('users/userList', data);
+  } catch(err) {
+    next(err);
+    return;
+  }
+
 });
 
 // DISPLAY

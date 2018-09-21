@@ -39,19 +39,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   next();
 }, async function(req, res, next) {
   var query = ContactManager.buildQuery(req.query), first = parseInt(req.query.first), size = parseInt(req.query.size);
-
-  console.log('Listing contacts');
-  //test de recup de la session id//
-  console.log(req.sessionID);
-  //test de recup du user (dans bdd)//
-  console.log(req.user)
-
-  var data = {
-    user: {
-      permissions: req.user.permissions,
-      username: req.user.username
-    }
-  };
+  var data = {};
 
   var options = { first, size };
 

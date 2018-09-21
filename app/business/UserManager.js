@@ -81,4 +81,54 @@ module.exports = class UserManager {
     });
   }
 
+   /**
+    * Builds the query.
+    * @param {Object} query the query.
+    */
+  _buildQuery(query = {}) {
+    return {};
+  }
+
+  /**
+   * Finds all Contacts matching the given request.
+   */
+  async find(query, options = {}) {
+    query = this._buildQuery(query);
+    var first = options.first, size = options.size;
+
+    if (!first || first < 0) {
+      options.first = first = 0;
+    }
+
+    if (!size || size <= 0) {
+      options.size = size = 20;
+    }
+
+    if (!options.sort) {
+      options.sort = { 'name.last' : 'asc', 'name.first' : 'asc' };
+    }
+
+    const users = await User.find(query)
+      .sort(options.sort)
+      .skip(first)
+      .limit(size + 1)
+      .exec();
+
+    // We queried one item more to check for pagination.
+    if (users.length > size) {
+      users.pop();
+      options.next = first + size;
+      options.hasNext = true;
+    }
+    if (first >= size) {
+      options.previous = first - size;
+      options.hasPrevious = true;
+    }
+    if (options.hasPrevious || options.hasNext) {
+      options.incomplete = true;
+    }
+
+    return users;
+  }
+
 };

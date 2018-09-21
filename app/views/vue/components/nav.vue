@@ -8,7 +8,8 @@
                 <li><a v-if="checkPermissions(user, 'contact:read')" href="/contacts" class="waves-effect waves-light">Contacts</a></li>
                 <li><a v-if="checkPermissions(user, 'tag:read')" href="/tags" class="waves-effect waves-light">Etiquettes</a></li>
                 <li><a v-if="checkPermissions(user, 'contact:import')" href="/import" class="waves-effect waves-light">Import</a></li>
-                <li><a href="/users/me" class="waves-effect waves-light">Profil ({{ user.username }})</a></li>
+                <li><a href="/users/me" class="waves-effect waves-light">Mon Profil</a></li>
+                <li><a v-if="checkPermissions(user, 'user:read')" href="/users" class="waves-effect waves-light">Utilisateurs</a></li>
                 <li><a href="/logout" class="waves-effect waves-light">Se déconnecter</a></li>
             </ul>
             <ul class="right hide-on-med-and-down sidenav" v-if="!user">
@@ -24,12 +25,13 @@
                     <img src="/images/testfond2.png">
                   </div>
                   <a href="/users/me"><img class="circle" src="/images/logoBC.png"></a>
-                  <a href="/users/me" class=""><span class="black-text name">Profil ({{ user.username }})</span></a>
+                  <a href="/users/me" class=""><span class="black-text name">Mon Profil</span></a>
                   <a href="/logout" class=""><span class="black-text">Se déconnecter</span></a>
                 </div>
                 <li><a v-if="checkPermissions(user, 'contact:read')" href="/contacts" class="waves-effect waves-light">Contacts</a></li>
                 <li><a v-if="checkPermissions(user, 'tag:read')" href="/tags" class="waves-effect waves-light">Etiquettes</a></li>
                 <li><a v-if="checkPermissions(user, 'contact:import')" href="/import" class="waves-effect waves-light">Import</a></li>
+                <li><a v-if="checkPermissions(user, 'user:read')" href="/users" class="waves-effect waves-light">Utilisateurs</a></li>
             </ul>
             <ul class="sidenav" id="nav-mobile" v-if="!user">
                 <li><a href="/login" class="waves-effect waves-light">Se connecter</a></li>

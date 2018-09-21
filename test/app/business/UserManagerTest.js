@@ -9,6 +9,19 @@ var User = require('../../../app/models/User');
 var UserManager = require('../../../app/business/UserManager');
 var db;
 
+function createUsers(userManager, count) {
+  var users = [];
+  for (var i = 0; i < count; i++) {
+    users.push(userManager.create({
+      username : 'test_' + i,
+      password : 'test',
+      firstname : 'test',
+      lastname : 'test'
+    }));
+  }
+  return Promise.all(users);
+}
+
 describe('UserManager', function() {
 
   before(async function() {
@@ -201,6 +214,38 @@ describe('UserManager', function() {
       const newHash = user.password;
       // THEN password is not modified
       expect(newHash, 'Password should not be modified').to.be.equals(oldHash);
+    });
+
+  });
+
+  describe('#find', function() {
+
+    var sut = new UserManager();
+
+    it('should have a find function with arity 1 (default param don\'t count)', async function() {
+      expect(sut.find).to.be.a('function');
+      expect(sut.find).to.have.property('length', 1);
+    });
+
+    it('should be able to find users', async function() {
+      // GIVEN 5 users.
+      const users = await createUsers(sut, 5);
+
+
+      var req = {};
+      var options = {
+        first : 1,
+        size : 3
+      };
+      // WHEN Finding users 1 to 3
+      const result = await sut.find(req, options);
+
+      // THEN
+      expect(result, "The right User count should be found").to.have.lengthOf(options.size);
+      expect(options, "There should be a hasNext flag").to.have.property('hasNext', true);
+      expect(options, "There should be a next element : 4").to.have.property('next', 4);
+      expect(options, "There should not be a hasPrevious flag").to.not.have.property('hasPrevious');
+      expect(options, "There should not be a previous element").to.not.have.property('previous');
     });
 
   });
