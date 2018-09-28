@@ -33,7 +33,7 @@ function checkPasswordMatch(req, res, next) {
 };
 
 /**
- * Trabsforms the user to a DTO.
+ * Transforms the user to a DTO.
  * @param {User} user
  */
 function userData(user) {
@@ -61,7 +61,7 @@ async function loadUser(id, req, next) {
 /**
  * Display list of user if allowed.
  */
-router.get('/', ensureRequest.isPermitted('user:read'), async function (req, res, next) {
+router.get('/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:read'), async function (req, res, next) {
   var first = parseInt(req.query.first), size = parseInt(req.query.size);
   var options = { first, size };
 
@@ -95,14 +95,14 @@ async function displayUser(id, req, res, next) {
 /**
  * Display Self profile.
  */
-router.get('/me', ensureLoggedIn('/login'),  function (req, res, next) {
+router.get('/me', ensureLoggedIn('/login'), function (req, res, next) {
   displayUser('me', req, res, next);
 });
 
 /**
  * Display generic profile.
  */
-router.get('/:userId', ensureRequest.isPermitted('user:read'), function (req, res, next) {
+router.get('/:userId', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:read'), function (req, res, next) {
   displayUser(req.params.userId, req, res, next);
 });
 
@@ -122,14 +122,14 @@ async function editUser(id, req, res, next) {
 /**
  * Edit Self route.
  */
-router.post('/me/', function (req, res, next) {
+router.post('/me/', ensureLoggedIn('/login'), function (req, res, next) {
   editUser('me', req, res, next);
 });
 
 /**
  * Edit User route.
  */
-router.post('/:userId', ensureRequest.isPermitted('user:update'), function (req, res, next) {
+router.post('/:userId', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:update'), function (req, res, next) {
   const id = req.params.userId;
   editUser(id, req, res, next);
 });
@@ -187,7 +187,7 @@ router.post('/me/password', ensureLoggedIn('/login'), function (req, res, next) 
 /**
  * Edit User password.
  */
-router.post('/:userId/password', ensureRequest.isPermitted('user:update'), function (req, res, next) {
+router.post('/:userId/password', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:update'), function (req, res, next) {
     const id = req.params.userId;
     editUserPassword(id, req, res, next);
 });
@@ -218,4 +218,43 @@ router.get('/edit/me', ensureLoggedIn('/login'), function (req, res, next) {
 router.get('/edit/:userId', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:update'), async function (req, res, next) {
   var id = req.params.userId;
   displayUserEdition(id, req, res, next);
+});
+
+
+// DISABLE (Ban/Unban)
+async function disable(id, req, res, next) {
+  const user = await loadUser(id, req, next);
+  if (user) {
+    user.ban(!!parseInt(req.body.disable));
+    await user.save();
+    res.redirect('/users/' + id);
+  }
+}
+
+/**
+ * Disables user
+ */
+router.post('/:userId/disable', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:disable'), async function (req, res, next) {
+    const id = req.params.userId;
+    disable(id, req, res, next);
+});
+
+// UPDATE PERMISSIONS
+/**
+ * Update user permissions
+ */
+router.post('/:userId/permissions', ensureLoggedIn('/login'), ensureRequest.isPermitted('permission:update'), async function (req, res, next) {
+    const id = req.params.userId;
+    const user = await loadUser(id, req, next);
+    if (user) {
+      const permissions = req.body.permissions
+        .split(";")
+        // Does not allow a user to become admin.
+        .filter(x => x != '*')
+        .map(x => x.trim());
+
+      user.permissions = permissions;
+      await user.save();
+      res.redirect('/users/' + id);
+    }
 });

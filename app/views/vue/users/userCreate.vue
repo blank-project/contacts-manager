@@ -1,8 +1,6 @@
-<!-- data a def , qui utilise la page et prk ?-->
-
 <template>
   <main class="grey lighten-4 blue-grey-text">
-      <main-nav :user="user"></main-nav>
+      <main-nav :user="currentUser"></main-nav>
         <div class="row" id="container">
           <span class="fa fa-user"></span>
           <form action="/users/" method="POST">

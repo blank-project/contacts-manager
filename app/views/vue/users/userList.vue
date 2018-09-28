@@ -1,6 +1,6 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
-        <main-nav :user="user"></main-nav>
+        <main-nav :user="currentUser"></main-nav>
         <div id="container" class="container">
               <div id="medium">
                 <table id="user-list" class="user-list pure-table pure-table-striped">
@@ -12,7 +12,6 @@
                       <th>Téléphone</th>
                       <th>Organisation</th>
                       <th>Fonction</th>
-                      <th>Adresse</th>
                       <th>Actif</th>
                     </tr>
                   </thead>
@@ -24,21 +23,22 @@
                       <td><p v-for="phone in user.phones">{{ phone.value }}</p></td>
                       <td>{{ user.organization }}</td>
                       <td>{{ user.title }}</td>
-                      <td>{{ user.formattedAdress }}</td>
                       <td><i v-if="user.meta.disabled" class="material-icons">block</i></td>
                     </tr>
                   </tbody>
               </table>
               </div>
               <div class="padded">
-                <input name="previousSize" type="hidden" :value="size" />
-                <button name="first" type="submit" :value="previous" :disabled="!previous" class="btn"><i class="material-icons">keyboard_arrow_left</i></button>
-                <button name="first" type="submit" :value="next" :disabled="!next" class="btn"><i class="material-icons">keyboard_arrow_right</i></button>
-                <input v-if="incomplete" name="size" type="number" :value="size" min="0" max="200" step="10" size="3" />
+                <form action="/users">
+                  <input name="previousSize" type="hidden" :value="size" />
+                  <button name="first" type="submit" :value="previous" :disabled="!previous" class="btn"><i class="material-icons">keyboard_arrow_left</i></button>
+                  <button name="first" type="submit" :value="next" :disabled="!next" class="btn"><i class="material-icons">keyboard_arrow_right</i></button>
+                  <!-- <input v-if="incomplete" name="size" type="number" :value="size" min="0" max="200" step="10" size="3" /> -->
+                </form>
               </div>
               <div class="buttons">
                 <div class="padded">
-                  <a v-if="checkPermissions(user, 'user:create')" class="btn" href="/users/edit" title="Nouveau"><i class="material-icons">add</i></a>
+                  <a v-if="checkPermissions(currentUser, 'user:create')" class="btn" href="/users/edit" title="Nouveau"><i class="material-icons">add</i></a>
                 </div>
               </div>
             </div>

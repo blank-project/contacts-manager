@@ -99,11 +99,15 @@ module.exports = function(app, config) {
 
     // Override original version.
     res.renderVue = function(componentPath, data = {}, vueOptions = {}) {
-      if (req.user && !data.user) {
-        data.user = {
-          permissions: req.user.permissions,
-          username: req.user.username
-        };
+      if (req.user) {
+        let userData = req.user.toObject({ virtuals : true});
+        if (!data.user) {
+          // Do not override existing data.
+          data.user = userData;
+        }
+        // Alias connected user as currentUser for the case when the data displayed uses a user data attribute.
+        // Examples include user consultation and edition.
+        data.currentUser = userData;
       }
       // Call original version.
       old(componentPath, data, vueOptions);
