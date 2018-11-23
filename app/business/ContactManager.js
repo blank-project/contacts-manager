@@ -120,7 +120,7 @@ class ContactManager {
   /**
    * Finds all Contacts matching the given request.
    */
-  find(req, options = {}) {
+  async find(req, options = {}) {
     var query = this.buildQuery(req),
     first = options.first,
     size = options.size;
@@ -133,15 +133,30 @@ class ContactManager {
       options.size = size = 20;
     }
 
-    return Contact.find(query)
+    var contacts = await Contact.find(query)
       .populate({
         path: 'tags',
         options: { sort: 'name'}
       })
       .sort({ 'name.last' : 'asc', 'name.first' : 'asc' })
       .skip(first)
-      .limit(size)
+      .limit(size + 1)
       .exec();
+
+    if (contacts.length > size) {
+      contacts.pop();
+      options.next = first + size;
+      options.hasNext = true;
+    }
+    if (first >= size) {
+      options.previous = first - size;
+      options.hasPrevious = true;
+    }
+    if (options.hasPrevious || options.hasNext) {
+      options.incomplete = true;
+    }
+
+    return contacts;
   }
 
 }
