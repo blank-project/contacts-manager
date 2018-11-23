@@ -22,18 +22,8 @@
         </ul>
       </span>
       <form action="/import" enctype="multipart/form-data" method="POST" >
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>File</span>
-            <input id="upload" name="upload" type="file" required>
-          </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
-          </div>
-          <div class="file-path-wrapper">
-            <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
-          </div>
-        </div>
+          <input id="upload" name="upload" type="file" required>
+          <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
       </form>
     </div>
     <main-footer></main-footer>

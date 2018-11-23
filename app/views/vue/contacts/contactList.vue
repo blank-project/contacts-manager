@@ -51,7 +51,7 @@
                       <th>Etiquettes</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="contacts.length">
                     <tr class="clickable" v-for="contact in contacts" @click="goTo('/contacts/' + contact._id)">
                       <td>{{ contact.name.first }}</td>
                       <td v-if="contact.name.last">{{ contact.name.last }}</td>
@@ -65,8 +65,9 @@
                   </tbody>
               </table>
               </div>
-              <div id="small">
-                  <div class="carte" v-for="contact in contacts"v-on:click="goTo('/contacts/' + contact._id)">
+              <!--
+                <div id="small">
+                  <div class="carte" v-for="contact in contacts" v-on:click="goTo('/contacts/' + contact._id)">
                     <p><b>Nom : </b> {{ contact.name.first }}</p>
                     <p v-if="contact.name.last"><b>Nom de famille : </b>{{ contact.name.last }}</p>
                     <p v-for="email in contact.emails"><b>Email : </b>{{ email.value }}</p>
@@ -77,13 +78,12 @@
                     <p v-for="tag in contact.tags"><b>Etiquettes : </b>{{ tag.name }}</p>
                   </div>
               </div>
-              <div class="padded">
-                  <!-- <input name="previousSize" type="hidden" value="{{ size }}" />
-                  <button name="first" type="submit" {{#if hasPrevious}}value="{{ previous }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-left"></button>
-                  <button name="first" type="submit" {{#if hasNext}}value="{{ next }}"{{else}}disabled{{/if}} class="pure-button fa fa-angle-double-right"></button> -->
-                  <!-- {{#if incomplete}}
-                  <input name="size" type="number" value="{{ size }}" min="0" max="200" step="10" size="3" />
-                  {{/if}} -->
+              -->
+
+              <div v-if="contacts.length" class="padded">
+                  <input name="previousSize" type="hidden" :value="size" />
+                  <button name="first" type="submit" :value="previous" :disabled="!hasPrevious" class="btn"><i class="material-icons">keyboard_arrow_left</i></button>
+                  <button name="first" type="submit" :value="next" :disabled="!hasNext" class="btn"><i class="material-icons">keyboard_arrow_right</i></button>
               </div>
               <div class="buttons">
                 <div class="padded">

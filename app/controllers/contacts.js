@@ -41,6 +41,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   var query = ContactManager.buildQuery(req.query), first = parseInt(req.query.first), size = parseInt(req.query.size);
   var data = {};
 
+  // Add 1 to check for next element.
   var options = { first, size };
 
   try {
@@ -58,19 +59,11 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
     next(err);
   }
 
-  var contacts = data.contacts;
-  if (contacts.length > size) {
-    contacts.pop();
-    data.next = first + size;
-    data.hasNext = true;
-  }
-  if (first >= size) {
-    data.previous = first - size;
-    data.hasPrevious = true;
-  }
-  if (data.hasPrevious || data.hasNext) {
-    data.incomplete = true;
-  }
+  data.hasPrevious = options.hasPrevious;
+  data.previous = options.previous;
+  data.next = options.next;
+  data.hasNext = options.hasNext;
+  data.incomplete = options.incomplete;
   data.size = size;
   data.title = 'Liste de Contact';
   data.query = req.query;
