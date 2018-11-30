@@ -6,10 +6,33 @@ Uses :
 - MongoDB as a NoSQL database
 - Node + Express for Web application development.
 
+## Administration
+Administration scripts are located in the scripts/ directory.
+They are useful until a web-based solution is provided.
+
+All scripts require the host, port and database set in the environment.
+
+### activate-user.sh
+Users are created deactivated by default, this script allows to activate a user.
+
+Activate the user with username test :
+```
+$ sh activate-user.sh test
+```
+
+### grant-admin.sh
+Users are created with the permission _contact:read_ only by default.
+This script allows to grant a user administrative permissions.
+
+Make the user with username test an administrator :
+```
+$ sh grant-admin.sh test
+```
+
 ## Contributing
 
 ### Docker Container
-The app can be deployed into a Docker container for development.  
+The app can be deployed into a Docker container for development.
 It has not been configured for Production yet
 
 To build :

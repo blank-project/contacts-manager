@@ -11,6 +11,7 @@ var config = {
     port: process.env.PORT || 3000,
     db : {
       database : 'contacts-manager-development',
+      // References the host in the docker-compose file.
       host : 'dev.database.contact-manager.com',
       port : '27017',
       options : {
