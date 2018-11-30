@@ -16,7 +16,8 @@ router.route('/login')
       .get(function (req, res, next) {
         var data =  {
           title : 'Login'
-        }, flash = req.flash();
+        };
+        var flash = req.flash();
         console.log(flash);
         if (flash && flash.error) {
           data.message = {
@@ -36,8 +37,9 @@ router.route('/login')
 router.get('/logout', function (req, res, next) {
     req.logout();
     delete res.locals.user;
-    res.render('home/index', {
-      title : 'Contacts Manager - Logout'
+    res.renderVue('home', {
+      title : 'Contacts Manager - Logout',
+      message : 'Déconnexion réussie'
     });
 });
 
