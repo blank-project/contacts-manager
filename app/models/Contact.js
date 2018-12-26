@@ -52,7 +52,7 @@ schema.index({
 // Add Virtuals
 schema.virtual('fullName').
   get(function () {
-    var name = this.name || {}, fullName = name.first;
+    var name = this.name || {}, fullName = name.first || '';
     if (name.last) {
       fullName += ' ' + name.last;
     }

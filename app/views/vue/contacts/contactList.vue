@@ -52,33 +52,18 @@
                     </tr>
                   </thead>
                   <tbody v-if="contacts.length">
-                    <tr class="clickable" v-for="contact in contacts" @click="goTo('/contacts/' + contact._id)">
-                      <td>{{ contact.name.first }}</td>
-                      <td v-if="contact.name.last">{{ contact.name.last }}</td>
-                      <td v-for="email in contact.emails">{{ email.value }}</td>
-                      <td v-for="phone in contact.phones">{{ phone.value }}</td>
+                    <tr class="clickable" v-for="contact in contacts" :key="contact.id" @click="goTo('/contacts/' + contact._id)">
+                      <td>{{ contact.fullName }}</td>
+                      <td><div v-for="email in contact.emails">{{ email.value }}<div></td>
+                      <td><div v-for="phone in contact.phones">{{ phone.value }}<div></td>
                       <td>{{ contact.organization }}</td>
                       <td>{{ contact.title }}</td>
-                      <td v-for="address in contact.addresses">{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</td>
-                      <td v-for="tag in contact.tags">{{ tag.name }}</td>
+                      <td><div v-for="address in contact.addresses"> {{ contact.formattedAddress }}</div></td>
+                      <td><div v-for="tag in contact.tags" :key="tag.id">{{ tag.name }}</div></td>
                     </tr>
                   </tbody>
               </table>
               </div>
-              <!--
-                <div id="small">
-                  <div class="carte" v-for="contact in contacts" v-on:click="goTo('/contacts/' + contact._id)">
-                    <p><b>Nom : </b> {{ contact.name.first }}</p>
-                    <p v-if="contact.name.last"><b>Nom de famille : </b>{{ contact.name.last }}</p>
-                    <p v-for="email in contact.emails"><b>Email : </b>{{ email.value }}</p>
-                    <p v-for="phone in contact.phones"><b>Telephone : </b>{{ phone.value }}</p>
-                    <p><b>Organisation : </b>{{ contact.organization }}</p>
-                    <p><b>titre : </b>{{ contact.title }}</p>
-                    <p v-for="address in contact.addresses"><b> Adresse : </b>{{ address.number + ' ' + address.street + ' ' + address.code + ' ' + address.city }}</p>
-                    <p v-for="tag in contact.tags"><b>Etiquettes : </b>{{ tag.name }}</p>
-                  </div>
-              </div>
-              -->
 
               <div v-if="contacts.length" class="padded">
                   <input name="previousSize" type="hidden" :value="size" />
