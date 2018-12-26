@@ -131,8 +131,10 @@ router.get('/duplicates/:ids', ensureRequest.isPermitted('contact:update','conta
 });
 
 router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {
-  res.renderVue('contacts/contactEdit', { contact : { address: {}}, title : 'Créer un contact',
-    user: { username: req.user.username, permissions: req.user.permissions } });
+  var contact = {}, data = { title : 'Créer un contact'};
+  contact.addresses = [{}];
+  data.contact = contact;
+  res.renderVue('contacts/contactEdit', data);
 });
 
 router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
@@ -144,7 +146,7 @@ router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), asyn
     var contact = await Contact.findById(id).populate('tags').exec();
 
     res.renderVue('contacts/contactEdit', {
-      contact : contact.toJSON(),
+      contact : contact.toObject({ getters: true, virtuals: true }),
       title : 'Editer un contact'
     });
   } catch(err) {
@@ -183,7 +185,7 @@ router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async funct
     next(err);
   }
 
-  // Can not use contact directly, it causes a bug in Vueœ
+  // Can not use contact directly, it causes a bug in Vue
   // Exports as a plain JSON Object
   data.contact = contact.toObject({ getters: true, virtuals: true });
   console.log(data.contact);
@@ -219,10 +221,10 @@ router.post('/', function (req, res, next) {
     organization : req.body.organization,
     title : req.body.title,
     address : {
-      number : req.body['address.number'],
-      street : req.body['address.street'],
-      code : req.body['address.code'],
-      city : req.body['address.city']
+      number : req.body['address.number'] || '',
+      street : req.body['address.street'] || '',
+      code : req.body['address.code'] || '',
+      city : req.body['address.city'] || ''
     },
     note : req.body.note,
   });

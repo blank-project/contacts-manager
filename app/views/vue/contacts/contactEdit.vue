@@ -10,7 +10,7 @@
           <div class="input-field">
             <i class="material-icons prefix">person</i>
             <label for="name">Nom</label>
-            <input id="name" type="text" name="name" :value="contact.fullName"/><br />
+            <input id="name" type="text" name="name" v-model="contact.fullName" required /><br />
           </div>
           <div class="input-field">
             <i class="material-icons prefix">alternate_email</i>
@@ -25,7 +25,7 @@
           <div class="input-field">
             <i class="material-icons prefix">business</i>
             <label for="organization">Organisation</label>
-            <input id="organization" type="text" name="organization" :v-model="contact.organization" /><br />
+            <input id="organization" type="text" name="organization" v-model="contact.organization" /><br />
           </div>
           <div class="input-field">
             <i class="material-icons prefix">list_alt</i>
@@ -73,15 +73,13 @@
  import mainFooter from './components/footer.vue';
  export default {
    data: function () {
-     return {
+     return { 
+       contact : null
      };
    },
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter
-   },
-   created() {
-     console.log(this);
    }
  }
 </script>
