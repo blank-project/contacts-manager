@@ -3,13 +3,21 @@
     <main-nav :user="user"></main-nav>
     <div id="container">
       <h3>{{ title }}</h3>
-      <span class="instructions">
-        <p><b>Uploader un fichier CSV, encodé en UTF-8, sans ligne d'en-tête, séparateur ",".</b></p><br/></br>
+      <div class="instructions">
+        <p>Uploader un fichier <a href="https://fr.wikipedia.org/wiki/Comma-separated_values">CSV</a> :
+        <ul>
+          <li>encodé en UTF-8</li>
+          <li>sans ligne d'en-tête</li>
+          <li>séparateur ","</li>
+        </ul>
+        </p>
+        <p>
         <b>Les colonnes sont :</b>
         <ul>
         <li>Prénom</li>
         <li>Nom</li>
-        <li>E-mail</li>
+        <li>E-mail 1</li>
+        <li>E-mail 2</li>
         <li>Téléphone 1</li>
         <li>Téléphone 2</li>
         <li>Organisation</li>
@@ -19,8 +27,14 @@
         <li>Code Postal</li>
         <li>Ville</li>
         <li>Note</li>
+        <li>Tag 1</li>
+        <li>Tag 2</li>
+        <li>Tag 3</li>
+        <li>Tag 4</li>
+        <li>Tag 5</li>
         </ul>
-      </span>
+        </p>
+      </div>
       <form action="/import" enctype="multipart/form-data" method="POST" >
           <input id="upload" name="upload" type="file" required>
           <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
@@ -75,15 +89,7 @@
     margin: auto;
   }
   .instructions {
-    background-color: white;
-    -webkit-box-shadow: 0px 0px 2px 1px #656565;
-    -moz-box-shadow: 0px 0px 2px 1px #656565;
-    filter:progid:DXImageTransform.Microsoft.Glow(Color=#656565,Strength=3);
-    zoom:1;
-    box-shadow: 0 0 20px 0px #65656521;
-    margin: 10vh 0 10vh 35vh;
-    padding-bottom: 5vh;
-    width: 60vw;
+    margin: 0px 30px;
   }
 
 span  ul, span li {
