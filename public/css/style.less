@@ -1,8 +1,20 @@
-body {
-  padding: 50px;
-  font-family: 'Roboto', sans-serif;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
+}
+
+main{
+  background-image: url(/images/testfond2.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 a {
   color: #00B7FF;
 }
@@ -115,3 +127,74 @@ header {
   // copied from pure-button-active
   box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset,0 0 6px rgba(0,0,0,.2) inset;
 }
+
+fieldset{
+  border-style: none;
+}
+
+.btn{
+  background-color: #00d2ff;
+}
+
+.btn:hover {
+    background-color: #00d2ff;
+    opacity: 0.75;
+}
+
+#logo{
+  height: 7vh;
+  margin-top: 1vh;
+  margin-left: 1vh;
+}
+
+nav {
+  background-color: #00d2ff;
+}
+
+h4, h3, h2, h1{
+  color: #607d8b !important;
+}
+
+  /* label underline focus color */
+  .input-field input[type=text]:focus {
+    border-bottom: 1px solid #607d8b !important;
+    box-shadow: 0 1px 0 0 #000;
+    color: #607d8b !important;
+  }
+
+  /* valid color */
+  .input-field input[type=text].valid {
+    border-bottom: 1px solid #607d8b;
+    box-shadow: 0 1px 0 0 #000;
+  }
+
+  /* icon prefix focus color */
+  .input-field .prefix.active {
+    color: #607d8b;
+  }
+
+  /* label focus color */
+     .input-field input[type=text]:focus + label{
+       color: #607d8b;
+     }
+
+   /* invalid color */
+      .input-field input[type=text].invalid {
+      border-bottom: 1px solid #607d8b;
+      box-shadow: 0 1px 0 0 #000;
+    }
+
+    /* label focus color */
+ .input-field input:focus + label {
+   color: #607d8b !important;
+ }
+ /* label underline focus color */
+
+ input:focus {
+   border-bottom: 1px solid #607d8b !important;
+   box-shadow: 0 1px 0 0 #607d8b !important
+ }
+
+  //  label.active:active{
+  //    color: #607d8b !important,
+  //  }

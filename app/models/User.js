@@ -4,6 +4,9 @@ var mongoose = require('mongoose')
   , Email = require('./Email')
 //  , Profile = require('./Profile')
   , passportLocalMongoose = require('passport-local-mongoose');
+
+const Permissions = require('./Permissions');
+
 // Base Schema
 // TODO Factor with Contact as BaseEntity ?
 // TODO Using ES6 Classes as definition ?
@@ -26,7 +29,8 @@ var schema = new Schema({
   timestamps: {
     createdAt : 'meta.creationDate',
     updatedAt : 'meta.modificationDate'
-  }
+  },
+  usePushEach: true
 });
 
 //
@@ -36,7 +40,7 @@ schema.plugin(passportLocalMongoose, {
   attemptsField : 'meta.attempts',
   lastLoginField : 'meta.lastLogin',
   populateFields : 'profile',
-  usernameUnique : false,
+  usernameUnique : true,
   findByUsername: function(model, queryParameters) {
     // Add additional query parameter - AND condition - active: true
     queryParameters["meta.disabled"] = null;
@@ -113,6 +117,16 @@ schema.virtual('phone').get(function() {
     phones.push(new Phone());
   }
   phones[0].value = v;
+});
+
+schema.method('isPermitted', function() {
+  var claim = this._claim || (this._claim = Permissions.considerPermissions([].concat(this.permissions)));
+  return claim.isPermitted(arguments);
+});
+
+schema.method('ban', function(ban) {
+  var meta = this.meta || (this.meta = {});
+  meta.disabled = ban === false ? null : new Date();
 });
 
 /*

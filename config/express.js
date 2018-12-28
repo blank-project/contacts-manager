@@ -15,6 +15,7 @@ var exphbs = require('express-handlebars');
 var helpers = require('handlebars-helpers')(['collection', 'array']);
 var session = require('express-session');
 var flash = require('connect-flash');
+var expressVue = require('express-vue');
 
 // Authentication conf
 var authentication = require('./authentication');
@@ -29,6 +30,26 @@ module.exports = function(app, config) {
   app.locals.ENV_DEVELOPMENT = env == 'development';
 
   helpers.isPermitted = authorization.helpers.isPermitted;
+
+  const vueOptions = {
+    rootPath: config.root + '/app/views/vue',
+    vue: {
+      head: {
+        title: 'Contacts Manager',
+        meta: [
+          { script: 'https://code.jquery.com/jquery-3.2.1.min.js' },
+          { script: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js' },
+          { script: 'https://unpkg.com/vue' },
+          { style: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css' },
+          { style: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+          { style: '/css/style.css' }
+        ]
+      }
+    },
+  };
+
+  const expressVueMiddleware = expressVue.init(vueOptions);
+  app.use(expressVueMiddleware);
 
   // Register view engine (handlebars).
   app.engine('hbs', exphbs({
@@ -71,6 +92,29 @@ module.exports = function(app, config) {
     next();
   });
 
+  // Hack to always have access to data from res.locals in rendering data.
+  // It is the default behavior, but it is not supported by express-vue.
+  app.use(function(req, res, next) {
+    var old = res.renderVue;
+
+    // Override original version.
+    res.renderVue = function(componentPath, data = {}, vueOptions = {}) {
+      if (req.user) {
+        let userData = req.user.toObject({ virtuals : true});
+        if (!data.user) {
+          // Do not override existing data.
+          data.user = userData;
+        }
+        // Alias connected user as currentUser for the case when the data displayed uses a user data attribute.
+        // Examples include user consultation and edition.
+        data.currentUser = userData;
+      }
+      // Call original version.
+      old(componentPath, data, vueOptions);
+    };
+    next();
+  });
+
   // Register all controllers
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach(function (controller) {
@@ -96,11 +140,11 @@ module.exports = function(app, config) {
   } else {
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
-        res.render('error', {
-          message: err.message,
-          error: {},
-          title: 'Une erreur s\'est produite'
-        });
+      res.render('error', {
+        message: err.message,
+        error: {},
+        title: 'Une erreur s\'est produite'
+      });
     });
   }
   return app;

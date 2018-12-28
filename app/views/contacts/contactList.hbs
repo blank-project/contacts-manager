@@ -1,9 +1,9 @@
 <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
-  {{> contactFilters }}
+  {{> contactFilters }} <!-- integre template hbs -->
   <div class="padded">
     <div class="heading">
       <h1>Liste des contacts</h1>
-      {{#isPermitted "contact:create" }}
+      {{#isPermitted "contact:create" }} <!-- v if ? ou server side rendering vuejs -->
       <a class="pure-button pure-button-primary left-offset" href="/contacts/edit" title="Nouveau"><i class="fa fa-plus"></i></a>
       {{/isPermitted }}
     </div>

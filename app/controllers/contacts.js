@@ -46,6 +46,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
 
   try {
     data.contacts = await ContactManager.find(req.query, options);
+    data.contacts = data.contacts.map(c => c.toObject({ getters: true, virtuals: true }));
     // Get updated pagination values after sanitization.
     ({ first, size } = options);
   } catch(err) {
@@ -66,8 +67,8 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
   data.incomplete = options.incomplete;
   data.size = size;
   data.title = 'Liste de Contact';
-  data.query = query;
-  res.render('contacts/contactList', data);
+  data.query = req.query;
+  res.renderVue('contacts/contactList', data);
 });
 
 router.get('/duplicates/', ensureRequest.isPermitted('contact:update'), async function(req, res, next) {
@@ -131,7 +132,10 @@ router.get('/duplicates/:ids', ensureRequest.isPermitted('contact:update','conta
 });
 
 router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {
-  res.render('contacts/contactEdit', { contact : {} });
+  var contact = {}, data = { title : 'Créer un contact'};
+  contact.addresses = [{}];
+  data.contact = contact;
+  res.renderVue('contacts/contactEdit', data);
 });
 
 router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
@@ -142,8 +146,9 @@ router.get('/edit/:contactId', ensureRequest.isPermitted('contact:update'), asyn
   try {
     var contact = await Contact.findById(id).populate('tags').exec();
 
-    res.render('contacts/contactEdit', {
-      contact : contact
+    res.renderVue('contacts/contactEdit', {
+      contact : contact.toObject({ getters: true, virtuals: true }),
+      title : 'Editer un contact'
     });
   } catch(err) {
     next(err);
@@ -181,10 +186,16 @@ router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async funct
     next(err);
   }
 
-  data.contact = contact;
+  // Can not use contact directly, it causes a bug in Vue
+  // Exports as a plain JSON Object
+  data.contact = contact.toObject({ getters: true, virtuals: true });
+  console.log(data.contact);
   data.tags = tags;
-  data.title = 'Fiche Contact ' + data.contact.fullName;
-  res.render('contacts/contactView', data);
+  data.title = 'Fiche Contact' + contact.fullName;
+
+  console.log('Done loading contact for display ' + id);
+
+  res.renderVue('contacts/contactView', data);
 });
 
 router.post('/', function (req, res, next) {
@@ -211,10 +222,10 @@ router.post('/', function (req, res, next) {
     organization : req.body.organization,
     title : req.body.title,
     address : {
-      number : req.body['address.number'],
-      street : req.body['address.street'],
-      code : req.body['address.code'],
-      city : req.body['address.city']
+      number : req.body['address.number'] || '',
+      street : req.body['address.street'] || '',
+      code : req.body['address.code'] || '',
+      city : req.body['address.city'] || ''
     },
     note : req.body.note,
   });
@@ -264,17 +275,16 @@ router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), as
 });
 
 router.delete('/:contactId', ensureRequest.isPermitted('contact:delete'), async function (req, res, next) {
-  var id = req.params.contactId
-  , data;
+  var id = req.params.contactId, data;
   console.log('Removing ' + id);
 
   try {
     data = await Contact.findByIdAndRemove(id).exec();
+    res.sendStatus(data ? 200 : 404);
+    res.renderVue('contacts/contactView');
   } catch(err) {
     next(err);
   }
-
-  res.sendStatus(data ? 200 : 404);
 });
 
 router.delete('/:contactId/tags/:tagId', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {

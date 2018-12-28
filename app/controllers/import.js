@@ -13,16 +13,16 @@ var express = require('express')
 
 // Exports a function to bind Controller
 module.exports = function (app) {
-  app.use('/import', ensureLoggedIn('/login'), ensureRequest.isPermitted('contact:import', 'contact:create'), router);
+  app.use('/import', ensureLoggedIn('/login'), ensureRequest.isPermitted('contact:import'), router);
 };
 
 router.get('/', function (req, res, next) {
-    res.render('import/contactImport', { title : 'Import de contact' });
+    res.renderVue('import/contactImport', { title : 'Import de contact' });
 });
 
 router.post('/', upload.single('upload'), function (req, res, next) {
     if (!req.file) {
-        res.render('contactImport', { title : 'Import de contact', message : 'Fichier manquant' });
+        res.renderVue('import/contactImport', { title : 'Import de contact', message : 'Fichier manquant' });
         return;
     }
     var filename = path.join(cwd, req.file.path)

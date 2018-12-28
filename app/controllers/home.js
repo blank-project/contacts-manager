@@ -7,42 +7,45 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
-    res.render('home/index', {
+    res.renderVue('home', {
       title : 'Contacts Manager'
     });
 });
 
 router.route('/login')
-  .get(function (req, res, next) {
-      var data =  {
-        title : 'Contacts Manager - Login'
-      }, flash = req.flash();
-      console.log(flash);
-      if (flash && flash.error) {
-        data.message = {
-          level : 'error',
-          message : flash.error[0]
+      .get(function (req, res, next) {
+        var data =  {
+          title : 'Login'
+        };
+        var flash = req.flash();
+        console.log(flash);
+        if (flash && flash.error) {
+          data.message = {
+            level : 'error',
+            message : flash.error[0]
+          }
         }
-      }
-      res.render('home/login', data);
-  })
-  .post(auth.authenticate('local', {
-    successRedirect: '/contacts',
-    failureRedirect: '/login',
-    failureFlash: true
-  }));
+        res.renderVue('login', data);
+      })
+      .post(auth.authenticate('local', {
+        successReturnToOrRedirect: '/contacts',
+        successFlash: true,
+        failureRedirect: '/login',
+        failureFlash: true
+      }));
 
 router.get('/logout', function (req, res, next) {
     req.logout();
     delete res.locals.user;
-    res.render('home/index', {
-      title : 'Contacts Manager - Logout'
+    res.renderVue('home', {
+      title : 'Contacts Manager - Logout',
+      message : 'Déconnexion réussie'
     });
 });
 
 router.route('/signup')
   .get(function (req, res, next) {
-      res.render('users/userCreate', {
-        title : 'Contacts Manager - Sign Up'
+      res.renderVue('signup', {
+        title : 'Sign Up'
       });
   });
