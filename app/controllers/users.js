@@ -37,7 +37,7 @@ function checkPasswordMatch(req, res, next) {
  * @param {User} user
  */
 function userData(user) {
-  return user ? user.toObject({ virtuals : true}) : {};
+  return user ? user.toObject({ getters : true, virtuals : true}) : {};
 }
 
 /**
@@ -92,6 +92,23 @@ async function displayUser(id, req, res, next) {
     res.renderVue('users/userView', data);
   }
 }
+
+
+/**
+ * Diplay User Creation route.
+ */
+router.get('/edit/', ensureLoggedIn('/login'), ensureRequest.isPermitted('user:create'), function (req, res, next) {
+  const data = {}
+  data.user = {
+    name : {
+      first : '',
+      last : ''
+    }
+  };
+  data.title = 'Créer un utilisateur';
+  res.renderVue('users/userCreate', data);
+});
+
 /**
  * Display Self profile.
  */

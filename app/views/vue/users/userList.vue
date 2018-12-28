@@ -16,7 +16,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="clickable" v-on:click="goTo('/users/' + user._id)" v-for="user in users" @click="goTo('/users/' + user._id)">
+                    <tr class="clickable" v-for="user in users" :key="user._id" @click="goTo('/users/' + user._id)">
                       <td>{{ user.name.first }}</td>
                       <td>{{ user.name.last }}</td>
                       <td><p v-for="email in user.emails">{{ email.value }}</p></td>
@@ -42,8 +42,6 @@
                 </div>
               </div>
             </div>
-          </form>
-      </div>
       <main-footer></main-footer>
     </main>
 </template>
