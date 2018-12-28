@@ -18,8 +18,8 @@
                     </div>
                     <div>
                       <label for="tags">Etiquettes</label>
-                      <select multiple name="tags" id="tags">
-                          {{ tags }}
+                      <select multiple name="tags" id="tags" class="browser-default">
+                          <option v-for="tag in tags" :key="tag._id" :value="tag._id">{{ tag.name }}</option>
                       </select>
                     </div>
                     <div>
@@ -59,7 +59,7 @@
                       <td>{{ contact.organization }}</td>
                       <td>{{ contact.title }}</td>
                       <td><div v-for="address in contact.addresses"> {{ contact.formattedAddress }}</div></td>
-                      <td><div v-for="tag in contact.tags" :key="tag.id">{{ tag.name }}</div></td>
+                      <td><tag v-for="tag in contact.tags" :key="tag.id" :tag="tag"></tag></td>
                     </tr>
                   </tbody>
               </table>
@@ -86,6 +86,7 @@
 
 <script type="text/javascript">
  import mainNav from './components/nav.vue';
+ import tag from './components/tag.vue';
  import mainFooter from './components/footer.vue';
  import permissionMixin from './mixins/permissions.vue';
 
@@ -97,6 +98,7 @@
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter,
+     tag : tag
    },
    mixins : [permissionMixin],
    methods: {
