@@ -59,3 +59,8 @@ Application is then accessible at [http://localhost:3000](http://localhost:3000)
 
 Start app for development : `gulp develop`
 Mongo DB service must be running : `sudo service mongod start`
+
+## Mock Data
+
+http://convertcsv.com/generate-test-data.htm
+first,last,email,email,phone,phone,alpha,alpha,natural,street,zip,city,paragraph
