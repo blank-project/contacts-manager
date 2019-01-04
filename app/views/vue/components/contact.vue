@@ -10,10 +10,7 @@
             <p><b>Organisation</b> : {{ contact.organization }}</p>
             <p><b>Fonction</b> : {{ contact.title }}</p>
             <p><b>Adresse</b> :
-              {{ contact.address.number }}
-              {{ contact.address.street}}
-              {{ contact.address.code }}
-              {{ contact.address.city }}
+              {{ contact.formattedAddress }}
             </p>
           </div>
           <div class="card-action" v-if="user">
