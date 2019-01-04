@@ -52,7 +52,7 @@
                     </tr>
                   </thead>
                   <tbody v-if="contacts.length">
-                    <tr class="clickable" v-for="contact in contacts" :key="contact.id" @click="goTo('/contacts/' + contact._id)">
+                    <tr class="clickable" v-for="contact in contacts" :key="contact.id" @click="contactClicked(contact._id, $event);">
                       <td>{{ contact.fullName }}</td>
                       <td><div v-for="email in contact.emails">{{ email.value }}<div></td>
                       <td><div v-for="phone in contact.phones">{{ phone.value }}<div></td>
@@ -104,6 +104,13 @@
    methods: {
      goTo: function(url) {
        location.href = url;
+     },
+     contactClicked : function(id, e) {
+      if (window.getSelection().toString()) {
+        // Selection is not empty, prevent click.
+        return;
+      }
+      this.goTo('/contacts/' + id);
      }
    }
  }
