@@ -1,16 +1,17 @@
 <template>
     <div class="tag" :style="{ backgroundColor: tag.color, color: tag.textColor}">
-        <span>{{ tag.name }}</span><span v-if="removable" class="tag-remove">x</span>
+        <span>{{ tag.name }}</span><span v-if="removable" @click="$emit('remove', tag._id)" class="tag-remove clickable"><i class="material-icons">clear</i></span>
     </div>
 </template>
 
 <script>
   export default {
-    data() {
-        return {
-            removable: false
+    props : {
+        "tag" : Object,
+        "removable" : {
+            type: Boolean,
+            default: false
         }
-    },
-    props : ['tag']
+    }
   }
 </script>

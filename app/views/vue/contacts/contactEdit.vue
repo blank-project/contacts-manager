@@ -61,6 +61,9 @@
         </div>
         <fieldset class="padded">
           <input type="submit" name="submit" value="Soumettre" class="btn"/>
+          <a :href="'/contacts/' + contact.id" class="btn">
+            Annuler
+          </a>
         </fieldset>
       </form>
     </div>

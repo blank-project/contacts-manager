@@ -239,21 +239,20 @@ router.post('/', function (req, res, next) {
 });
 
 router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), async function (req, res, next) {
-  var id = req.params.contactId
-  , tag
-  , tagId = req.body.tagId
-  , backUrl = req.body.urlSource;
+  const id = req.params.contactId, tagId = req.body.tagId;
   console.log('Associating ' + id + ' with ' + tagId);
+  var tag;
 
   try {
     tag = await Tag.findById(tagId).exec()
   } catch(err) {
     next(err);
+    return;
   }
 
   if (tag == null) {
     console.log("Tag " + tagId + ' not found');
-    next();
+    res.sendStatus(404);
     return;
   }
   // Tag found at this point, add to tag set.
@@ -264,14 +263,10 @@ router.post('/:contactId/tags/', ensureRequest.isPermitted('contact:update'), as
     }).exec();
   } catch(err) {
     next(err);
-  }
-
-  if (backUrl) {
-    res.redirect(backUrl);
     return;
   }
 
-  res.redirect("/contacts/" + id);
+  res.sendStatus(200);
 });
 
 router.delete('/:contactId', ensureRequest.isPermitted('contact:delete'), async function (req, res, next) {

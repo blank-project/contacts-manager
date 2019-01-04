@@ -12,6 +12,18 @@
             <p><b>Adresse</b> :
               {{ contact.formattedAddress }}
             </p>
+            <div>
+              <b>Etiquettes :</b>
+              <div>
+                <tag v-for="tag in contact.tags" :key="tag.id" :tag="tag" :removable="checkPermissions(user, 'contact:update')" @remove="removeTag(contact.id, $event)"></tag>
+              </div>
+            </div>
+            <div>
+              <b>Ajouter une etiquette :</b>
+              <div>
+                <tag class="clickable" v-for="tag in tags" :key="tag.id" :tag="tag" @click.native="addTag(contact.id, tag._id)"></tag>
+              </div>
+            </div>
           </div>
           <div class="card-action" v-if="user">
             <a :href="'edit/' + contact.id" v-if="checkPermissions(user, 'contact:update')">
@@ -21,97 +33,23 @@
               <i class="material-icons">delete</i> Supprimer
             </a>
           </div>
+          <div class="card-action">
+            <a href="/contacts/"><i class="material-icons">arrow_back</i> Retour à la liste</a>
+          </div>
         </div>
       </div>
     </div>
-    <table class="contact pure-table">
-  <!--    <tr>
-        <td>Adresse</td>
-          <td>
-          <address>
-           <span>{{ contact.adress.number }}</span> <span>{{ contact.adress.street }}</span><br />
-           <span>{{ contact.adress.code }}</span> <span>{{ contact.adress.city }}</span><br />
-         </address>
-        </td>
-      </tr> -->
-<!--
-      <tr>
-        <td>Etiquettes</td>
-        <td>
-          <div id="tag-list" class="padded">
-            {{#each tags}}
-              {{#isPermitted "contact:update" }}
-                {{! TODO Find a way to factor tag and tagEdit}}
-                {{>tagEdit}}
-              {{else}}
-                {{>tag}}
-              {{/isPermitted}}
-            {{else}}
-              Aucune étiquette
-            {{/each}}
-          </div>
-          {{#isPermitted "contact:update" }}
-          <div class="padded">
-            <form method="POST" action="/contacts/{{ id }}/tags/" class="pure-form">
-              <select name="tagId" id="tagId">
-                {{#each ../tags}}
-                <option value="{{ id }}">{{ name }}</option>
-                {{/each}}
-              </select>
-              <button type="submit" class="pure-button pure-input-rounded" {{#isEmpty ../tags }}disabled{{/isEmpty}}>
-                <i class="fa fa-plus"></i>
-              </button>
-            </form>
-          </div>
-          {{/isPermitted}}
-        </td>
-      </tr>
-      <tr>
-        <td>Note</td><td>{{ note }}</td>
-      </tr>
-  -->  </table> <!--
-    {{/with}}
-    {{#with contact}}
-    <div class="padded">
-      {{#isPermitted "contact:update" }}
-      <a href="edit/{{ id }}" class="pure-button pure-button-primary">Modifier</a>
-      {{/isPermitted}}
-      {{#isPermitted "contact:delete" }}
-      <button id="delete" class="pure-button button-error">Supprimer</button>
-      {{/isPermitted}}
-    <div>
-    {{/with}}
-    <div class="padded">
-    <a href="/contacts/" class="pure-button">Retour à la liste</a>
-    </div>
-
-    <script>
-        var tags = document.getElementById('tag-list');
-        delegate(tags, 'click', '.tag-remove', function(e) {
-          var id = e.actualTarget.getAttribute("data-id");
-          removeTagFromContact(id, '{{ contact.id }}').then(function (response) {
-            window.location.reload(true);
-          }).catch(console.log);
-        });
-    </script>
-    {{#isPermitted "contact:delete" }}
-    <script>
-        var deleteButton = document.getElementById("delete");
-        deleteButton.addEventListener('click', function(ev) {
-          deleteContact('{{ contact.id }}').then(function (response) {
-            location.assign("/contacts/");
-          })
-          .catch(console.log);
-        });
-    </script>
-    {{/isPermitted}}-->
   </div>
 </template>
 
 <script>
   import permissionMixin from './mixins/permissions.vue';
+  import tag from './components/tag.vue'
 
   export default {
+    components: {
+      tag : tag
+    },
     data() {
       return { }
     },
@@ -122,12 +60,26 @@
       },
       'user': {
         type: Object
+      },
+      'tags' : {
+        type : Array
       }
     },
     methods : {
       deleteOne : function(id) {
         deleteContact(id).then(function (response) {
           location.assign("/contacts/");
+        });
+      },
+      removeTag(contactId, tagId) {
+        removeTagFromContact(tagId, contactId).then(function (response) {
+          window.location.reload(true);
+        });
+      },
+      addTag(contactId, tagId) {
+        console.log('add ' + tagId)
+        addTagToContact(tagId, contactId).then(function (response) {
+          window.location.reload(true);
         });
       }
     }
