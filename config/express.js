@@ -42,6 +42,7 @@ module.exports = function(app, config) {
           { script: 'https://unpkg.com/vue' },
           { script: 'https://unpkg.com/axios/dist/axios.min.js' },
           { script: '/js/contacts-manager-client.js' },
+          { script: '/js/init.js' },
           { style: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css' },
           { style: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
           { style: '/css/style.css' }

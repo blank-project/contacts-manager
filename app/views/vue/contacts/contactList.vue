@@ -18,7 +18,7 @@
                     </div>
                     <div>
                       <label for="tags">Etiquettes</label>
-                      <select multiple name="tags" id="tags" class="browser-default">
+                      <select multiple name="tags" id="tags" class="">
                           <option v-for="tag in tags" :key="tag._id" :value="tag._id">{{ tag.name }}</option>
                       </select>
                     </div>
