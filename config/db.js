@@ -5,7 +5,16 @@ var conf = require('./config').db,
 module.exports = function() {
 
   // Connection URL
-  var url = 'mongodb://' + conf.host + ':' + conf.port + '/' + conf.database;
+  var url = 'mongodb://';
+ 
+  if (conf.user && conf.password) {
+    url += conf.user+ ':' + conf.password + '@';
+  }
+  url += conf.host;
+  if(conf.port) {
+    url += ':' + conf.port
+  } 
+  url += '/' + conf.database;
 
   console.log('Connecting to ' + conf.database);
 
