@@ -7,9 +7,21 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
+  const user = req.user;
+  if (user) {
+     if (user.isPermitted('contact:read')) {
+      res.redirect('/contacts/');
+     } else {
+       // Display own profile on home if not allowed to display contacts.
+      res.redirect('/users/me');
+     }
+     
+  } else {
+    // Home page when not logged in
     res.renderVue('home', {
       title : 'Contacts Manager'
     });
+  }    
 });
 
 router.route('/login')
@@ -28,7 +40,7 @@ router.route('/login')
         res.renderVue('login', data);
       })
       .post(auth.authenticate('local', {
-        successReturnToOrRedirect: '/contacts',
+        successReturnToOrRedirect: '/',
         successFlash: true,
         failureRedirect: '/login',
         failureFlash: true
