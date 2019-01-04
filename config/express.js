@@ -38,9 +38,11 @@ module.exports = function(app, config) {
         title: 'Contacts Manager',
         meta: [
           { script: 'https://code.jquery.com/jquery-3.2.1.min.js' },
-          { script: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js' },
+          { script: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js' },
           { script: 'https://unpkg.com/vue' },
-          { style: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css' },
+          { script: 'https://unpkg.com/axios/dist/axios.min.js' },
+          { script: '/js/contacts-manager-client.js' },
+          { style: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css' },
           { style: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
           { style: '/css/style.css' }
         ]

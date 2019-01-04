@@ -20,8 +20,8 @@
             <a :href="'edit/' + contact.id" v-if="checkPermissions(user, 'contact:update')">
               <i class="material-icons">create</i> Modifier
             </a>
-            <a :href="contact.id" v-if="checkPermissions(user, 'contact:delete')">
-              <i class="material-icons">create</i> Supprimer (WIP)
+            <a href="" v-if="checkPermissions(user, 'contact:delete')" @click.prevent="deleteOne(contact.id)">
+              <i class="material-icons">delete</i> Supprimer
             </a>
           </div>
         </div>
@@ -125,6 +125,13 @@
       },
       'user': {
         type: Object
+      }
+    },
+    methods : {
+      deleteOne : function(id) {
+        deleteContact(id).then(function (response) {
+          location.assign("/contacts/");
+        });
       }
     }
   }

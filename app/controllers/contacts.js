@@ -281,7 +281,6 @@ router.delete('/:contactId', ensureRequest.isPermitted('contact:delete'), async 
   try {
     data = await Contact.findByIdAndRemove(id).exec();
     res.sendStatus(data ? 200 : 404);
-    res.renderVue('contacts/contactView');
   } catch(err) {
     next(err);
   }
