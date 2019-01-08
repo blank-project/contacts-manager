@@ -12,7 +12,7 @@ var config = {
     db : {
       database : 'contacts-manager-development',
       // References the host in the docker-compose file.
-      host : 'dev.database.contact-manager.com',
+      host : '127.0.0.1',
       port : '27017',
       options : {
         poolSize : 10
