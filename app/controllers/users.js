@@ -163,7 +163,7 @@ router.post('/', checkPasswordMatch, async function (req, res, next) {
       console.log(`User ${created.username} was created disabled`);
       // TODO send flash message.
     }
-    res.redirect('/users/me');
+    res.redirect('/users/edit/'+created._id);
   } catch(e) {
     next(e);
     return;
