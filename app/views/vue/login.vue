@@ -1,7 +1,6 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav :user="user"></main-nav>
-        <alerts v-if="message" :message="message"></alerts>
         <div id="container" class="row">
           <div class="center-text">
             <h1>{{ title }}</h1>
@@ -20,6 +19,7 @@
               <div class="col s1">
                   <input id="submit" name="submit" type="submit" value="Soumettre" class="btn"/>
               </div>
+              <alerts v-if="message" :message="message"></alerts>
           </form>
         </div>
         <main-footer></main-footer>

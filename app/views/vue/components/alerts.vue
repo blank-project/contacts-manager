@@ -10,11 +10,11 @@ export default {
    },
    methods: {
      showAlert: function(text) {
-       Materialize.toast(text, 4000, 'red darken-2');
+       M.toast({html:text, displayLength: 4000, classes:'red darken-2'});
      },
 
      showInfo: function(text) {
-       Materialize.toast(text, 4000, 'orange lighten-1');
+       M.toast({html:text, displayLength: 4000, classes:'orange lighten-1'});
      },
    },
    mounted() {
