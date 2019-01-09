@@ -163,7 +163,7 @@ router.post('/', checkPasswordMatch, async function (req, res, next) {
       console.log(`User ${created.username} was created disabled`);
       // TODO send flash message.
     }
-    res.redirect('/users/edit/'+created._id);
+    res.redirect('/users/edit/'+created._id+'?created=true');
   } catch(e) {
     next(e);
     return;
@@ -218,6 +218,13 @@ async function displayUserEdition(id, req, res, next) {
     const data = {}
     data.user = userData(user);
     data.title = 'Editer le Profil : ' + data.user.username;
+    if(req.query.created=='true') {
+      data.created = true;
+      data.message = {
+        level : 'validation',
+        message : "L'utilisateur a été correctement créé"
+      }
+    }
     res.renderVue('users/userEdit', data);
   }
 }

@@ -14,7 +14,7 @@ export default {
      },
 
      showInfo: function(text) {
-       M.toast({html:text, displayLength: 4000, classes:'orange lighten-1'});
+       M.toast({html:text, displayLength: 4000, classes:'green lighten-1'});
      },
    },
    mounted() {

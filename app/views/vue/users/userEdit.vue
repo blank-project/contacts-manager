@@ -1,6 +1,7 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav :user="currentUser"></main-nav>
+          <alerts v-if="created" :message="message"></alerts>
           <div class="row" id="container">
             <div class="col m6">
               <span class="fa fa-user"></span>
@@ -53,7 +54,6 @@
                   </form>
               </div>
             </div>
-          </div>
         <main-footer></main-footer>
     </main>
 </template>
@@ -62,17 +62,20 @@
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
  import permissionMixin from './mixins/permissions.vue';
+ import alerts from './components/alerts.vue';
 
  export default {
    data: function () {
      return {
-      user: null
+      user: null,
+      created: null
     };
    },
    mixins : [permissionMixin],
    components: {
      mainNav: mainNav,
-     mainFooter: mainFooter
+     mainFooter: mainFooter,
+     alerts: alerts
    }
  }
 

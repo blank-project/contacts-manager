@@ -1,0 +1,117 @@
+body {
+  padding: 50px;
+  font-family: 'Roboto', sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+@padding-default : 5px;
+
+.padded-vertical {
+  padding : @padding-default 0px;
+}
+.padded-horizontal {
+  padding : 0px @padding-default;
+}
+
+.padded {
+    padding : @padding-default;
+}
+
+.left-offset {
+  margin-left : @padding-default;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+}
+
+// Style
+.tag {
+  border-radius : 5px;
+  margin-left: 5px;
+  padding : 5px;
+  display : inline-block;
+
+  .tag-remove{
+    padding-left : 5px;
+  }
+}
+
+main {
+  margin: 20px;
+}
+
+.clickable {
+  cursor : pointer;
+}
+
+a.fa {
+  color: #AAA;
+  text-decoration: none;
+
+  :hover {
+    text-decoration: underline;
+  }
+}
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.pure-table tr.clickable:hover td {
+  // same as pure-table header
+  background-color: #e0e0e0;
+}
+
+header {
+  position : relative;
+}
+.user-pane {
+  position : absolute;
+  right : 0px;
+}
+
+// TOGGLES
+.toggle-state {
+   position: absolute;
+   top: -9999px;
+   left: -9999px;
+}
+
+.toggle-state-visible {
+  display : none;
+}
+
+.toggle-state:checked ~ .toggle-state-visible {
+  display : block;
+}
+
+.toggle-state:checked ~ .toggle-state-button-active {
+  // copied from pure-button-active
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset,0 0 6px rgba(0,0,0,.2) inset;
+}
