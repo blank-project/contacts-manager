@@ -19,6 +19,7 @@
  import mainNav from './components/nav.vue';
  import mainFooter from './components/footer.vue';
  import alerts from './components/alerts.vue';
+ import cart from './components/cart.vue';
 
  export default {
    data: function () {
@@ -30,7 +31,8 @@
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter,
-     alerts: alerts
+     alerts: alerts,
+     cart:cart
    },
  }
 </script>

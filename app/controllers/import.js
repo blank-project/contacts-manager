@@ -9,7 +9,8 @@ var express = require('express')
   , cwd = conf.root
   , execFile = require('child_process').execFile
   , scriptDir = path.join(cwd, 'scripts/')
-  , script = path.join(scriptDir, 'contacts-import.sh');
+  , script = path.join(scriptDir, 'contacts-import.sh')
+  , vueClipboard = require('vue-clipboard2');
 
 // Exports a function to bind Controller
 module.exports = function (app) {

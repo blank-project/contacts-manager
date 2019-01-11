@@ -1,6 +1,8 @@
 <template>
     <main class="grey lighten-4 blue-grey-text">
         <main-nav :user="user"></main-nav> <!--passer data "session" en attribut -->
+        <alerts v-if="message" :message="message"></alerts>
+        <cart :cart-content="cartContent"></cart>
         <div id="container" class="container">
           <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
              <!-- integrer template du filter -->
@@ -42,6 +44,7 @@
                 <table id="contact-list" class="contact-list pure-table pure-table-striped">
                   <thead>
                     <tr>
+                      <th>Panier</th>
                       <th>Nom</th>
                       <th>Mail</th>
                       <th>Téléphone</th>
@@ -53,6 +56,7 @@
                   </thead>
                   <tbody v-if="contacts.length">
                     <tr class="clickable" v-for="contact in contacts" :key="contact.id" @click="contactClicked(contact._id, $event);">
+                      <td @click.stop="addCart(contact);"><i class="material-icons">shopping_cart</i></td>
                       <td>{{ contact.fullName }}</td>
                       <td><div v-for="email in contact.emails">{{ email.value }}<div></td>
                       <td><div v-for="phone in contact.phones">{{ phone.value }}<div></td>
@@ -89,16 +93,22 @@
  import tag from './components/tag.vue';
  import mainFooter from './components/footer.vue';
  import permissionMixin from './mixins/permissions.vue';
+ import cart from './components/cart.vue';
+ import alerts from './components/alerts.vue';
 
  export default {
    data: function () {
      return {
+       cartContent:[],
+       message:''
      };
    },
    components: {
      mainNav: mainNav,
      mainFooter: mainFooter,
-     tag : tag
+     tag: tag,
+     cart: cart,
+     alerts: alerts
    },
    mixins : [permissionMixin],
    methods: {
@@ -111,6 +121,30 @@
         return;
       }
       this.goTo('/contacts/' + id);
+     },
+     addCart: function(contact) {
+       if(!this.cartContent.some(function(el) {return el._id ==contact._id})) {
+         this.cartContent.push(contact);
+         this.message = {level: "info", message:"Le contact a été ajouté au panier."}
+       } else {
+         this.message = {level:"error", message:"Le contact est déjà dans le panier."}
+       }
+    },
+    saveCartLocal: function() {
+      let parsed = JSON.stringify(this.cartContent);
+ 
+      if(parsed !=[] || parsed != null) {
+        localStorage.setItem('cart', parsed);
+      }
+
+    }
+   
+   },
+   mounted() {
+    window.addEventListener('beforeunload', this.saveCartLocal);
+
+    if(localStorage.getItem('cart')) {
+       this.cartContent = JSON.parse(localStorage.getItem('cart'));
      }
    }
  }
