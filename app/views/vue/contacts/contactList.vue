@@ -64,7 +64,15 @@
                   </tbody>
               </table>
               </div>
-
+              <div class="input-field col s12">
+                <select name="size" v-model="size">
+                  <option value="" disabled selected>Nombre de contacts par pages</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="500">500</option>
+                </select>
+              </div>
               <div v-if="contacts.length" class="padded">
                   <input name="previousSize" type="hidden" :value="size" />
                   <button name="first" type="submit" :value="previous" :disabled="!hasPrevious" class="btn"><i class="material-icons">keyboard_arrow_left</i></button>
