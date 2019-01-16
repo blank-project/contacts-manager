@@ -15,7 +15,6 @@ var express = require('express')
 module.exports = function (app) {
   app.use('/import', ensureLoggedIn('/login'), ensureRequest.isPermitted('contact:import'), router);
 };
-
 router.get('/', function (req, res, next) {
     res.renderVue('import/contactImport', { title : 'Import de contact' });
 });
