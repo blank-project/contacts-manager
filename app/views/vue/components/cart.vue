@@ -20,9 +20,10 @@ export default {
     copyCart: function() {
       var tempContact = [];
       for(var i=0; i < this.cartContent.length; i++) {
-        tempContact.push(this.cartContent[i].email)
+        tempContact.push(this.cartContent[i].email);
       }
       this.$copyText(tempContact);
+      M.toast({html: 'Le contenu du panier a été copié', classes: 'green lighten-1', displayLength: 2000});
     }
   },
   computed: {

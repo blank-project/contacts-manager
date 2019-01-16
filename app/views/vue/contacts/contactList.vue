@@ -133,9 +133,9 @@
      addCart: function(contact) {
        if(!this.cartContent.some(function(el) {return el._id ==contact._id})) {
          this.cartContent.push(contact);
-         this.message = {level: "info", message:"Le contact a été ajouté au panier."}
+         M.toast({html: 'Le contact a été ajouté au panier', classes: 'green lighten-1', displayLength: 2000});
        } else {
-         this.message = {level:"error", message:"Le contact est déjà dans le panier."}
+         M.toast({html: 'Le contact est déjà dans le panier', classes: 'red darken-2', displayLength: 2000});
        }
     },
     removeCart: function(payload) {
