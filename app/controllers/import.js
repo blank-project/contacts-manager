@@ -9,14 +9,12 @@ var express = require('express')
   , cwd = conf.root
   , execFile = require('child_process').execFile
   , scriptDir = path.join(cwd, 'scripts/')
-  , script = path.join(scriptDir, 'contacts-import.sh')
-  , vueClipboard = require('vue-clipboard2');
+  , script = path.join(scriptDir, 'contacts-import.sh');
 
 // Exports a function to bind Controller
 module.exports = function (app) {
   app.use('/import', ensureLoggedIn('/login'), ensureRequest.isPermitted('contact:import'), router);
 };
-
 router.get('/', function (req, res, next) {
     res.renderVue('import/contactImport', { title : 'Import de contact' });
 });

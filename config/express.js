@@ -16,7 +16,6 @@ var helpers = require('handlebars-helpers')(['collection', 'array']);
 var session = require('express-session');
 var flash = require('connect-flash');
 var expressVue = require('express-vue');
-
 // Authentication conf
 var authentication = require('./authentication');
 // Authorization conf
@@ -41,6 +40,7 @@ module.exports = function(app, config) {
           { script: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js' },
           { script: 'https://unpkg.com/vue' },
           { script: 'https://unpkg.com/axios/dist/axios.min.js' },
+          { script: '/js/vue-clipboard.min.js'},
           { script: '/js/contacts-manager-client.js' },
           { script: '/js/init.js' },
           { style: 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css' },
@@ -72,7 +72,6 @@ module.exports = function(app, config) {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
-
   app.use(flash());
   app.use(cookieParser(secret));
   app.use(session({
