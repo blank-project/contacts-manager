@@ -76,7 +76,7 @@
     methods : {
       deleteOne : function(id) {
         deleteContact(id).then(function (response) {
-          location.assign("/contacts/");
+          location.assign(localStorage.getItem("backLink"));
         });
       },
       removeTag(contactId, tagId) {
