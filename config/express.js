@@ -102,7 +102,7 @@ module.exports = function(app, config) {
         // Alias connected user as currentUser for the case when the data displayed uses a user data attribute.
         // Examples include user consultation and edition.
         data.currentUser = userData;
-        data.back = req.headers.referer;
+        
       }
       // Call original version.
       old(componentPath, data, vueOptions);

@@ -157,7 +157,7 @@
         document.getElementById('cartList').classList.add('scale-out')
         setTimeout(function() {
           this.cartContent = [];
-          localStorage.clear();
+          localStorage.removeItem('cart');
           document.getElementById('cartList').classList.remove('scale-out')
         }.bind(this), 100)
 
@@ -170,10 +170,15 @@
       if(parsed !=[] || parsed != null) {
         localStorage.setItem('cart', parsed);
       }
+    },
+    removeFilters: function() {
+      localStorage.removeItem('backLink');
     }
    },
    mounted() {
+    localStorage.setItem('backLink', window.location.href)
     window.addEventListener('beforeunload', this.saveCartLocal);
+    //window.addEventListener('beforeunload', this.removeFilters);
 
     if(localStorage.getItem('cart')) {
        this.cartContent = JSON.parse(localStorage.getItem('cart'));

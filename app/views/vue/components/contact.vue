@@ -34,7 +34,7 @@
             </a>
           </div>
           <div class="card-action">
-            <a :href="back"><i class="material-icons">arrow_back</i> Retour à la liste</a>
+            <a :href="backLink"><i class="material-icons">arrow_back</i> Retour à la liste</a>
           </div>
         </div>
       </div>
@@ -50,6 +50,11 @@
     components: {
       tag : tag
     },
+    data: function () {
+      return {
+        backLink:''
+      };
+    },
     mixins : [permissionMixin],
     props : {
       'back': {
@@ -64,6 +69,9 @@
       'tags' : {
         type : Array
       }
+    },
+    mounted() {
+      this.backLink = localStorage.getItem("backLink");
     },
     methods : {
       deleteOne : function(id) {

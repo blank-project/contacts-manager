@@ -192,7 +192,7 @@ router.get('/:contactId', ensureRequest.isPermitted('contact:read'), async funct
   console.log(data.contact);
   data.tags = tags;
   data.title = 'Fiche Contact' + contact.fullName;
-
+  
   console.log('Done loading contact for display ' + id);
 
   res.renderVue('contacts/contactView', data);
