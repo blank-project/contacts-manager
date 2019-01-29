@@ -2,7 +2,7 @@
   <main>
     <main-nav :user="user"></main-nav>
     <div id="container">
-      <contact :contact="contact" :user="user" :tags="tags"></contact>
+      <contact  :contact="contact" :user="user" :tags="tags" :back="back" ></contact>
     </div>
     <main-footer></main-footer>
   </main>

@@ -34,7 +34,7 @@
             </a>
           </div>
           <div class="card-action">
-            <a href="/contacts/"><i class="material-icons">arrow_back</i> Retour à la liste</a>
+            <a :href="back"><i class="material-icons">arrow_back</i> Retour à la liste</a>
           </div>
         </div>
       </div>
@@ -50,11 +50,11 @@
     components: {
       tag : tag
     },
-    data() {
-      return { }
-    },
     mixins : [permissionMixin],
     props : {
+      'back': {
+        type: String
+      },
       'contact': {
         default: undefined
       },
