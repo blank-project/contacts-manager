@@ -88,7 +88,6 @@
                     <a v-if="checkPermissions(user, 'contact:create')" class="btn" href="/contacts/edit" title="Nouveau"><i class="material-icons">add</i></a>
                 </div>
               </div>
-            </div>
           </form>
           </div>
       <main-footer></main-footer>

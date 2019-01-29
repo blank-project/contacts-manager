@@ -33,7 +33,7 @@
             <input id="title" type="text" name="title" v-model="contact.title" /><br />
           </div>
         </fieldset>
-        <fieldset v-for="address, i in contact.addresses" :key="i">
+        <fieldset v-for="(address, i) in contact.addresses" :key="i">
           <legend>Adresse {{ i + 1}}</legend>
           <div class="input-field">
             <label for="address.number">N°</label>
@@ -57,7 +57,7 @@
         <div class="input-field">
           <i class="material-icons prefix">comment</i>
           <label for="note">Note</label>
-          <textarea id="note" name="note" class="materialize-textarea">{{ contact.note }}</textarea><br />
+          <textarea id="note" name="note" class="materialize-textarea" v-model="contact.note"></textarea><br />
         </div>
         <fieldset class="padded">
           <input type="submit" name="submit" value="Soumettre" class="btn"/>

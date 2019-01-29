@@ -11,7 +11,7 @@
                 <p><b>Fonction</b> : {{ user.title }}</p>
                 <p><b>Permissions</b>
                 <ul>
-                  <li v-for="permission in user.permissions">
+                  <li v-for="(permission, i) in user.permissions" :key="i" >
                     {{ permission }}
                   </li>
                 </ul>
