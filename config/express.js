@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 // Handlebars
+var exphbs = require('express-handlebars');
 var helpers = require('handlebars-helpers')(['collection', 'array']);
 var session = require('express-session');
 var flash = require('connect-flash');
@@ -54,9 +55,16 @@ module.exports = function(app, config) {
   app.use(expressVueMiddleware);
 
   // Register view engine (handlebars).
-
+  app.engine('hbs', exphbs({
+    layoutsDir: config.root + '/app/views/_layouts/',
+    defaultLayout: 'main',
+    extname : '.hbs',
+    partialsDir: [config.root + '/app/views/_partials/'],
+    helpers : helpers
+  }));
 
   app.set('views', config.root + '/app/views');
+  app.set('view engine', 'hbs');
 
   // app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));

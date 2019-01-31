@@ -1,0 +1,23 @@
+<form action="/tags/" method="POST" class="pure-form pure-form-aligned">
+{{#with tag }}
+  {{#if id }}
+  <input type="hidden" name="id" value="{{ id }}" />
+  {{/if}}
+  <div class="pure-control-group">
+    <label for="name">Nom</label>
+    <input id="name" type="text" name="name" value="{{ name }}"/>
+  </div>
+  <div class="pure-control-group">
+    <label for="color">Couleur</label>
+    <input id="color" type="color" name="color" value="{{ color }}" />
+  </div>
+  <fieldset class="padded">
+    <input type="submit" name="submit" value="Soumettre" class="pure-button pure-button-primary" />
+    {{#if id }}
+    <a href="/tags/{{ id }}" class="pure-button">Annuler</a>
+    {{else}}
+    <a href="/tags/" class="pure-button">Annuler</a>
+    {{/if}}
+  </fieldset>
+{{/with}}
+</form>
