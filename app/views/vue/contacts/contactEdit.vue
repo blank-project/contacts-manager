@@ -6,6 +6,7 @@
         <h3>{{ title }}</h3>
       </div>
       <form action="/contacts/" method="POST">
+        <input type="hidden" name="id" v-model="contact.id" />
         <fieldset>
           <div class="input-field">
             <i class="material-icons prefix">person</i>
