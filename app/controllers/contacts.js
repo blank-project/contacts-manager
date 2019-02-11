@@ -46,6 +46,7 @@ router.get('/', ensureRequest.isPermitted('contact:read'), function (req, res, n
 
   try {
     data.contacts = await ContactManager.find(req.query, options);
+    console.log("options : "+JSON.stringify(options));
     data.contacts = data.contacts.map(c => c.toObject({ getters: true, virtuals: true }));
     // Get updated pagination values after sanitization.
     ({ first, size } = options);

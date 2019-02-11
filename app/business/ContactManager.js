@@ -133,6 +133,10 @@ class ContactManager {
       options.size = size = 20;
     }
 
+    if (size == "all") {
+      options.size = size = 99999;
+    }
+
     var contacts = await Contact.find(query)
       .populate({
         path: 'tags',
@@ -142,7 +146,7 @@ class ContactManager {
       .skip(first)
       .limit(size + 1)
       .exec();
-
+      console.log(contacts);
     if (contacts.length > size) {
       contacts.pop();
       options.next = first + size;

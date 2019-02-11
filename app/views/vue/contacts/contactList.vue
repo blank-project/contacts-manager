@@ -4,7 +4,7 @@
         <alerts v-if="message" :message="message"></alerts>
         <cart :cart-content="cartContent" @removecart="removeCart"></cart>
         <div id="container" class="container">
-          <form method="GET" action="/contacts/" class="pure-form pure-form-aligned">
+          <form method="GET" action="/contacts/" class="pure-form pure-form-aligned" id="search-form">
              <!-- integrer template du filter -->
              <div class="padded">
                <div class="heading">
@@ -69,12 +69,13 @@
               </table>
               </div>
               <div class="input-field col s12">
-                <select name="size" v-model="size">
+                <select name="size" v-model="size" @change="submitForm">
                   <option value="" disabled selected>Nombre de contacts par pages</option>
                   <option value="20">20</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
                   <option value="500">500</option>
+                  <option value="99999">Tout</option>
                 </select>
               </div>
               <div v-if="contacts.length" class="padded">
@@ -173,6 +174,9 @@
     },
     removeFilters: function() {
       localStorage.removeItem('backLink');
+    },
+    submitForm: function() {
+      document.getElementById("search-form").submit();
     }
    },
    mounted() {
