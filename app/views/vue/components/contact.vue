@@ -18,7 +18,7 @@
                 <tag v-for="tag in contact.tags" :key="tag.id" :tag="tag" :removable="checkPermissions(user, 'contact:update')" @remove="removeTag(contact.id, $event)"></tag>
               </div>
             </div>
-            <div>
+            <div v-if="!contact.hideAddTag">
               <b>Ajouter une etiquette :</b>
               <div>
                 <tag class="clickable" v-for="tag in tags" :key="tag.id" :tag="tag" @click.native="addTag(contact.id, tag._id)"></tag>
@@ -26,9 +26,11 @@
             </div>
           </div>
           <div class="card-action" v-if="user">
-            <a :href="'edit/' + contact.id" v-if="checkPermissions(user, 'contact:update')">
-              <i class="material-icons">create</i> Modifier
-            </a>
+            <div v-if="!contact.hideEdit">
+              <a id="edit-contact" :href="'edit/' + contact.id" v-if="checkPermissions(user, 'contact:update')">
+                <i class="material-icons">create</i> Modifier
+              </a>
+            </div>
             <a href="" v-if="checkPermissions(user, 'contact:delete')" @click.prevent="deleteOne(contact.id)">
               <i class="material-icons">delete</i> Supprimer
             </a>

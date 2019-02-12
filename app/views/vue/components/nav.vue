@@ -7,6 +7,7 @@
               <!-- :v-if=""  utilisateur connecté alors tu affiche -->
                 <li><a v-if="checkPermissions(user, 'contact:read')" href="/contacts" class="waves-effect waves-light">Contacts</a></li>
                 <li><a v-if="checkPermissions(user, 'tag:read')" href="/tags" class="waves-effect waves-light">Etiquettes</a></li>
+                <li><a v-if="checkPermissions(user, 'contact:delete')" href="/contacts/duplicates/" class="waves-effect waves-light">Doublons</a></li>
                 <li><a v-if="checkPermissions(user, 'contact:import')" href="/import" class="waves-effect waves-light">Import</a></li>
                 <li><a href="/users/me" class="waves-effect waves-light">Mon Profil</a></li>
                 <li><a v-if="checkPermissions(user, 'user:read')" href="/users" class="waves-effect waves-light">Utilisateurs</a></li>
@@ -30,6 +31,7 @@
                 </div>
                 <li><a v-if="checkPermissions(user, 'contact:read')" href="/contacts" class="waves-effect waves-light">Contacts</a></li>
                 <li><a v-if="checkPermissions(user, 'tag:read')" href="/tags" class="waves-effect waves-light">Etiquettes</a></li>
+                <li><a v-if="checkPermissions(user, 'contact:delete')" href="/contacts/duplicates/" class="waves-effect waves-light">Doublons</a></li>
                 <li><a v-if="checkPermissions(user, 'contact:import')" href="/import" class="waves-effect waves-light">Import</a></li>
                 <li><a v-if="checkPermissions(user, 'user:read')" href="/users" class="waves-effect waves-light">Utilisateurs</a></li>
             </ul>
@@ -55,7 +57,6 @@ import permissionMixin from './mixins/permissions.vue';
    },
    mixins : [permissionMixin],
    mounted() {
-     console.log(this);
      var elems = this.$el.querySelectorAll('.sidenav');
      console.log(elems);
      var instances = M.Sidenav.init(elems, {});

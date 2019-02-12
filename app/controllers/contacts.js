@@ -78,7 +78,7 @@ router.get('/duplicates/', ensureRequest.isPermitted('contact:update'), async fu
     var c = await Contact.aggregate([
       {
         $group: {
-          _id: {name: "$name"} ,
+          _id: {emails: "$emails"} ,
           ids: {$addToSet: "$_id"},
           count: {$sum: 1}
         }
@@ -89,7 +89,7 @@ router.get('/duplicates/', ensureRequest.isPermitted('contact:update'), async fu
         }
       }
     ]);
-    res.render('contacts/contactDuplicates', { contacts: c });
+    res.renderVue('contacts/contactDuplicates', { contacts: c });
   } catch(err) {
     next(err);
   }
@@ -129,7 +129,7 @@ router.get('/duplicates/:ids', ensureRequest.isPermitted('contact:update','conta
       next(err);
     }
   }
-  res.render("contacts/chooseFromDuplicates", { contacts: contacts });
+  res.renderVue("contacts/chooseFromDuplicates", { contacts: contacts });
 });
 
 router.get('/edit/', ensureRequest.isPermitted('contact:create'), function (req, res, next) {
