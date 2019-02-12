@@ -26,8 +26,8 @@
             </div>
           </div>
           <div class="card-action" v-if="user">
-            <div v-if="!contact.hideEdit">
-              <a id="edit-contact" :href="'edit/' + contact.id" v-if="checkPermissions(user, 'contact:update')">
+            <div class="edit-contact" v-if="!contact.hideEdit">
+              <a :href="'edit/' + contact.id" v-if="checkPermissions(user, 'contact:update')">
                 <i class="material-icons">create</i> Modifier
               </a>
             </div>
@@ -103,5 +103,9 @@
 
 .contact-container > div.row {
   margin: auto;
+}
+
+.edit-contact {
+  display:inline;
 }
 </style>
