@@ -146,7 +146,6 @@ class ContactManager {
       .skip(first)
       .limit(size + 1)
       .exec();
-      console.log(contacts);
     if (contacts.length > size) {
       contacts.pop();
       options.next = first + size;

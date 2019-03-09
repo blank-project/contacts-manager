@@ -15,6 +15,9 @@ module.exports = function() {
     url += ':' + conf.port
   } 
   url += '/' + conf.database;
+  if (conf.opts) {
+    url += '?' + conf.opts;
+  }
 
   console.log('Connecting to ' + conf.database);
 

@@ -11,6 +11,7 @@ function loadDbConf(config) {
   db.port = process.env.DB_PORT;
   db.user = process.env.DB_USER;
   db.password = process.env.DB_PASSWORD;
+  db.opts = process.env.DB_OPTS;
 }
 
 // Env specific conf
@@ -45,5 +46,16 @@ if (config.env) {
 }
 
 loadDbConf(config);
+
+config.exportDbEnv = function() {
+  var env = {};
+  env.DB_HOST = this.db.host;
+  env.DB_DATABASE = this.db.database;
+  env.DB_PORT = this.db.port;
+  env.DB_USER = this.db.user;
+  env.DB_PASSWORD = this.db.password;
+  env.DB_OPTS = this.db.opts;
+  return env;
+};
 
 module.exports = config;
