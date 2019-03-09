@@ -25,7 +25,7 @@ var envs = {
   },
 
   production: {
-    
+    env : ".env.prod"
   }
 
 };
@@ -39,6 +39,10 @@ var config = {
 }
 
 config = Object.assign(config, envs[env]);
+
+if (process.env.NODE_ENV_FILE) {
+  config.env = process.env.NODE_ENV_FILE;
+}
 
 // Load optional env file into process.env
 if (config.env) {
