@@ -1,2 +1,5 @@
 node_modules/
 .git/
+data/
+test/
+README.md

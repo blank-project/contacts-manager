@@ -9,7 +9,6 @@ const path = require('path')
 
 // Export part
 const CONF = require('../../config/config')
-, DB = CONF.db
 , CWD = CONF.root
 , SCRIPTS_DIR = path.join(CWD, 'scripts/')
 , SCRIPT = path.join(SCRIPTS_DIR, 'contacts-export.sh')
@@ -49,10 +48,12 @@ module.exports = class ExportManager {
    * Generate the process Options.
    */
   getProcessOptions() {
-    return {
+    var opts =  {
       cwd : SCRIPTS_DIR,
-      env : DB
+      env : { }
     };
+    Object.assign(opts.env, CONF.exportDbEnv());    
+    return opts;
   }
 
   /**

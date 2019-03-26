@@ -5,7 +5,6 @@ var express = require('express')
   , upload = require('multer')({ dest: 'data/uploads/' })
   , conf = require('../../config/config')
   , path = require('path')
-  , db = conf.db
   , cwd = conf.root
   , execFile = require('child_process').execFile
   , scriptDir = path.join(cwd, 'scripts/')
@@ -27,8 +26,9 @@ router.post('/', upload.single('upload'), function (req, res, next) {
     var filename = path.join(cwd, req.file.path)
       , options = {
       cwd : scriptDir,
-      env : db
+      env : { }
     };
+    Object.assign(options.env, conf.exportDbEnv());
     execFile(script, [ filename ], options, (error, stdout, stderr) => {
       console.log(stdout);
       console.log(stderr);

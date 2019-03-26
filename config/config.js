@@ -1,58 +1,65 @@
 var path = require('path'),
+    dotenv = require('dotenv'),
     rootPath = path.normalize(__dirname + '/..'),
     env = process.env.NODE_ENV || 'development';
 
-var config = {
-  development: {
-    root: rootPath,
-    app: {
-      name: 'contacts-manager'
-    },
-    port: process.env.PORT || 3000,
-    db : {
-      database : 'contacts-manager-development',
-      // References the host in the docker-compose file.
-      host : '127.0.0.1',
-      port : '27017',
-      options : {
-        poolSize : 10
-      }
+function loadDbConf(config) {
+  var db = {};
+  config.db = db;
+  db.host = process.env.DB_HOST;
+  db.database = process.env.DB_DATABASE;
+  db.port = process.env.DB_PORT;
+  db.user = process.env.DB_USER;
+  db.password = process.env.DB_PASSWORD;
+  db.opts = process.env.DB_OPTS;
+}
 
-    }
+// Env specific conf
+var envs = {
+  development: {
+    env : ".env.dev"
   },
 
   test: {
-    root: rootPath,
-    app: {
-      name: 'contacts-manager'
-    },
-    port: process.env.PORT || 3000,
-    db : {
-      database : 'contacts-manager-test',
-      host : 'localhost',
-      port : '27017',
-      options : {
-        poolSize : 10
-      }
-    }
+    env : "test/.env.test"
   },
 
   production: {
-    root: rootPath,
-    app: {
-      name: 'contacts-manager'
-    },
-    port: process.env.PORT || 3000,
-    db : {
-      database : 'contacts-manager-production',
-      host : 'localhost',
-      port : '27017',
-      options : {
-        poolSize : 10
-      }
-
-    }
+    env : ".env.prod"
   }
+
 };
 
-module.exports = config[env];
+var config = {
+  root: rootPath,
+  app: {
+    name: 'contacts-manager'
+  },
+  port: process.env.PORT || 3000
+}
+
+config = Object.assign(config, envs[env]);
+
+if (process.env.NODE_ENV_FILE) {
+  config.env = process.env.NODE_ENV_FILE;
+}
+
+// Load optional env file into process.env
+if (config.env) {
+  dotenv.config({ path: path.join(rootPath, config.env) });
+}
+
+loadDbConf(config);
+
+config.exportDbEnv = function() {
+  var env = {};
+  env.DB_HOST = this.db.host;
+  env.DB_DATABASE = this.db.database;
+  env.DB_PORT = this.db.port;
+  env.DB_USER = this.db.user;
+  env.DB_PASSWORD = this.db.password;
+  env.DB_OPTS = this.db.opts;
+  return env;
+};
+
+module.exports = config;
